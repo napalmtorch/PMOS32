@@ -1,0 +1,36 @@
+newimg 536870912
+format
+
+mkdir /sys
+mkdir /sys/bin
+mkdir /sys/lib
+
+mkdir /sys/src
+mkdir /sys/src/Demo
+mkdir /sys/src/Test
+
+mkdir /sys/resources
+mkdir /sys/resources/fonts
+mkdir /sys/resources/themes
+mkdir /sys/resources/wallpapers
+
+mkdir /users
+
+mkdir /users/root
+mkdir /users/root/documents
+mkdir /users/root/pictures
+
+mkdir /users/public
+mkdir /users/public/documents
+mkdir /users/public/pictures
+
+infile /sys/src/Test/Test.c Disk/sys/src/Test/Test.c
+infile /sys/src/Test/Linker.ld Disk/sys/src/Test/Linker.ld
+
+infile /sys/bin/Test.o Disk/sys/bin/Test.o
+infile /sys/bin/Test.elf Disk/sys/bin/Test.elf
+
+saveimg ./hdd.img
+blocks
+entries
+exit
