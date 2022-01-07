@@ -4,10 +4,18 @@ format
 mkdir /sys
 mkdir /sys/bin
 mkdir /sys/lib
+mkdir /sys/lib/gfx
+mkdir /sys/lib/input
+mkdir /sys/lib/system
+mkdir /sys/lib/system/Shell
+mkdir /sys/lib/system/Terminal
 
 mkdir /sys/src
-mkdir /sys/src/Demo
-mkdir /sys/src/Test
+mkdir /sys/src/gfx
+mkdir /sys/src/input
+mkdir /sys/src/system
+mkdir /sys/src/system/Shell
+mkdir /sys/src/system/Terminal
 
 mkdir /sys/resources
 mkdir /sys/resources/fonts
@@ -24,11 +32,32 @@ mkdir /users/public
 mkdir /users/public/documents
 mkdir /users/public/pictures
 
-infile /sys/src/Test/Test.c Disk/sys/src/Test/Test.c
-infile /sys/src/Test/Linker.ld Disk/sys/src/Test/Linker.ld
+infile /sys/lib/Common.h Disk/sys/lib/Common.h
+infile /sys/lib/Library.h Disk/sys/lib/Library.h
+infile /sys/lib/Memory.h Disk/sys/lib/Memory.h
+infile /sys/lib/Types.h Disk/sys/lib/Types.h
+infile /sys/lib/Time.h Disk/sys/lib/Time.h
+infile /sys/lib/gfx/Image.h Disk/sys/lib/gfx/Image.h
+infile /sys/lib/gfx/Graphics.h Disk/sys/lib/gfx/Graphics.h
+infile /sys/lib/gfx/Font.h Disk/sys/lib/gfx/Font.h
+infile /sys/lib/gfx/FontData.h Disk/sys/lib/gfx/FontData.h
+infile /sys/lib/input/Keyboard.h Disk/sys/lib/input/Keyboard.h
+infile /sys/lib/input/Mouse.h Disk/sys/lib/input/Mouse.h
 
-infile /sys/bin/Test.o Disk/sys/bin/Test.o
-infile /sys/bin/Test.elf Disk/sys/bin/Test.elf
+infile /sys/src/Common.cpp Disk/sys/src/Common.cpp
+infile /sys/src/Library.cpp Disk/sys/src/Library.cpp
+infile /sys/src/Memory.cpp Disk/sys/src/Memory.cpp
+infile /sys/src/Time.cpp Disk/sys/src/Time.cpp
+infile /sys/src/gfx/Image.cpp Disk/sys/src/gfx/Image.cpp
+infile /sys/src/gfx/Graphics.cpp Disk/sys/src/gfx/Graphics.cpp
+infile /sys/src/input/Keyboard.cpp Disk/sys/src/input/Keyboard.cpp
+infile /sys/src/input/Mouse.cpp Disk/sys/src/input/Mouse.cpp
+
+infile /sys/src/Linker.ld Disk/sys/src/Linker.ld
+
+infile /sys/src/system/Shell/Main.cpp Disk/sys/src/system/Shell/Main.cpp
+
+infile /sys/bin/Shell.elf Disk/sys/bin/Shell.elf
 
 saveimg ./hdd.img
 blocks

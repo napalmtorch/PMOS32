@@ -2,11 +2,22 @@
 #include <Lib/Types.h>
 #include <Kernel/Graphics/Color.h>
 #include <Kernel/Graphics/Font.h>
-
+#include <Kernel/HAL/Common/RealMode.h>
 namespace HAL
 {
     namespace Drivers
     {
+        // info block
+        typedef struct
+        {
+            char      Signature[4];
+            uint16_t    Version;
+            uint16_t    OEMString[2];
+            uint8_t      Capabilities[4];
+            uint16_t    VideoMode[2];
+            uint16_t    TotalMemory;
+        } PACKED VESAInfo;
+
         // mode info block
         typedef struct
         {
@@ -42,6 +53,7 @@ namespace HAL
 
             public:
                 void Init();
+                void SetMode(uint32_t w, uint32_t h);
                 void Clear(Graphics::Color color);
                 void DrawPixel(uint16_t x, uint16_t y, Graphics::Color color);
                 void DrawFilledRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, Graphics::Color color);

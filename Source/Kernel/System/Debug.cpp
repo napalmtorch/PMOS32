@@ -285,6 +285,52 @@ namespace System
             
         }
 
+        void DumpMemory(void* ptr, uint32_t len)
+    {
+        int bytes_per_line = 16;
+        char temp[16];
+        char chars[bytes_per_line];
+        memset(temp, 0, 16);
+        memset(chars, 0, 16);
+        uint8_t* src = (uint8_t*)ptr;
+
+        Write("Dumping memory at: ");
+        strhex((uint32_t)src, temp, false, 4);
+        Write(temp, Color4::Cyan);
+        WriteChar('\n');
+
+        int xx = 0;
+        uint32_t pos = 0;
+        for (size_t i = 0; i < (len / bytes_per_line); i++)
+        {              
+            // address range
+            pos = i * bytes_per_line;
+            chars[0] = '\0';
+            strhex((uint32_t)(src + pos), temp, false, 4);
+            Write(temp, Color4::Cyan); Write(":");
+            strhex((uint32_t)(src + pos + (bytes_per_line - 1)), temp, false, 4);
+            Write(temp, Color4::Cyan);
+            Write("    ");
+
+            // bytes
+            for (size_t j = 0; j < bytes_per_line; j++)
+            {
+                memset(temp, 0, 16);
+                strhex(src[pos + j], temp, false, 1);
+                if (src[pos + j] > 0) { Write(temp); }
+                else { Write(temp, Color4::Red); }
+                Write(" ");
+
+                if (src[pos + j] >= 32 && src[pos + j] <= 126) { stradd(chars, src[pos + j]); }
+                else { stradd(chars, '.'); }
+            }
+
+            Write("    ");
+            Write(chars, Color4::Yellow);
+            WriteChar('\n');
+        }
+    }
+
         void DumpRegisters(Registers32* regs)
         {
             

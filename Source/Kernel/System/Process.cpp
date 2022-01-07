@@ -103,7 +103,7 @@ namespace System
     bool Process::Terminate()
     {
         Running = false;
-        return false;
+        return true;
     }
 
     bool Process::LoadThread(Threading::Thread* thread)
@@ -193,6 +193,28 @@ namespace System
         Debug::WriteLine("--------------------------------------------------------------\n", Color4::Gray);
     }
 
+    void ProcessManager::PrintThreads()
+    {
+        Debug::Write("------ ", Color4::Gray);
+        Debug::Write("THREADS", Color4::Green);
+        Debug::Write(" -----------------------------------------------\n", Color4::Gray);
+        Debug::WriteLine(" ID          ADDR        STATE   NAME", Color4::Magenta);
+
+        for (uint32_t i = 0; i < CountMax; i++)
+        {
+            if (Processes[i] == nullptr) { continue; }
+            for (uint32_t j = 0; j < Processes[i]->ThreadCountMax; j++)
+            {
+                if (Processes[i]->Threads[j] == nullptr) { continue; }
+
+                Debug::PrintFormatted(" 0x%8x  0x%8x  0x%2x         %s\n", 
+                        Processes[i]->Threads[j]->ID, (uint32_t)Processes[i]->Threads[j], (uint32_t)Processes[i]->Threads[j]->State, Processes[i]->Threads[j]->Name);
+            }
+        }
+
+        Debug::WriteLine("--------------------------------------------------------------\n", Color4::Gray);
+    }
+
     bool ProcessManager::Load(Process* proc)
     {
         if (proc == nullptr) { Debug::Error("Tried to load null process"); return false; }
@@ -212,9 +234,16 @@ namespace System
         {
             if (Processes[i] == proc)
             {
+                for (uint32_t j = 0; j < Processes[i]->ThreadCountMax; j++)
+                {
+                    if (Processes[i]->Threads[j] == nullptr) { continue; }
+                    Processes[i]->Threads[j]->Stop();
+                    proc->UnloadThread(Processes[i]->Threads[j]);
+                }
+
+                Debug::Info("Unloaded process '%s'", Processes[i]->Name);
                 Core::Heap.Free(Processes[i]->ProgramData);
                 Core::Heap.Free(Processes[i]->Threads);
-                Debug::Info("Unloaded process '%s'", Processes[i]->Name);
                 Core::Heap.Free(Processes[i]);
                 Processes[i] = nullptr;
                 Count--;
@@ -224,8 +253,43 @@ namespace System
         return false;
     }
 
-    bool switch_proc = false;
+    bool ProcessManager::Kill(Process* proc)
+    {
+        if (proc == nullptr) { return false; }
+        for (uint32_t i = 0; i < CountMax; i++)
+        {
+            if (Processes[i] == nullptr) { continue; }
+            if (i == 0) { continue; }
+            if (Processes[i] == proc) { return Processes[i]->Terminate(); }
+        }
+        return false;
+    }
 
+    bool ProcessManager::Kill(char* name)
+    {
+        if (name == nullptr) { return false; }
+        for (uint32_t i = 0; i < CountMax; i++)
+        {
+            if (Processes[i] == nullptr) { continue; }
+            if (i == 0) { continue; }
+            if (streql(Processes[i]->Name, name)) { return Processes[i]->Terminate(); }
+        }
+        return false;
+    }
+
+    bool ProcessManager::Kill(int index)
+    {
+        if (index < 1 || index >= CountMax) { return false; }
+        for (uint32_t i = 0; i < CountMax; i++)
+        {
+            if (Processes[i] == nullptr) { continue; }
+            if (i == 0) { continue; }
+            if (i == index) { return Processes[i]->Terminate(); }
+        }
+        return false;
+    }
+
+    bool switch_proc = false;
     void ProcessManager::Schedule()
     {
         switch_proc = false;
@@ -233,6 +297,7 @@ namespace System
         // get current process
         CurrentProc = Processes[Index];
         if (CurrentProc == nullptr) { return; }
+        if (CurrentProc->ID == 0) { CurrentProc->Running = true; }
 
         // get current thread in process
         _current_thread = CurrentProc->Threads[CurrentProc->Index];
@@ -280,7 +345,11 @@ namespace System
         {
             if (Index >= CountMax) { Index = 0; break; }
             if (Processes[Index] == nullptr) { Index++; continue; }
-            if (!Processes[Index]->Running) { Unload(Processes[Index]); Index++; continue; }
+            if (!Processes[Index]->Running) 
+            {
+                Unload(Processes[Index]); 
+                Index++; continue; 
+            }
             if (Processes[Index]->Running) 
             { 
                 if (Processes[Index]->ThreadCount > 0) { break; }

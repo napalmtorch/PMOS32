@@ -1,0 +1,5 @@
+create 1048576
+add test.elf Disk/sys/bin/Shell.elf
+save ramdisk.img
+print
+exit

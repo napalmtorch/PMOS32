@@ -14,6 +14,8 @@ namespace System
 
         bool Init(uint8_t* data, uint32_t size, Process* proc)
         {
+            Debug::Info("Reading ELF file...");
+
             if (!Validate((ELFHeader*)data)) { Debug::Error("File is not ELF format"); return false; }
 
             ELFHeader* header = (ELFHeader*)data;
@@ -21,6 +23,7 @@ namespace System
 
             if (header->Type != 2) { Debug::Error("ELF file is not executable, type = 0x%2x", header->Type); return false; }
 
+            Debug::Info("PROG DATA SIZE: %d", size + 0x1000);
             uint8_t* prog_data = (uint8_t*)(uint8_t*)Core::Heap.Allocate(size + 0x1000, true, Memory::HeapType::Array);
             proc->ProgramData = prog_data;
             proc->ProgramSize = size + 0x1000;

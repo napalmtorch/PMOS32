@@ -56,8 +56,12 @@ namespace System
         public:
             void Init();
             void Print();
+            void PrintThreads();
             bool Load(Process* proc);
             bool Unload(Process* proc);
+            bool Kill(Process* proc);
+            bool Kill(char* name);
+            bool Kill(int index);
 
         public:
             void Schedule();

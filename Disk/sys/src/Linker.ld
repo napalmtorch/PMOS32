@@ -1,4 +1,4 @@
-ENTRY(_start)
+ENTRY(_Z6_startPv)
 OUTPUT_FORMAT(elf32-i386)
 OUTPUT_ARCH(i386:i386)
 

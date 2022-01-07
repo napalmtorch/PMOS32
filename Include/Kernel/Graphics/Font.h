@@ -11,7 +11,7 @@ namespace Graphics
 		uint8_t  SpacingX;
 		uint8_t  SpacingY;
 		uint8_t* Data;
-	} __attribute__((packed)) Font;
+	} PACKED Font;
 
     namespace Fonts
     {

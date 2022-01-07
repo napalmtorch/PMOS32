@@ -3,6 +3,11 @@
 using namespace System;
 using namespace Graphics;
 
+#define LNG_PTR(seg, off) ((seg << 4) | off)
+#define REAL_PTR(arr) LNG_PTR(arr[1], arr[0])
+#define SEG(addr) (((uint32_t)addr >> 4) & 0xF000)
+#define OFF(addr) ((uint32_t)addr & 0xFFFF)
+
 namespace HAL
 {
     namespace Drivers
@@ -22,9 +27,14 @@ namespace HAL
             Buffer = (uint32_t*)Info.PhysicalBase;
             CursorX = 0;
             CursorY = 0;
-
+            
             Clear(Color::Black);
             Debug::OK("Initialized VESA controller - %dx%d, FB: 0x%8x", Width, Height, (uint32_t)Info.PhysicalBase);
+        }
+
+        void VESAController::SetMode(uint32_t w, uint32_t h)
+        {          
+
         }
 
         /// @brief Clear the buffer @param color Color value

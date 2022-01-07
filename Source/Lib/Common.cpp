@@ -206,12 +206,35 @@ int atoi(const char* str) { return 0; }
 
 uint32_t atol(const char* str)
 {
-    size_t i = 0;
-    while (str[i] != 0)
-    { if (str[i] < 48 || str[i] > 57) { return 0; } }
-    int res = 0;
-    for (int i = 0; str[i] != 0; i++) { res = res * 10 + str[i] - '0'; }
-    return res;
+    long int result = 0;
+    unsigned int digit;
+    int sign;
+    while (isspace(*str)) {
+	str += 1;
+    }
+
+    if (*str == '-') {
+	sign = 1;
+	str += 1;
+    } else {
+	sign = 0;
+	if (*str == '+') {
+	    str += 1;
+	}
+    }
+
+    for ( ; ; str += 1) {
+	digit = *str - '0';
+	if (digit > 9) {
+	    break;
+	}
+	result = (10*result) + digit;
+    }
+
+    if (sign) {
+	return -result;
+    }
+    return result;
 }
 
 void srand(uint32_t seed) { }

@@ -37,6 +37,11 @@ cdir="Source/ASM/" outdir="Bin/Objs/" inf="RegisterUtil.asm" outf="RegisterUtil.
 nasm -felf32 "$cdir$inf" -o "$outdir$outf"
 echo "$nmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 
+# RealMode.asm
+cdir="Source/ASM/" outdir="Bin/Objs/" inf="RealMode.asm" outf="RealMode.o"
+nasm -felf32 "$cdir$inf" -o "$outdir$outf"
+echo "$nmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
+
 # ----------------------------------------------- CORE --------------------------------------------------------------
 cdir="Source/Kernel/Core/"
 for file in $cdir*.cpp
@@ -142,18 +147,22 @@ i686-elf-ld -T '../../Build/Linker.ld' -o '../Kernel.bin' "../Boot.o" *.o -O0
 cd '../../'
 
 # ----------------------------------------------- PROGRAMS --------------------------------------------------------------
-i686-elf-gcc -c -o "Disk/sys/bin/Test.o" "Disk/sys/src/Test/Test.c" -nostdlib -ffreestanding -Wall -Wextra -O0
-i686-elf-ld -T "Disk/sys/src/Test/Linker.ld" -o "Disk/sys/bin/Test.elf" "Disk/sys/bin/Test.o" -O0
+sh Build/BuildLibs.sh
 
 # Create disk image
 ./fsmgr "Build/makedisk"
 
+# Create ram disk image
+./ramfsmgr "Build/makeramdisk"
+
 # Create ISO image
 mkdir -p 'Bin/isodir/boot/grub'
 cp 'Bin/Kernel.bin' 'Bin/isodir/boot/kernel.bin'
+cp 'ramdisk.img' 'Bin/isodir/boot/ramdisk.initrd'
 cp 'Build/GrubMenu.cfg' 'Bin/isodir/boot/grub/grub.cfg'
 grub-mkrescue -o 'PMOS.iso' 'Bin/isodir'
 cp 'PMOS.iso' 'PMOS_FLP.img'
 
 # Run QEMU instance of operating system
-qemu-system-i386 -m 1024M -vga std -hda 'hdd.img' -cdrom 'PMOS.iso' -serial stdio -boot d -soundhw ac97 -rtc base=localtime
+#vmplayer "../VMs/PMOS/PMOS/PMOS.vmx"
+qemu-system-i386 -m 1024M -vga std -hda 'hdd.img' -cdrom 'PMOS.iso' -serial stdio -boot d -soundhw ac97 -rtc base=localtime -enable-kvm

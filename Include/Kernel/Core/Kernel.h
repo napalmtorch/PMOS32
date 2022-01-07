@@ -7,6 +7,7 @@
 #include <Kernel/HAL/Common/Multiboot.h>
 #include <Kernel/HAL/Common/Ports.h>
 #include <Kernel/HAL/Common/Serial.h>
+#include <Kernel/HAL/Common/RTC.h>
 #include <Kernel/HAL/Common/PIT.h>
 #include <Kernel/HAL/Memory/VMM.h>
 #include <Kernel/HAL/Memory/PMM.h>
@@ -18,6 +19,7 @@
 #include <Kernel/HAL/Drivers/ATA.h>
 #include <Kernel/HAL/Drivers/Key.h>
 #include <Kernel/HAL/Drivers/PS2Keyboard.h>
+#include <Kernel/HAL/Drivers/PS2Mouse.h>
 #include <Kernel/System/Debug.h>
 #include <Kernel/System/Threading.h>
 #include <Kernel/System/Terminal.h>
@@ -28,6 +30,7 @@
 #include <Kernel/System/ELF.h>
 #include <Kernel/FS/FileSystem.h>
 #include <Kernel/FS/VFS.h>
+#include <Kernel/FS/RAMFS.h>
 
 #define KBASE_PHYSICAL 0
 #define KBASE_VIRTUAL  0xC0000000
@@ -40,6 +43,7 @@ namespace Core
     extern HAL::Drivers::VGAController VGA;
     extern HAL::Drivers::VESAController VESA;
     extern HAL::Drivers::PS2Keyboard Keyboard;
+    extern HAL::Drivers::PS2Mouse Mouse;
     extern HAL::Drivers::ATAController ATA;
     extern System::Threading::ThreadManager ThreadMgr;
     extern System::TerminalManager Terminal;
@@ -47,11 +51,12 @@ namespace Core
     extern System::CommandLine CLI;
     extern FileSystem::FSHost FileSysHDD;
     extern FileSystem::VirtualFileSystem FS;
+    extern FileSystem::RFSHost RAMFS;
 }
 
 namespace Kernel
 {
-    extern HAL::MultibootHeader Multiboot;
+    extern HAL::MultibootHeader& Multiboot;
 
     void Boot(void* mboot);
     void BeforeRun();

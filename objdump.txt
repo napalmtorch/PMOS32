@@ -5,38 +5,2111 @@ architecture: i386, flags 0x00000112:
 EXEC_P, HAS_SYMS, D_PAGED
 start address 0x20000000
 
-Program Header:
-    LOAD off    0x00001000 vaddr 0x20000000 paddr 0x20000000 align 2**12
-         filesz 0x0000103c memsz 0x00002000 flags rwx
 
-Sections:
-Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00001000  20000000  20000000  00001000  2**2
-                  CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .eh_frame     0000003c  20001000  20001000  00002000  2**2
-                  CONTENTS, ALLOC, LOAD, READONLY, DATA
-  2 .data         00000fc4  2000103c  2000103c  0000203c  2**0
-                  ALLOC
-  3 .bss          00000000  20002000  20002000  00000000  2**0
-                  ALLOC
-  4 .comment      00000011  00000000  00000000  0000203c  2**0
-                  CONTENTS, READONLY
-SYMBOL TABLE:
-20000000 l    d  .text	00000000 .text
-20001000 l    d  .eh_frame	00000000 .eh_frame
-2000103c l    d  .data	00000000 .data
-20002000 l    d  .bss	00000000 .bss
-00000000 l    d  .comment	00000000 .comment
-00000000 l    df *ABS*	00000000 Test.c
-20000000 g       *ABS*	00000000 address
-20002000 g       .data	00000000 end
-20000024 g     O .text	0000000d test
-20000000 g     F .text	00000022 _start
-20002000 g       .bss	00000000 bss
-2000203c g       .eh_frame	00000000 __bss_start
-2000103c g       .data	00000000 data
-2000203c g       .eh_frame	00000000 _edata
-2000203c g       .eh_frame	00000000 _end
-20000000 g       .text	00000000 code
+Disassembly of section .text:
 
+20000000 <_Z6_startPv>:
+20000000:	55                   	push   ebp
+20000001:	89 e5                	mov    ebp,esp
+20000003:	83 ec 18             	sub    esp,0x18
+20000006:	83 ec 0c             	sub    esp,0xc
+20000009:	68 b1 01 00 20       	push   0x200001b1
+2000000e:	e8 44 01 00 00       	call   20000157 <_Z6kprintPKc>
+20000013:	83 c4 10             	add    esp,0x10
+20000016:	e8 6e 00 00 00       	call   20000089 <_Z8lib_initv>
+2000001b:	83 ec 04             	sub    esp,0x4
+2000001e:	6a 02                	push   0x2
+20000020:	6a 01                	push   0x1
+20000022:	68 00 00 08 00       	push   0x80000
+20000027:	e8 47 01 00 00       	call   20000173 <_Z12mem_allocatejbh>
+2000002c:	83 c4 10             	add    esp,0x10
+2000002f:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
+20000032:	83 ec 0c             	sub    esp,0xc
+20000035:	68 c8 01 00 20       	push   0x200001c8
+2000003a:	e8 18 01 00 00       	call   20000157 <_Z6kprintPKc>
+2000003f:	83 c4 10             	add    esp,0x10
+20000042:	b8 d2 04 00 00       	mov    eax,0x4d2
+20000047:	c9                   	leave  
+20000048:	c3                   	ret    
 
+20000049 <_Z6strcmpPKcS0_>:
+20000049:	55                   	push   ebp
+2000004a:	89 e5                	mov    ebp,esp
+2000004c:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+2000004f:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+20000052:	84 c0                	test   al,al
+20000054:	74 1b                	je     20000071 <_Z6strcmpPKcS0_+0x28>
+20000056:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+20000059:	0f b6 10             	movzx  edx,BYTE PTR [eax]
+2000005c:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+2000005f:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+20000062:	38 c2                	cmp    dl,al
+20000064:	75 0a                	jne    20000070 <_Z6strcmpPKcS0_+0x27>
+20000066:	83 45 08 01          	add    DWORD PTR [ebp+0x8],0x1
+2000006a:	83 45 0c 01          	add    DWORD PTR [ebp+0xc],0x1
+2000006e:	eb dc                	jmp    2000004c <_Z6strcmpPKcS0_+0x3>
+20000070:	90                   	nop
+20000071:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+20000074:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+20000077:	0f be d0             	movsx  edx,al
+2000007a:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+2000007d:	0f b6 00             	movzx  eax,BYTE PTR [eax]
+20000080:	0f be c0             	movsx  eax,al
+20000083:	29 c2                	sub    edx,eax
+20000085:	89 d0                	mov    eax,edx
+20000087:	5d                   	pop    ebp
+20000088:	c3                   	ret    
+
+20000089 <_Z8lib_initv>:
+20000089:	55                   	push   ebp
+2000008a:	89 e5                	mov    ebp,esp
+2000008c:	53                   	push   ebx
+2000008d:	83 ec 14             	sub    esp,0x14
+20000090:	8d 55 ec             	lea    edx,[ebp-0x14]
+20000093:	b8 00 00 00 00       	mov    eax,0x0
+20000098:	bb 00 00 00 00       	mov    ebx,0x0
+2000009d:	b9 ff 00 00 00       	mov    ecx,0xff
+200000a2:	cd 80                	int    0x80
+200000a4:	c7 45 f4 00 00 00 00 	mov    DWORD PTR [ebp-0xc],0x0
+200000ab:	81 7d f4 ff 00 00 00 	cmp    DWORD PTR [ebp-0xc],0xff
+200000b2:	0f 8f 99 00 00 00    	jg     20000151 <_Z8lib_initv+0xc8>
+200000b8:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+200000bb:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+200000be:	c1 e2 03             	shl    edx,0x3
+200000c1:	01 d0                	add    eax,edx
+200000c3:	8b 40 04             	mov    eax,DWORD PTR [eax+0x4]
+200000c6:	85 c0                	test   eax,eax
+200000c8:	74 7e                	je     20000148 <_Z8lib_initv+0xbf>
+200000ca:	c6 45 f3 00          	mov    BYTE PTR [ebp-0xd],0x0
+200000ce:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+200000d1:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+200000d4:	c1 e2 03             	shl    edx,0x3
+200000d7:	01 d0                	add    eax,edx
+200000d9:	8b 00                	mov    eax,DWORD PTR [eax]
+200000db:	68 09 02 00 20       	push   0x20000209
+200000e0:	50                   	push   eax
+200000e1:	e8 63 ff ff ff       	call   20000049 <_Z6strcmpPKcS0_>
+200000e6:	83 c4 08             	add    esp,0x8
+200000e9:	85 c0                	test   eax,eax
+200000eb:	0f 94 c0             	sete   al
+200000ee:	84 c0                	test   al,al
+200000f0:	74 17                	je     20000109 <_Z8lib_initv+0x80>
+200000f2:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+200000f5:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+200000f8:	c1 e2 03             	shl    edx,0x3
+200000fb:	01 d0                	add    eax,edx
+200000fd:	8b 40 04             	mov    eax,DWORD PTR [eax+0x4]
+20000100:	a3 00 20 00 20       	mov    ds:0x20002000,eax
+20000105:	c6 45 f3 01          	mov    BYTE PTR [ebp-0xd],0x1
+20000109:	80 7d f3 00          	cmp    BYTE PTR [ebp-0xd],0x0
+2000010d:	74 39                	je     20000148 <_Z8lib_initv+0xbf>
+2000010f:	83 ec 0c             	sub    esp,0xc
+20000112:	68 16 02 00 20       	push   0x20000216
+20000117:	e8 3b 00 00 00       	call   20000157 <_Z6kprintPKc>
+2000011c:	83 c4 10             	add    esp,0x10
+2000011f:	8b 45 ec             	mov    eax,DWORD PTR [ebp-0x14]
+20000122:	8b 55 f4             	mov    edx,DWORD PTR [ebp-0xc]
+20000125:	c1 e2 03             	shl    edx,0x3
+20000128:	01 d0                	add    eax,edx
+2000012a:	8b 00                	mov    eax,DWORD PTR [eax]
+2000012c:	83 ec 0c             	sub    esp,0xc
+2000012f:	50                   	push   eax
+20000130:	e8 22 00 00 00       	call   20000157 <_Z6kprintPKc>
+20000135:	83 c4 10             	add    esp,0x10
+20000138:	83 ec 0c             	sub    esp,0xc
+2000013b:	68 26 02 00 20       	push   0x20000226
+20000140:	e8 12 00 00 00       	call   20000157 <_Z6kprintPKc>
+20000145:	83 c4 10             	add    esp,0x10
+20000148:	83 45 f4 01          	add    DWORD PTR [ebp-0xc],0x1
+2000014c:	e9 5a ff ff ff       	jmp    200000ab <_Z8lib_initv+0x22>
+20000151:	90                   	nop
+20000152:	8b 5d fc             	mov    ebx,DWORD PTR [ebp-0x4]
+20000155:	c9                   	leave  
+20000156:	c3                   	ret    
+
+20000157 <_Z6kprintPKc>:
+20000157:	55                   	push   ebp
+20000158:	89 e5                	mov    ebp,esp
+2000015a:	53                   	push   ebx
+2000015b:	8b 5d 08             	mov    ebx,DWORD PTR [ebp+0x8]
+2000015e:	b8 00 00 00 00       	mov    eax,0x0
+20000163:	b9 01 00 00 00       	mov    ecx,0x1
+20000168:	ba 00 00 00 00       	mov    edx,0x0
+2000016d:	cd 80                	int    0x80
+2000016f:	90                   	nop
+20000170:	5b                   	pop    ebx
+20000171:	5d                   	pop    ebp
+20000172:	c3                   	ret    
+
+20000173 <_Z12mem_allocatejbh>:
+20000173:	55                   	push   ebp
+20000174:	89 e5                	mov    ebp,esp
+20000176:	83 ec 18             	sub    esp,0x18
+20000179:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+2000017c:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+2000017f:	88 55 f4             	mov    BYTE PTR [ebp-0xc],dl
+20000182:	88 45 f0             	mov    BYTE PTR [ebp-0x10],al
+20000185:	a1 00 20 00 20       	mov    eax,ds:0x20002000
+2000018a:	0f b6 4d f0          	movzx  ecx,BYTE PTR [ebp-0x10]
+2000018e:	0f b6 55 f4          	movzx  edx,BYTE PTR [ebp-0xc]
+20000192:	83 ec 04             	sub    esp,0x4
+20000195:	51                   	push   ecx
+20000196:	52                   	push   edx
+20000197:	ff 75 08             	push   DWORD PTR [ebp+0x8]
+2000019a:	ff d0                	call   eax
+2000019c:	83 c4 10             	add    esp,0x10
+2000019f:	c9                   	leave  
+200001a0:	c3                   	ret    
+200001a1:	66 90                	xchg   ax,ax
+200001a3:	90                   	nop
+
+200001a4 <_ZL4test>:
+200001a4:	48                   	dec    eax
+200001a5:	65 6c                	gs ins BYTE PTR es:[edi],dx
+200001a7:	6c                   	ins    BYTE PTR es:[edi],dx
+200001a8:	6f                   	outs   dx,DWORD PTR ds:[esi]
+200001a9:	20 77 6f             	and    BYTE PTR [edi+0x6f],dh
+200001ac:	72 6c                	jb     2000021a <_ZL4test+0x76>
+200001ae:	64 0a 00             	or     al,BYTE PTR fs:[eax]
+200001b1:	53                   	push   ebx
+200001b2:	74 61                	je     20000215 <_ZL4test+0x71>
+200001b4:	72 74                	jb     2000022a <_ZL4test+0x86>
+200001b6:	65 64 20 74 65 73    	gs and BYTE PTR fs:[ebp+eiz*2+0x73],dh
+200001bc:	74 20                	je     200001de <_ZL4test+0x3a>
+200001be:	70 72                	jo     20000232 <_ZL4test+0x8e>
+200001c0:	6f                   	outs   dx,DWORD PTR ds:[esi]
+200001c1:	67 72 61             	addr16 jb 20000225 <_ZL4test+0x81>
+200001c4:	6d                   	ins    DWORD PTR es:[edi],dx
+200001c5:	0a 00                	or     al,BYTE PTR [eax]
+200001c7:	00 53 75             	add    BYTE PTR [ebx+0x75],dl
+200001ca:	63 63 65             	arpl   WORD PTR [ebx+0x65],sp
+200001cd:	73 73                	jae    20000242 <_ZL4test+0x9e>
+200001cf:	66 75 6c             	data16 jne 2000023e <_ZL4test+0x9a>
+200001d2:	6c                   	ins    BYTE PTR es:[edi],dx
+200001d3:	79 20                	jns    200001f5 <_ZL4test+0x51>
+200001d5:	61                   	popa   
+200001d6:	6c                   	ins    BYTE PTR es:[edi],dx
+200001d7:	6c                   	ins    BYTE PTR es:[edi],dx
+200001d8:	6f                   	outs   dx,DWORD PTR ds:[esi]
+200001d9:	63 61 74             	arpl   WORD PTR [ecx+0x74],sp
+200001dc:	65 64 20 6d 65       	gs and BYTE PTR fs:[ebp+0x65],ch
+200001e1:	6d                   	ins    DWORD PTR es:[edi],dx
+200001e2:	6f                   	outs   dx,DWORD PTR ds:[esi]
+200001e3:	72 79                	jb     2000025e <_ZL4test+0xba>
+200001e5:	20 75 73             	and    BYTE PTR [ebp+0x73],dh
+200001e8:	69 6e 67 20 6d 61 70 	imul   ebp,DWORD PTR [esi+0x67],0x70616d20
+200001ef:	70 65                	jo     20000256 <_ZL4test+0xb2>
+200001f1:	64 20 66 75          	and    BYTE PTR fs:[esi+0x75],ah
+200001f5:	6e                   	outs   dx,BYTE PTR ds:[esi]
+200001f6:	63 74 69 6f          	arpl   WORD PTR [ecx+ebp*2+0x6f],si
+200001fa:	6e                   	outs   dx,BYTE PTR ds:[esi]
+200001fb:	20 66 72             	and    BYTE PTR [esi+0x72],ah
+200001fe:	6f                   	outs   dx,DWORD PTR ds:[esi]
+200001ff:	6d                   	ins    DWORD PTR es:[edi],dx
+20000200:	20 6b 65             	and    BYTE PTR [ebx+0x65],ch
+20000203:	72 6e                	jb     20000273 <_ZL4test+0xcf>
+20000205:	65 6c                	gs ins BYTE PTR es:[edi],dx
+20000207:	21 00                	and    DWORD PTR [eax],eax
+20000209:	4d                   	dec    ebp
+2000020a:	45                   	inc    ebp
+2000020b:	4d                   	dec    ebp
+2000020c:	5f                   	pop    edi
+2000020d:	41                   	inc    ecx
+2000020e:	4c                   	dec    esp
+2000020f:	4c                   	dec    esp
+20000210:	4f                   	dec    edi
+20000211:	43                   	inc    ebx
+20000212:	41                   	inc    ecx
+20000213:	54                   	push   esp
+20000214:	45                   	inc    ebp
+20000215:	00 4d 61             	add    BYTE PTR [ebp+0x61],cl
+20000218:	70 70                	jo     2000028a <_ZL4test+0xe6>
+2000021a:	65 64 20 6d 65       	gs and BYTE PTR fs:[ebp+0x65],ch
+2000021f:	74 68                	je     20000289 <_ZL4test+0xe5>
+20000221:	6f                   	outs   dx,DWORD PTR ds:[esi]
+20000222:	64 3a 20             	cmp    ah,BYTE PTR fs:[eax]
+20000225:	00 0a                	add    BYTE PTR [edx],cl
+20000227:	00 66 90             	add    BYTE PTR [esi-0x70],ah
+2000022a:	66 90                	xchg   ax,ax
+2000022c:	66 90                	xchg   ax,ax
+2000022e:	66 90                	xchg   ax,ax
+20000230:	66 90                	xchg   ax,ax
+20000232:	66 90                	xchg   ax,ax
+20000234:	66 90                	xchg   ax,ax
+20000236:	66 90                	xchg   ax,ax
+20000238:	66 90                	xchg   ax,ax
+2000023a:	66 90                	xchg   ax,ax
+2000023c:	66 90                	xchg   ax,ax
+2000023e:	66 90                	xchg   ax,ax
+20000240:	66 90                	xchg   ax,ax
+20000242:	66 90                	xchg   ax,ax
+20000244:	66 90                	xchg   ax,ax
+20000246:	66 90                	xchg   ax,ax
+20000248:	66 90                	xchg   ax,ax
+2000024a:	66 90                	xchg   ax,ax
+2000024c:	66 90                	xchg   ax,ax
+2000024e:	66 90                	xchg   ax,ax
+20000250:	66 90                	xchg   ax,ax
+20000252:	66 90                	xchg   ax,ax
+20000254:	66 90                	xchg   ax,ax
+20000256:	66 90                	xchg   ax,ax
+20000258:	66 90                	xchg   ax,ax
+2000025a:	66 90                	xchg   ax,ax
+2000025c:	66 90                	xchg   ax,ax
+2000025e:	66 90                	xchg   ax,ax
+20000260:	66 90                	xchg   ax,ax
+20000262:	66 90                	xchg   ax,ax
+20000264:	66 90                	xchg   ax,ax
+20000266:	66 90                	xchg   ax,ax
+20000268:	66 90                	xchg   ax,ax
+2000026a:	66 90                	xchg   ax,ax
+2000026c:	66 90                	xchg   ax,ax
+2000026e:	66 90                	xchg   ax,ax
+20000270:	66 90                	xchg   ax,ax
+20000272:	66 90                	xchg   ax,ax
+20000274:	66 90                	xchg   ax,ax
+20000276:	66 90                	xchg   ax,ax
+20000278:	66 90                	xchg   ax,ax
+2000027a:	66 90                	xchg   ax,ax
+2000027c:	66 90                	xchg   ax,ax
+2000027e:	66 90                	xchg   ax,ax
+20000280:	66 90                	xchg   ax,ax
+20000282:	66 90                	xchg   ax,ax
+20000284:	66 90                	xchg   ax,ax
+20000286:	66 90                	xchg   ax,ax
+20000288:	66 90                	xchg   ax,ax
+2000028a:	66 90                	xchg   ax,ax
+2000028c:	66 90                	xchg   ax,ax
+2000028e:	66 90                	xchg   ax,ax
+20000290:	66 90                	xchg   ax,ax
+20000292:	66 90                	xchg   ax,ax
+20000294:	66 90                	xchg   ax,ax
+20000296:	66 90                	xchg   ax,ax
+20000298:	66 90                	xchg   ax,ax
+2000029a:	66 90                	xchg   ax,ax
+2000029c:	66 90                	xchg   ax,ax
+2000029e:	66 90                	xchg   ax,ax
+200002a0:	66 90                	xchg   ax,ax
+200002a2:	66 90                	xchg   ax,ax
+200002a4:	66 90                	xchg   ax,ax
+200002a6:	66 90                	xchg   ax,ax
+200002a8:	66 90                	xchg   ax,ax
+200002aa:	66 90                	xchg   ax,ax
+200002ac:	66 90                	xchg   ax,ax
+200002ae:	66 90                	xchg   ax,ax
+200002b0:	66 90                	xchg   ax,ax
+200002b2:	66 90                	xchg   ax,ax
+200002b4:	66 90                	xchg   ax,ax
+200002b6:	66 90                	xchg   ax,ax
+200002b8:	66 90                	xchg   ax,ax
+200002ba:	66 90                	xchg   ax,ax
+200002bc:	66 90                	xchg   ax,ax
+200002be:	66 90                	xchg   ax,ax
+200002c0:	66 90                	xchg   ax,ax
+200002c2:	66 90                	xchg   ax,ax
+200002c4:	66 90                	xchg   ax,ax
+200002c6:	66 90                	xchg   ax,ax
+200002c8:	66 90                	xchg   ax,ax
+200002ca:	66 90                	xchg   ax,ax
+200002cc:	66 90                	xchg   ax,ax
+200002ce:	66 90                	xchg   ax,ax
+200002d0:	66 90                	xchg   ax,ax
+200002d2:	66 90                	xchg   ax,ax
+200002d4:	66 90                	xchg   ax,ax
+200002d6:	66 90                	xchg   ax,ax
+200002d8:	66 90                	xchg   ax,ax
+200002da:	66 90                	xchg   ax,ax
+200002dc:	66 90                	xchg   ax,ax
+200002de:	66 90                	xchg   ax,ax
+200002e0:	66 90                	xchg   ax,ax
+200002e2:	66 90                	xchg   ax,ax
+200002e4:	66 90                	xchg   ax,ax
+200002e6:	66 90                	xchg   ax,ax
+200002e8:	66 90                	xchg   ax,ax
+200002ea:	66 90                	xchg   ax,ax
+200002ec:	66 90                	xchg   ax,ax
+200002ee:	66 90                	xchg   ax,ax
+200002f0:	66 90                	xchg   ax,ax
+200002f2:	66 90                	xchg   ax,ax
+200002f4:	66 90                	xchg   ax,ax
+200002f6:	66 90                	xchg   ax,ax
+200002f8:	66 90                	xchg   ax,ax
+200002fa:	66 90                	xchg   ax,ax
+200002fc:	66 90                	xchg   ax,ax
+200002fe:	66 90                	xchg   ax,ax
+20000300:	66 90                	xchg   ax,ax
+20000302:	66 90                	xchg   ax,ax
+20000304:	66 90                	xchg   ax,ax
+20000306:	66 90                	xchg   ax,ax
+20000308:	66 90                	xchg   ax,ax
+2000030a:	66 90                	xchg   ax,ax
+2000030c:	66 90                	xchg   ax,ax
+2000030e:	66 90                	xchg   ax,ax
+20000310:	66 90                	xchg   ax,ax
+20000312:	66 90                	xchg   ax,ax
+20000314:	66 90                	xchg   ax,ax
+20000316:	66 90                	xchg   ax,ax
+20000318:	66 90                	xchg   ax,ax
+2000031a:	66 90                	xchg   ax,ax
+2000031c:	66 90                	xchg   ax,ax
+2000031e:	66 90                	xchg   ax,ax
+20000320:	66 90                	xchg   ax,ax
+20000322:	66 90                	xchg   ax,ax
+20000324:	66 90                	xchg   ax,ax
+20000326:	66 90                	xchg   ax,ax
+20000328:	66 90                	xchg   ax,ax
+2000032a:	66 90                	xchg   ax,ax
+2000032c:	66 90                	xchg   ax,ax
+2000032e:	66 90                	xchg   ax,ax
+20000330:	66 90                	xchg   ax,ax
+20000332:	66 90                	xchg   ax,ax
+20000334:	66 90                	xchg   ax,ax
+20000336:	66 90                	xchg   ax,ax
+20000338:	66 90                	xchg   ax,ax
+2000033a:	66 90                	xchg   ax,ax
+2000033c:	66 90                	xchg   ax,ax
+2000033e:	66 90                	xchg   ax,ax
+20000340:	66 90                	xchg   ax,ax
+20000342:	66 90                	xchg   ax,ax
+20000344:	66 90                	xchg   ax,ax
+20000346:	66 90                	xchg   ax,ax
+20000348:	66 90                	xchg   ax,ax
+2000034a:	66 90                	xchg   ax,ax
+2000034c:	66 90                	xchg   ax,ax
+2000034e:	66 90                	xchg   ax,ax
+20000350:	66 90                	xchg   ax,ax
+20000352:	66 90                	xchg   ax,ax
+20000354:	66 90                	xchg   ax,ax
+20000356:	66 90                	xchg   ax,ax
+20000358:	66 90                	xchg   ax,ax
+2000035a:	66 90                	xchg   ax,ax
+2000035c:	66 90                	xchg   ax,ax
+2000035e:	66 90                	xchg   ax,ax
+20000360:	66 90                	xchg   ax,ax
+20000362:	66 90                	xchg   ax,ax
+20000364:	66 90                	xchg   ax,ax
+20000366:	66 90                	xchg   ax,ax
+20000368:	66 90                	xchg   ax,ax
+2000036a:	66 90                	xchg   ax,ax
+2000036c:	66 90                	xchg   ax,ax
+2000036e:	66 90                	xchg   ax,ax
+20000370:	66 90                	xchg   ax,ax
+20000372:	66 90                	xchg   ax,ax
+20000374:	66 90                	xchg   ax,ax
+20000376:	66 90                	xchg   ax,ax
+20000378:	66 90                	xchg   ax,ax
+2000037a:	66 90                	xchg   ax,ax
+2000037c:	66 90                	xchg   ax,ax
+2000037e:	66 90                	xchg   ax,ax
+20000380:	66 90                	xchg   ax,ax
+20000382:	66 90                	xchg   ax,ax
+20000384:	66 90                	xchg   ax,ax
+20000386:	66 90                	xchg   ax,ax
+20000388:	66 90                	xchg   ax,ax
+2000038a:	66 90                	xchg   ax,ax
+2000038c:	66 90                	xchg   ax,ax
+2000038e:	66 90                	xchg   ax,ax
+20000390:	66 90                	xchg   ax,ax
+20000392:	66 90                	xchg   ax,ax
+20000394:	66 90                	xchg   ax,ax
+20000396:	66 90                	xchg   ax,ax
+20000398:	66 90                	xchg   ax,ax
+2000039a:	66 90                	xchg   ax,ax
+2000039c:	66 90                	xchg   ax,ax
+2000039e:	66 90                	xchg   ax,ax
+200003a0:	66 90                	xchg   ax,ax
+200003a2:	66 90                	xchg   ax,ax
+200003a4:	66 90                	xchg   ax,ax
+200003a6:	66 90                	xchg   ax,ax
+200003a8:	66 90                	xchg   ax,ax
+200003aa:	66 90                	xchg   ax,ax
+200003ac:	66 90                	xchg   ax,ax
+200003ae:	66 90                	xchg   ax,ax
+200003b0:	66 90                	xchg   ax,ax
+200003b2:	66 90                	xchg   ax,ax
+200003b4:	66 90                	xchg   ax,ax
+200003b6:	66 90                	xchg   ax,ax
+200003b8:	66 90                	xchg   ax,ax
+200003ba:	66 90                	xchg   ax,ax
+200003bc:	66 90                	xchg   ax,ax
+200003be:	66 90                	xchg   ax,ax
+200003c0:	66 90                	xchg   ax,ax
+200003c2:	66 90                	xchg   ax,ax
+200003c4:	66 90                	xchg   ax,ax
+200003c6:	66 90                	xchg   ax,ax
+200003c8:	66 90                	xchg   ax,ax
+200003ca:	66 90                	xchg   ax,ax
+200003cc:	66 90                	xchg   ax,ax
+200003ce:	66 90                	xchg   ax,ax
+200003d0:	66 90                	xchg   ax,ax
+200003d2:	66 90                	xchg   ax,ax
+200003d4:	66 90                	xchg   ax,ax
+200003d6:	66 90                	xchg   ax,ax
+200003d8:	66 90                	xchg   ax,ax
+200003da:	66 90                	xchg   ax,ax
+200003dc:	66 90                	xchg   ax,ax
+200003de:	66 90                	xchg   ax,ax
+200003e0:	66 90                	xchg   ax,ax
+200003e2:	66 90                	xchg   ax,ax
+200003e4:	66 90                	xchg   ax,ax
+200003e6:	66 90                	xchg   ax,ax
+200003e8:	66 90                	xchg   ax,ax
+200003ea:	66 90                	xchg   ax,ax
+200003ec:	66 90                	xchg   ax,ax
+200003ee:	66 90                	xchg   ax,ax
+200003f0:	66 90                	xchg   ax,ax
+200003f2:	66 90                	xchg   ax,ax
+200003f4:	66 90                	xchg   ax,ax
+200003f6:	66 90                	xchg   ax,ax
+200003f8:	66 90                	xchg   ax,ax
+200003fa:	66 90                	xchg   ax,ax
+200003fc:	66 90                	xchg   ax,ax
+200003fe:	66 90                	xchg   ax,ax
+20000400:	66 90                	xchg   ax,ax
+20000402:	66 90                	xchg   ax,ax
+20000404:	66 90                	xchg   ax,ax
+20000406:	66 90                	xchg   ax,ax
+20000408:	66 90                	xchg   ax,ax
+2000040a:	66 90                	xchg   ax,ax
+2000040c:	66 90                	xchg   ax,ax
+2000040e:	66 90                	xchg   ax,ax
+20000410:	66 90                	xchg   ax,ax
+20000412:	66 90                	xchg   ax,ax
+20000414:	66 90                	xchg   ax,ax
+20000416:	66 90                	xchg   ax,ax
+20000418:	66 90                	xchg   ax,ax
+2000041a:	66 90                	xchg   ax,ax
+2000041c:	66 90                	xchg   ax,ax
+2000041e:	66 90                	xchg   ax,ax
+20000420:	66 90                	xchg   ax,ax
+20000422:	66 90                	xchg   ax,ax
+20000424:	66 90                	xchg   ax,ax
+20000426:	66 90                	xchg   ax,ax
+20000428:	66 90                	xchg   ax,ax
+2000042a:	66 90                	xchg   ax,ax
+2000042c:	66 90                	xchg   ax,ax
+2000042e:	66 90                	xchg   ax,ax
+20000430:	66 90                	xchg   ax,ax
+20000432:	66 90                	xchg   ax,ax
+20000434:	66 90                	xchg   ax,ax
+20000436:	66 90                	xchg   ax,ax
+20000438:	66 90                	xchg   ax,ax
+2000043a:	66 90                	xchg   ax,ax
+2000043c:	66 90                	xchg   ax,ax
+2000043e:	66 90                	xchg   ax,ax
+20000440:	66 90                	xchg   ax,ax
+20000442:	66 90                	xchg   ax,ax
+20000444:	66 90                	xchg   ax,ax
+20000446:	66 90                	xchg   ax,ax
+20000448:	66 90                	xchg   ax,ax
+2000044a:	66 90                	xchg   ax,ax
+2000044c:	66 90                	xchg   ax,ax
+2000044e:	66 90                	xchg   ax,ax
+20000450:	66 90                	xchg   ax,ax
+20000452:	66 90                	xchg   ax,ax
+20000454:	66 90                	xchg   ax,ax
+20000456:	66 90                	xchg   ax,ax
+20000458:	66 90                	xchg   ax,ax
+2000045a:	66 90                	xchg   ax,ax
+2000045c:	66 90                	xchg   ax,ax
+2000045e:	66 90                	xchg   ax,ax
+20000460:	66 90                	xchg   ax,ax
+20000462:	66 90                	xchg   ax,ax
+20000464:	66 90                	xchg   ax,ax
+20000466:	66 90                	xchg   ax,ax
+20000468:	66 90                	xchg   ax,ax
+2000046a:	66 90                	xchg   ax,ax
+2000046c:	66 90                	xchg   ax,ax
+2000046e:	66 90                	xchg   ax,ax
+20000470:	66 90                	xchg   ax,ax
+20000472:	66 90                	xchg   ax,ax
+20000474:	66 90                	xchg   ax,ax
+20000476:	66 90                	xchg   ax,ax
+20000478:	66 90                	xchg   ax,ax
+2000047a:	66 90                	xchg   ax,ax
+2000047c:	66 90                	xchg   ax,ax
+2000047e:	66 90                	xchg   ax,ax
+20000480:	66 90                	xchg   ax,ax
+20000482:	66 90                	xchg   ax,ax
+20000484:	66 90                	xchg   ax,ax
+20000486:	66 90                	xchg   ax,ax
+20000488:	66 90                	xchg   ax,ax
+2000048a:	66 90                	xchg   ax,ax
+2000048c:	66 90                	xchg   ax,ax
+2000048e:	66 90                	xchg   ax,ax
+20000490:	66 90                	xchg   ax,ax
+20000492:	66 90                	xchg   ax,ax
+20000494:	66 90                	xchg   ax,ax
+20000496:	66 90                	xchg   ax,ax
+20000498:	66 90                	xchg   ax,ax
+2000049a:	66 90                	xchg   ax,ax
+2000049c:	66 90                	xchg   ax,ax
+2000049e:	66 90                	xchg   ax,ax
+200004a0:	66 90                	xchg   ax,ax
+200004a2:	66 90                	xchg   ax,ax
+200004a4:	66 90                	xchg   ax,ax
+200004a6:	66 90                	xchg   ax,ax
+200004a8:	66 90                	xchg   ax,ax
+200004aa:	66 90                	xchg   ax,ax
+200004ac:	66 90                	xchg   ax,ax
+200004ae:	66 90                	xchg   ax,ax
+200004b0:	66 90                	xchg   ax,ax
+200004b2:	66 90                	xchg   ax,ax
+200004b4:	66 90                	xchg   ax,ax
+200004b6:	66 90                	xchg   ax,ax
+200004b8:	66 90                	xchg   ax,ax
+200004ba:	66 90                	xchg   ax,ax
+200004bc:	66 90                	xchg   ax,ax
+200004be:	66 90                	xchg   ax,ax
+200004c0:	66 90                	xchg   ax,ax
+200004c2:	66 90                	xchg   ax,ax
+200004c4:	66 90                	xchg   ax,ax
+200004c6:	66 90                	xchg   ax,ax
+200004c8:	66 90                	xchg   ax,ax
+200004ca:	66 90                	xchg   ax,ax
+200004cc:	66 90                	xchg   ax,ax
+200004ce:	66 90                	xchg   ax,ax
+200004d0:	66 90                	xchg   ax,ax
+200004d2:	66 90                	xchg   ax,ax
+200004d4:	66 90                	xchg   ax,ax
+200004d6:	66 90                	xchg   ax,ax
+200004d8:	66 90                	xchg   ax,ax
+200004da:	66 90                	xchg   ax,ax
+200004dc:	66 90                	xchg   ax,ax
+200004de:	66 90                	xchg   ax,ax
+200004e0:	66 90                	xchg   ax,ax
+200004e2:	66 90                	xchg   ax,ax
+200004e4:	66 90                	xchg   ax,ax
+200004e6:	66 90                	xchg   ax,ax
+200004e8:	66 90                	xchg   ax,ax
+200004ea:	66 90                	xchg   ax,ax
+200004ec:	66 90                	xchg   ax,ax
+200004ee:	66 90                	xchg   ax,ax
+200004f0:	66 90                	xchg   ax,ax
+200004f2:	66 90                	xchg   ax,ax
+200004f4:	66 90                	xchg   ax,ax
+200004f6:	66 90                	xchg   ax,ax
+200004f8:	66 90                	xchg   ax,ax
+200004fa:	66 90                	xchg   ax,ax
+200004fc:	66 90                	xchg   ax,ax
+200004fe:	66 90                	xchg   ax,ax
+20000500:	66 90                	xchg   ax,ax
+20000502:	66 90                	xchg   ax,ax
+20000504:	66 90                	xchg   ax,ax
+20000506:	66 90                	xchg   ax,ax
+20000508:	66 90                	xchg   ax,ax
+2000050a:	66 90                	xchg   ax,ax
+2000050c:	66 90                	xchg   ax,ax
+2000050e:	66 90                	xchg   ax,ax
+20000510:	66 90                	xchg   ax,ax
+20000512:	66 90                	xchg   ax,ax
+20000514:	66 90                	xchg   ax,ax
+20000516:	66 90                	xchg   ax,ax
+20000518:	66 90                	xchg   ax,ax
+2000051a:	66 90                	xchg   ax,ax
+2000051c:	66 90                	xchg   ax,ax
+2000051e:	66 90                	xchg   ax,ax
+20000520:	66 90                	xchg   ax,ax
+20000522:	66 90                	xchg   ax,ax
+20000524:	66 90                	xchg   ax,ax
+20000526:	66 90                	xchg   ax,ax
+20000528:	66 90                	xchg   ax,ax
+2000052a:	66 90                	xchg   ax,ax
+2000052c:	66 90                	xchg   ax,ax
+2000052e:	66 90                	xchg   ax,ax
+20000530:	66 90                	xchg   ax,ax
+20000532:	66 90                	xchg   ax,ax
+20000534:	66 90                	xchg   ax,ax
+20000536:	66 90                	xchg   ax,ax
+20000538:	66 90                	xchg   ax,ax
+2000053a:	66 90                	xchg   ax,ax
+2000053c:	66 90                	xchg   ax,ax
+2000053e:	66 90                	xchg   ax,ax
+20000540:	66 90                	xchg   ax,ax
+20000542:	66 90                	xchg   ax,ax
+20000544:	66 90                	xchg   ax,ax
+20000546:	66 90                	xchg   ax,ax
+20000548:	66 90                	xchg   ax,ax
+2000054a:	66 90                	xchg   ax,ax
+2000054c:	66 90                	xchg   ax,ax
+2000054e:	66 90                	xchg   ax,ax
+20000550:	66 90                	xchg   ax,ax
+20000552:	66 90                	xchg   ax,ax
+20000554:	66 90                	xchg   ax,ax
+20000556:	66 90                	xchg   ax,ax
+20000558:	66 90                	xchg   ax,ax
+2000055a:	66 90                	xchg   ax,ax
+2000055c:	66 90                	xchg   ax,ax
+2000055e:	66 90                	xchg   ax,ax
+20000560:	66 90                	xchg   ax,ax
+20000562:	66 90                	xchg   ax,ax
+20000564:	66 90                	xchg   ax,ax
+20000566:	66 90                	xchg   ax,ax
+20000568:	66 90                	xchg   ax,ax
+2000056a:	66 90                	xchg   ax,ax
+2000056c:	66 90                	xchg   ax,ax
+2000056e:	66 90                	xchg   ax,ax
+20000570:	66 90                	xchg   ax,ax
+20000572:	66 90                	xchg   ax,ax
+20000574:	66 90                	xchg   ax,ax
+20000576:	66 90                	xchg   ax,ax
+20000578:	66 90                	xchg   ax,ax
+2000057a:	66 90                	xchg   ax,ax
+2000057c:	66 90                	xchg   ax,ax
+2000057e:	66 90                	xchg   ax,ax
+20000580:	66 90                	xchg   ax,ax
+20000582:	66 90                	xchg   ax,ax
+20000584:	66 90                	xchg   ax,ax
+20000586:	66 90                	xchg   ax,ax
+20000588:	66 90                	xchg   ax,ax
+2000058a:	66 90                	xchg   ax,ax
+2000058c:	66 90                	xchg   ax,ax
+2000058e:	66 90                	xchg   ax,ax
+20000590:	66 90                	xchg   ax,ax
+20000592:	66 90                	xchg   ax,ax
+20000594:	66 90                	xchg   ax,ax
+20000596:	66 90                	xchg   ax,ax
+20000598:	66 90                	xchg   ax,ax
+2000059a:	66 90                	xchg   ax,ax
+2000059c:	66 90                	xchg   ax,ax
+2000059e:	66 90                	xchg   ax,ax
+200005a0:	66 90                	xchg   ax,ax
+200005a2:	66 90                	xchg   ax,ax
+200005a4:	66 90                	xchg   ax,ax
+200005a6:	66 90                	xchg   ax,ax
+200005a8:	66 90                	xchg   ax,ax
+200005aa:	66 90                	xchg   ax,ax
+200005ac:	66 90                	xchg   ax,ax
+200005ae:	66 90                	xchg   ax,ax
+200005b0:	66 90                	xchg   ax,ax
+200005b2:	66 90                	xchg   ax,ax
+200005b4:	66 90                	xchg   ax,ax
+200005b6:	66 90                	xchg   ax,ax
+200005b8:	66 90                	xchg   ax,ax
+200005ba:	66 90                	xchg   ax,ax
+200005bc:	66 90                	xchg   ax,ax
+200005be:	66 90                	xchg   ax,ax
+200005c0:	66 90                	xchg   ax,ax
+200005c2:	66 90                	xchg   ax,ax
+200005c4:	66 90                	xchg   ax,ax
+200005c6:	66 90                	xchg   ax,ax
+200005c8:	66 90                	xchg   ax,ax
+200005ca:	66 90                	xchg   ax,ax
+200005cc:	66 90                	xchg   ax,ax
+200005ce:	66 90                	xchg   ax,ax
+200005d0:	66 90                	xchg   ax,ax
+200005d2:	66 90                	xchg   ax,ax
+200005d4:	66 90                	xchg   ax,ax
+200005d6:	66 90                	xchg   ax,ax
+200005d8:	66 90                	xchg   ax,ax
+200005da:	66 90                	xchg   ax,ax
+200005dc:	66 90                	xchg   ax,ax
+200005de:	66 90                	xchg   ax,ax
+200005e0:	66 90                	xchg   ax,ax
+200005e2:	66 90                	xchg   ax,ax
+200005e4:	66 90                	xchg   ax,ax
+200005e6:	66 90                	xchg   ax,ax
+200005e8:	66 90                	xchg   ax,ax
+200005ea:	66 90                	xchg   ax,ax
+200005ec:	66 90                	xchg   ax,ax
+200005ee:	66 90                	xchg   ax,ax
+200005f0:	66 90                	xchg   ax,ax
+200005f2:	66 90                	xchg   ax,ax
+200005f4:	66 90                	xchg   ax,ax
+200005f6:	66 90                	xchg   ax,ax
+200005f8:	66 90                	xchg   ax,ax
+200005fa:	66 90                	xchg   ax,ax
+200005fc:	66 90                	xchg   ax,ax
+200005fe:	66 90                	xchg   ax,ax
+20000600:	66 90                	xchg   ax,ax
+20000602:	66 90                	xchg   ax,ax
+20000604:	66 90                	xchg   ax,ax
+20000606:	66 90                	xchg   ax,ax
+20000608:	66 90                	xchg   ax,ax
+2000060a:	66 90                	xchg   ax,ax
+2000060c:	66 90                	xchg   ax,ax
+2000060e:	66 90                	xchg   ax,ax
+20000610:	66 90                	xchg   ax,ax
+20000612:	66 90                	xchg   ax,ax
+20000614:	66 90                	xchg   ax,ax
+20000616:	66 90                	xchg   ax,ax
+20000618:	66 90                	xchg   ax,ax
+2000061a:	66 90                	xchg   ax,ax
+2000061c:	66 90                	xchg   ax,ax
+2000061e:	66 90                	xchg   ax,ax
+20000620:	66 90                	xchg   ax,ax
+20000622:	66 90                	xchg   ax,ax
+20000624:	66 90                	xchg   ax,ax
+20000626:	66 90                	xchg   ax,ax
+20000628:	66 90                	xchg   ax,ax
+2000062a:	66 90                	xchg   ax,ax
+2000062c:	66 90                	xchg   ax,ax
+2000062e:	66 90                	xchg   ax,ax
+20000630:	66 90                	xchg   ax,ax
+20000632:	66 90                	xchg   ax,ax
+20000634:	66 90                	xchg   ax,ax
+20000636:	66 90                	xchg   ax,ax
+20000638:	66 90                	xchg   ax,ax
+2000063a:	66 90                	xchg   ax,ax
+2000063c:	66 90                	xchg   ax,ax
+2000063e:	66 90                	xchg   ax,ax
+20000640:	66 90                	xchg   ax,ax
+20000642:	66 90                	xchg   ax,ax
+20000644:	66 90                	xchg   ax,ax
+20000646:	66 90                	xchg   ax,ax
+20000648:	66 90                	xchg   ax,ax
+2000064a:	66 90                	xchg   ax,ax
+2000064c:	66 90                	xchg   ax,ax
+2000064e:	66 90                	xchg   ax,ax
+20000650:	66 90                	xchg   ax,ax
+20000652:	66 90                	xchg   ax,ax
+20000654:	66 90                	xchg   ax,ax
+20000656:	66 90                	xchg   ax,ax
+20000658:	66 90                	xchg   ax,ax
+2000065a:	66 90                	xchg   ax,ax
+2000065c:	66 90                	xchg   ax,ax
+2000065e:	66 90                	xchg   ax,ax
+20000660:	66 90                	xchg   ax,ax
+20000662:	66 90                	xchg   ax,ax
+20000664:	66 90                	xchg   ax,ax
+20000666:	66 90                	xchg   ax,ax
+20000668:	66 90                	xchg   ax,ax
+2000066a:	66 90                	xchg   ax,ax
+2000066c:	66 90                	xchg   ax,ax
+2000066e:	66 90                	xchg   ax,ax
+20000670:	66 90                	xchg   ax,ax
+20000672:	66 90                	xchg   ax,ax
+20000674:	66 90                	xchg   ax,ax
+20000676:	66 90                	xchg   ax,ax
+20000678:	66 90                	xchg   ax,ax
+2000067a:	66 90                	xchg   ax,ax
+2000067c:	66 90                	xchg   ax,ax
+2000067e:	66 90                	xchg   ax,ax
+20000680:	66 90                	xchg   ax,ax
+20000682:	66 90                	xchg   ax,ax
+20000684:	66 90                	xchg   ax,ax
+20000686:	66 90                	xchg   ax,ax
+20000688:	66 90                	xchg   ax,ax
+2000068a:	66 90                	xchg   ax,ax
+2000068c:	66 90                	xchg   ax,ax
+2000068e:	66 90                	xchg   ax,ax
+20000690:	66 90                	xchg   ax,ax
+20000692:	66 90                	xchg   ax,ax
+20000694:	66 90                	xchg   ax,ax
+20000696:	66 90                	xchg   ax,ax
+20000698:	66 90                	xchg   ax,ax
+2000069a:	66 90                	xchg   ax,ax
+2000069c:	66 90                	xchg   ax,ax
+2000069e:	66 90                	xchg   ax,ax
+200006a0:	66 90                	xchg   ax,ax
+200006a2:	66 90                	xchg   ax,ax
+200006a4:	66 90                	xchg   ax,ax
+200006a6:	66 90                	xchg   ax,ax
+200006a8:	66 90                	xchg   ax,ax
+200006aa:	66 90                	xchg   ax,ax
+200006ac:	66 90                	xchg   ax,ax
+200006ae:	66 90                	xchg   ax,ax
+200006b0:	66 90                	xchg   ax,ax
+200006b2:	66 90                	xchg   ax,ax
+200006b4:	66 90                	xchg   ax,ax
+200006b6:	66 90                	xchg   ax,ax
+200006b8:	66 90                	xchg   ax,ax
+200006ba:	66 90                	xchg   ax,ax
+200006bc:	66 90                	xchg   ax,ax
+200006be:	66 90                	xchg   ax,ax
+200006c0:	66 90                	xchg   ax,ax
+200006c2:	66 90                	xchg   ax,ax
+200006c4:	66 90                	xchg   ax,ax
+200006c6:	66 90                	xchg   ax,ax
+200006c8:	66 90                	xchg   ax,ax
+200006ca:	66 90                	xchg   ax,ax
+200006cc:	66 90                	xchg   ax,ax
+200006ce:	66 90                	xchg   ax,ax
+200006d0:	66 90                	xchg   ax,ax
+200006d2:	66 90                	xchg   ax,ax
+200006d4:	66 90                	xchg   ax,ax
+200006d6:	66 90                	xchg   ax,ax
+200006d8:	66 90                	xchg   ax,ax
+200006da:	66 90                	xchg   ax,ax
+200006dc:	66 90                	xchg   ax,ax
+200006de:	66 90                	xchg   ax,ax
+200006e0:	66 90                	xchg   ax,ax
+200006e2:	66 90                	xchg   ax,ax
+200006e4:	66 90                	xchg   ax,ax
+200006e6:	66 90                	xchg   ax,ax
+200006e8:	66 90                	xchg   ax,ax
+200006ea:	66 90                	xchg   ax,ax
+200006ec:	66 90                	xchg   ax,ax
+200006ee:	66 90                	xchg   ax,ax
+200006f0:	66 90                	xchg   ax,ax
+200006f2:	66 90                	xchg   ax,ax
+200006f4:	66 90                	xchg   ax,ax
+200006f6:	66 90                	xchg   ax,ax
+200006f8:	66 90                	xchg   ax,ax
+200006fa:	66 90                	xchg   ax,ax
+200006fc:	66 90                	xchg   ax,ax
+200006fe:	66 90                	xchg   ax,ax
+20000700:	66 90                	xchg   ax,ax
+20000702:	66 90                	xchg   ax,ax
+20000704:	66 90                	xchg   ax,ax
+20000706:	66 90                	xchg   ax,ax
+20000708:	66 90                	xchg   ax,ax
+2000070a:	66 90                	xchg   ax,ax
+2000070c:	66 90                	xchg   ax,ax
+2000070e:	66 90                	xchg   ax,ax
+20000710:	66 90                	xchg   ax,ax
+20000712:	66 90                	xchg   ax,ax
+20000714:	66 90                	xchg   ax,ax
+20000716:	66 90                	xchg   ax,ax
+20000718:	66 90                	xchg   ax,ax
+2000071a:	66 90                	xchg   ax,ax
+2000071c:	66 90                	xchg   ax,ax
+2000071e:	66 90                	xchg   ax,ax
+20000720:	66 90                	xchg   ax,ax
+20000722:	66 90                	xchg   ax,ax
+20000724:	66 90                	xchg   ax,ax
+20000726:	66 90                	xchg   ax,ax
+20000728:	66 90                	xchg   ax,ax
+2000072a:	66 90                	xchg   ax,ax
+2000072c:	66 90                	xchg   ax,ax
+2000072e:	66 90                	xchg   ax,ax
+20000730:	66 90                	xchg   ax,ax
+20000732:	66 90                	xchg   ax,ax
+20000734:	66 90                	xchg   ax,ax
+20000736:	66 90                	xchg   ax,ax
+20000738:	66 90                	xchg   ax,ax
+2000073a:	66 90                	xchg   ax,ax
+2000073c:	66 90                	xchg   ax,ax
+2000073e:	66 90                	xchg   ax,ax
+20000740:	66 90                	xchg   ax,ax
+20000742:	66 90                	xchg   ax,ax
+20000744:	66 90                	xchg   ax,ax
+20000746:	66 90                	xchg   ax,ax
+20000748:	66 90                	xchg   ax,ax
+2000074a:	66 90                	xchg   ax,ax
+2000074c:	66 90                	xchg   ax,ax
+2000074e:	66 90                	xchg   ax,ax
+20000750:	66 90                	xchg   ax,ax
+20000752:	66 90                	xchg   ax,ax
+20000754:	66 90                	xchg   ax,ax
+20000756:	66 90                	xchg   ax,ax
+20000758:	66 90                	xchg   ax,ax
+2000075a:	66 90                	xchg   ax,ax
+2000075c:	66 90                	xchg   ax,ax
+2000075e:	66 90                	xchg   ax,ax
+20000760:	66 90                	xchg   ax,ax
+20000762:	66 90                	xchg   ax,ax
+20000764:	66 90                	xchg   ax,ax
+20000766:	66 90                	xchg   ax,ax
+20000768:	66 90                	xchg   ax,ax
+2000076a:	66 90                	xchg   ax,ax
+2000076c:	66 90                	xchg   ax,ax
+2000076e:	66 90                	xchg   ax,ax
+20000770:	66 90                	xchg   ax,ax
+20000772:	66 90                	xchg   ax,ax
+20000774:	66 90                	xchg   ax,ax
+20000776:	66 90                	xchg   ax,ax
+20000778:	66 90                	xchg   ax,ax
+2000077a:	66 90                	xchg   ax,ax
+2000077c:	66 90                	xchg   ax,ax
+2000077e:	66 90                	xchg   ax,ax
+20000780:	66 90                	xchg   ax,ax
+20000782:	66 90                	xchg   ax,ax
+20000784:	66 90                	xchg   ax,ax
+20000786:	66 90                	xchg   ax,ax
+20000788:	66 90                	xchg   ax,ax
+2000078a:	66 90                	xchg   ax,ax
+2000078c:	66 90                	xchg   ax,ax
+2000078e:	66 90                	xchg   ax,ax
+20000790:	66 90                	xchg   ax,ax
+20000792:	66 90                	xchg   ax,ax
+20000794:	66 90                	xchg   ax,ax
+20000796:	66 90                	xchg   ax,ax
+20000798:	66 90                	xchg   ax,ax
+2000079a:	66 90                	xchg   ax,ax
+2000079c:	66 90                	xchg   ax,ax
+2000079e:	66 90                	xchg   ax,ax
+200007a0:	66 90                	xchg   ax,ax
+200007a2:	66 90                	xchg   ax,ax
+200007a4:	66 90                	xchg   ax,ax
+200007a6:	66 90                	xchg   ax,ax
+200007a8:	66 90                	xchg   ax,ax
+200007aa:	66 90                	xchg   ax,ax
+200007ac:	66 90                	xchg   ax,ax
+200007ae:	66 90                	xchg   ax,ax
+200007b0:	66 90                	xchg   ax,ax
+200007b2:	66 90                	xchg   ax,ax
+200007b4:	66 90                	xchg   ax,ax
+200007b6:	66 90                	xchg   ax,ax
+200007b8:	66 90                	xchg   ax,ax
+200007ba:	66 90                	xchg   ax,ax
+200007bc:	66 90                	xchg   ax,ax
+200007be:	66 90                	xchg   ax,ax
+200007c0:	66 90                	xchg   ax,ax
+200007c2:	66 90                	xchg   ax,ax
+200007c4:	66 90                	xchg   ax,ax
+200007c6:	66 90                	xchg   ax,ax
+200007c8:	66 90                	xchg   ax,ax
+200007ca:	66 90                	xchg   ax,ax
+200007cc:	66 90                	xchg   ax,ax
+200007ce:	66 90                	xchg   ax,ax
+200007d0:	66 90                	xchg   ax,ax
+200007d2:	66 90                	xchg   ax,ax
+200007d4:	66 90                	xchg   ax,ax
+200007d6:	66 90                	xchg   ax,ax
+200007d8:	66 90                	xchg   ax,ax
+200007da:	66 90                	xchg   ax,ax
+200007dc:	66 90                	xchg   ax,ax
+200007de:	66 90                	xchg   ax,ax
+200007e0:	66 90                	xchg   ax,ax
+200007e2:	66 90                	xchg   ax,ax
+200007e4:	66 90                	xchg   ax,ax
+200007e6:	66 90                	xchg   ax,ax
+200007e8:	66 90                	xchg   ax,ax
+200007ea:	66 90                	xchg   ax,ax
+200007ec:	66 90                	xchg   ax,ax
+200007ee:	66 90                	xchg   ax,ax
+200007f0:	66 90                	xchg   ax,ax
+200007f2:	66 90                	xchg   ax,ax
+200007f4:	66 90                	xchg   ax,ax
+200007f6:	66 90                	xchg   ax,ax
+200007f8:	66 90                	xchg   ax,ax
+200007fa:	66 90                	xchg   ax,ax
+200007fc:	66 90                	xchg   ax,ax
+200007fe:	66 90                	xchg   ax,ax
+20000800:	66 90                	xchg   ax,ax
+20000802:	66 90                	xchg   ax,ax
+20000804:	66 90                	xchg   ax,ax
+20000806:	66 90                	xchg   ax,ax
+20000808:	66 90                	xchg   ax,ax
+2000080a:	66 90                	xchg   ax,ax
+2000080c:	66 90                	xchg   ax,ax
+2000080e:	66 90                	xchg   ax,ax
+20000810:	66 90                	xchg   ax,ax
+20000812:	66 90                	xchg   ax,ax
+20000814:	66 90                	xchg   ax,ax
+20000816:	66 90                	xchg   ax,ax
+20000818:	66 90                	xchg   ax,ax
+2000081a:	66 90                	xchg   ax,ax
+2000081c:	66 90                	xchg   ax,ax
+2000081e:	66 90                	xchg   ax,ax
+20000820:	66 90                	xchg   ax,ax
+20000822:	66 90                	xchg   ax,ax
+20000824:	66 90                	xchg   ax,ax
+20000826:	66 90                	xchg   ax,ax
+20000828:	66 90                	xchg   ax,ax
+2000082a:	66 90                	xchg   ax,ax
+2000082c:	66 90                	xchg   ax,ax
+2000082e:	66 90                	xchg   ax,ax
+20000830:	66 90                	xchg   ax,ax
+20000832:	66 90                	xchg   ax,ax
+20000834:	66 90                	xchg   ax,ax
+20000836:	66 90                	xchg   ax,ax
+20000838:	66 90                	xchg   ax,ax
+2000083a:	66 90                	xchg   ax,ax
+2000083c:	66 90                	xchg   ax,ax
+2000083e:	66 90                	xchg   ax,ax
+20000840:	66 90                	xchg   ax,ax
+20000842:	66 90                	xchg   ax,ax
+20000844:	66 90                	xchg   ax,ax
+20000846:	66 90                	xchg   ax,ax
+20000848:	66 90                	xchg   ax,ax
+2000084a:	66 90                	xchg   ax,ax
+2000084c:	66 90                	xchg   ax,ax
+2000084e:	66 90                	xchg   ax,ax
+20000850:	66 90                	xchg   ax,ax
+20000852:	66 90                	xchg   ax,ax
+20000854:	66 90                	xchg   ax,ax
+20000856:	66 90                	xchg   ax,ax
+20000858:	66 90                	xchg   ax,ax
+2000085a:	66 90                	xchg   ax,ax
+2000085c:	66 90                	xchg   ax,ax
+2000085e:	66 90                	xchg   ax,ax
+20000860:	66 90                	xchg   ax,ax
+20000862:	66 90                	xchg   ax,ax
+20000864:	66 90                	xchg   ax,ax
+20000866:	66 90                	xchg   ax,ax
+20000868:	66 90                	xchg   ax,ax
+2000086a:	66 90                	xchg   ax,ax
+2000086c:	66 90                	xchg   ax,ax
+2000086e:	66 90                	xchg   ax,ax
+20000870:	66 90                	xchg   ax,ax
+20000872:	66 90                	xchg   ax,ax
+20000874:	66 90                	xchg   ax,ax
+20000876:	66 90                	xchg   ax,ax
+20000878:	66 90                	xchg   ax,ax
+2000087a:	66 90                	xchg   ax,ax
+2000087c:	66 90                	xchg   ax,ax
+2000087e:	66 90                	xchg   ax,ax
+20000880:	66 90                	xchg   ax,ax
+20000882:	66 90                	xchg   ax,ax
+20000884:	66 90                	xchg   ax,ax
+20000886:	66 90                	xchg   ax,ax
+20000888:	66 90                	xchg   ax,ax
+2000088a:	66 90                	xchg   ax,ax
+2000088c:	66 90                	xchg   ax,ax
+2000088e:	66 90                	xchg   ax,ax
+20000890:	66 90                	xchg   ax,ax
+20000892:	66 90                	xchg   ax,ax
+20000894:	66 90                	xchg   ax,ax
+20000896:	66 90                	xchg   ax,ax
+20000898:	66 90                	xchg   ax,ax
+2000089a:	66 90                	xchg   ax,ax
+2000089c:	66 90                	xchg   ax,ax
+2000089e:	66 90                	xchg   ax,ax
+200008a0:	66 90                	xchg   ax,ax
+200008a2:	66 90                	xchg   ax,ax
+200008a4:	66 90                	xchg   ax,ax
+200008a6:	66 90                	xchg   ax,ax
+200008a8:	66 90                	xchg   ax,ax
+200008aa:	66 90                	xchg   ax,ax
+200008ac:	66 90                	xchg   ax,ax
+200008ae:	66 90                	xchg   ax,ax
+200008b0:	66 90                	xchg   ax,ax
+200008b2:	66 90                	xchg   ax,ax
+200008b4:	66 90                	xchg   ax,ax
+200008b6:	66 90                	xchg   ax,ax
+200008b8:	66 90                	xchg   ax,ax
+200008ba:	66 90                	xchg   ax,ax
+200008bc:	66 90                	xchg   ax,ax
+200008be:	66 90                	xchg   ax,ax
+200008c0:	66 90                	xchg   ax,ax
+200008c2:	66 90                	xchg   ax,ax
+200008c4:	66 90                	xchg   ax,ax
+200008c6:	66 90                	xchg   ax,ax
+200008c8:	66 90                	xchg   ax,ax
+200008ca:	66 90                	xchg   ax,ax
+200008cc:	66 90                	xchg   ax,ax
+200008ce:	66 90                	xchg   ax,ax
+200008d0:	66 90                	xchg   ax,ax
+200008d2:	66 90                	xchg   ax,ax
+200008d4:	66 90                	xchg   ax,ax
+200008d6:	66 90                	xchg   ax,ax
+200008d8:	66 90                	xchg   ax,ax
+200008da:	66 90                	xchg   ax,ax
+200008dc:	66 90                	xchg   ax,ax
+200008de:	66 90                	xchg   ax,ax
+200008e0:	66 90                	xchg   ax,ax
+200008e2:	66 90                	xchg   ax,ax
+200008e4:	66 90                	xchg   ax,ax
+200008e6:	66 90                	xchg   ax,ax
+200008e8:	66 90                	xchg   ax,ax
+200008ea:	66 90                	xchg   ax,ax
+200008ec:	66 90                	xchg   ax,ax
+200008ee:	66 90                	xchg   ax,ax
+200008f0:	66 90                	xchg   ax,ax
+200008f2:	66 90                	xchg   ax,ax
+200008f4:	66 90                	xchg   ax,ax
+200008f6:	66 90                	xchg   ax,ax
+200008f8:	66 90                	xchg   ax,ax
+200008fa:	66 90                	xchg   ax,ax
+200008fc:	66 90                	xchg   ax,ax
+200008fe:	66 90                	xchg   ax,ax
+20000900:	66 90                	xchg   ax,ax
+20000902:	66 90                	xchg   ax,ax
+20000904:	66 90                	xchg   ax,ax
+20000906:	66 90                	xchg   ax,ax
+20000908:	66 90                	xchg   ax,ax
+2000090a:	66 90                	xchg   ax,ax
+2000090c:	66 90                	xchg   ax,ax
+2000090e:	66 90                	xchg   ax,ax
+20000910:	66 90                	xchg   ax,ax
+20000912:	66 90                	xchg   ax,ax
+20000914:	66 90                	xchg   ax,ax
+20000916:	66 90                	xchg   ax,ax
+20000918:	66 90                	xchg   ax,ax
+2000091a:	66 90                	xchg   ax,ax
+2000091c:	66 90                	xchg   ax,ax
+2000091e:	66 90                	xchg   ax,ax
+20000920:	66 90                	xchg   ax,ax
+20000922:	66 90                	xchg   ax,ax
+20000924:	66 90                	xchg   ax,ax
+20000926:	66 90                	xchg   ax,ax
+20000928:	66 90                	xchg   ax,ax
+2000092a:	66 90                	xchg   ax,ax
+2000092c:	66 90                	xchg   ax,ax
+2000092e:	66 90                	xchg   ax,ax
+20000930:	66 90                	xchg   ax,ax
+20000932:	66 90                	xchg   ax,ax
+20000934:	66 90                	xchg   ax,ax
+20000936:	66 90                	xchg   ax,ax
+20000938:	66 90                	xchg   ax,ax
+2000093a:	66 90                	xchg   ax,ax
+2000093c:	66 90                	xchg   ax,ax
+2000093e:	66 90                	xchg   ax,ax
+20000940:	66 90                	xchg   ax,ax
+20000942:	66 90                	xchg   ax,ax
+20000944:	66 90                	xchg   ax,ax
+20000946:	66 90                	xchg   ax,ax
+20000948:	66 90                	xchg   ax,ax
+2000094a:	66 90                	xchg   ax,ax
+2000094c:	66 90                	xchg   ax,ax
+2000094e:	66 90                	xchg   ax,ax
+20000950:	66 90                	xchg   ax,ax
+20000952:	66 90                	xchg   ax,ax
+20000954:	66 90                	xchg   ax,ax
+20000956:	66 90                	xchg   ax,ax
+20000958:	66 90                	xchg   ax,ax
+2000095a:	66 90                	xchg   ax,ax
+2000095c:	66 90                	xchg   ax,ax
+2000095e:	66 90                	xchg   ax,ax
+20000960:	66 90                	xchg   ax,ax
+20000962:	66 90                	xchg   ax,ax
+20000964:	66 90                	xchg   ax,ax
+20000966:	66 90                	xchg   ax,ax
+20000968:	66 90                	xchg   ax,ax
+2000096a:	66 90                	xchg   ax,ax
+2000096c:	66 90                	xchg   ax,ax
+2000096e:	66 90                	xchg   ax,ax
+20000970:	66 90                	xchg   ax,ax
+20000972:	66 90                	xchg   ax,ax
+20000974:	66 90                	xchg   ax,ax
+20000976:	66 90                	xchg   ax,ax
+20000978:	66 90                	xchg   ax,ax
+2000097a:	66 90                	xchg   ax,ax
+2000097c:	66 90                	xchg   ax,ax
+2000097e:	66 90                	xchg   ax,ax
+20000980:	66 90                	xchg   ax,ax
+20000982:	66 90                	xchg   ax,ax
+20000984:	66 90                	xchg   ax,ax
+20000986:	66 90                	xchg   ax,ax
+20000988:	66 90                	xchg   ax,ax
+2000098a:	66 90                	xchg   ax,ax
+2000098c:	66 90                	xchg   ax,ax
+2000098e:	66 90                	xchg   ax,ax
+20000990:	66 90                	xchg   ax,ax
+20000992:	66 90                	xchg   ax,ax
+20000994:	66 90                	xchg   ax,ax
+20000996:	66 90                	xchg   ax,ax
+20000998:	66 90                	xchg   ax,ax
+2000099a:	66 90                	xchg   ax,ax
+2000099c:	66 90                	xchg   ax,ax
+2000099e:	66 90                	xchg   ax,ax
+200009a0:	66 90                	xchg   ax,ax
+200009a2:	66 90                	xchg   ax,ax
+200009a4:	66 90                	xchg   ax,ax
+200009a6:	66 90                	xchg   ax,ax
+200009a8:	66 90                	xchg   ax,ax
+200009aa:	66 90                	xchg   ax,ax
+200009ac:	66 90                	xchg   ax,ax
+200009ae:	66 90                	xchg   ax,ax
+200009b0:	66 90                	xchg   ax,ax
+200009b2:	66 90                	xchg   ax,ax
+200009b4:	66 90                	xchg   ax,ax
+200009b6:	66 90                	xchg   ax,ax
+200009b8:	66 90                	xchg   ax,ax
+200009ba:	66 90                	xchg   ax,ax
+200009bc:	66 90                	xchg   ax,ax
+200009be:	66 90                	xchg   ax,ax
+200009c0:	66 90                	xchg   ax,ax
+200009c2:	66 90                	xchg   ax,ax
+200009c4:	66 90                	xchg   ax,ax
+200009c6:	66 90                	xchg   ax,ax
+200009c8:	66 90                	xchg   ax,ax
+200009ca:	66 90                	xchg   ax,ax
+200009cc:	66 90                	xchg   ax,ax
+200009ce:	66 90                	xchg   ax,ax
+200009d0:	66 90                	xchg   ax,ax
+200009d2:	66 90                	xchg   ax,ax
+200009d4:	66 90                	xchg   ax,ax
+200009d6:	66 90                	xchg   ax,ax
+200009d8:	66 90                	xchg   ax,ax
+200009da:	66 90                	xchg   ax,ax
+200009dc:	66 90                	xchg   ax,ax
+200009de:	66 90                	xchg   ax,ax
+200009e0:	66 90                	xchg   ax,ax
+200009e2:	66 90                	xchg   ax,ax
+200009e4:	66 90                	xchg   ax,ax
+200009e6:	66 90                	xchg   ax,ax
+200009e8:	66 90                	xchg   ax,ax
+200009ea:	66 90                	xchg   ax,ax
+200009ec:	66 90                	xchg   ax,ax
+200009ee:	66 90                	xchg   ax,ax
+200009f0:	66 90                	xchg   ax,ax
+200009f2:	66 90                	xchg   ax,ax
+200009f4:	66 90                	xchg   ax,ax
+200009f6:	66 90                	xchg   ax,ax
+200009f8:	66 90                	xchg   ax,ax
+200009fa:	66 90                	xchg   ax,ax
+200009fc:	66 90                	xchg   ax,ax
+200009fe:	66 90                	xchg   ax,ax
+20000a00:	66 90                	xchg   ax,ax
+20000a02:	66 90                	xchg   ax,ax
+20000a04:	66 90                	xchg   ax,ax
+20000a06:	66 90                	xchg   ax,ax
+20000a08:	66 90                	xchg   ax,ax
+20000a0a:	66 90                	xchg   ax,ax
+20000a0c:	66 90                	xchg   ax,ax
+20000a0e:	66 90                	xchg   ax,ax
+20000a10:	66 90                	xchg   ax,ax
+20000a12:	66 90                	xchg   ax,ax
+20000a14:	66 90                	xchg   ax,ax
+20000a16:	66 90                	xchg   ax,ax
+20000a18:	66 90                	xchg   ax,ax
+20000a1a:	66 90                	xchg   ax,ax
+20000a1c:	66 90                	xchg   ax,ax
+20000a1e:	66 90                	xchg   ax,ax
+20000a20:	66 90                	xchg   ax,ax
+20000a22:	66 90                	xchg   ax,ax
+20000a24:	66 90                	xchg   ax,ax
+20000a26:	66 90                	xchg   ax,ax
+20000a28:	66 90                	xchg   ax,ax
+20000a2a:	66 90                	xchg   ax,ax
+20000a2c:	66 90                	xchg   ax,ax
+20000a2e:	66 90                	xchg   ax,ax
+20000a30:	66 90                	xchg   ax,ax
+20000a32:	66 90                	xchg   ax,ax
+20000a34:	66 90                	xchg   ax,ax
+20000a36:	66 90                	xchg   ax,ax
+20000a38:	66 90                	xchg   ax,ax
+20000a3a:	66 90                	xchg   ax,ax
+20000a3c:	66 90                	xchg   ax,ax
+20000a3e:	66 90                	xchg   ax,ax
+20000a40:	66 90                	xchg   ax,ax
+20000a42:	66 90                	xchg   ax,ax
+20000a44:	66 90                	xchg   ax,ax
+20000a46:	66 90                	xchg   ax,ax
+20000a48:	66 90                	xchg   ax,ax
+20000a4a:	66 90                	xchg   ax,ax
+20000a4c:	66 90                	xchg   ax,ax
+20000a4e:	66 90                	xchg   ax,ax
+20000a50:	66 90                	xchg   ax,ax
+20000a52:	66 90                	xchg   ax,ax
+20000a54:	66 90                	xchg   ax,ax
+20000a56:	66 90                	xchg   ax,ax
+20000a58:	66 90                	xchg   ax,ax
+20000a5a:	66 90                	xchg   ax,ax
+20000a5c:	66 90                	xchg   ax,ax
+20000a5e:	66 90                	xchg   ax,ax
+20000a60:	66 90                	xchg   ax,ax
+20000a62:	66 90                	xchg   ax,ax
+20000a64:	66 90                	xchg   ax,ax
+20000a66:	66 90                	xchg   ax,ax
+20000a68:	66 90                	xchg   ax,ax
+20000a6a:	66 90                	xchg   ax,ax
+20000a6c:	66 90                	xchg   ax,ax
+20000a6e:	66 90                	xchg   ax,ax
+20000a70:	66 90                	xchg   ax,ax
+20000a72:	66 90                	xchg   ax,ax
+20000a74:	66 90                	xchg   ax,ax
+20000a76:	66 90                	xchg   ax,ax
+20000a78:	66 90                	xchg   ax,ax
+20000a7a:	66 90                	xchg   ax,ax
+20000a7c:	66 90                	xchg   ax,ax
+20000a7e:	66 90                	xchg   ax,ax
+20000a80:	66 90                	xchg   ax,ax
+20000a82:	66 90                	xchg   ax,ax
+20000a84:	66 90                	xchg   ax,ax
+20000a86:	66 90                	xchg   ax,ax
+20000a88:	66 90                	xchg   ax,ax
+20000a8a:	66 90                	xchg   ax,ax
+20000a8c:	66 90                	xchg   ax,ax
+20000a8e:	66 90                	xchg   ax,ax
+20000a90:	66 90                	xchg   ax,ax
+20000a92:	66 90                	xchg   ax,ax
+20000a94:	66 90                	xchg   ax,ax
+20000a96:	66 90                	xchg   ax,ax
+20000a98:	66 90                	xchg   ax,ax
+20000a9a:	66 90                	xchg   ax,ax
+20000a9c:	66 90                	xchg   ax,ax
+20000a9e:	66 90                	xchg   ax,ax
+20000aa0:	66 90                	xchg   ax,ax
+20000aa2:	66 90                	xchg   ax,ax
+20000aa4:	66 90                	xchg   ax,ax
+20000aa6:	66 90                	xchg   ax,ax
+20000aa8:	66 90                	xchg   ax,ax
+20000aaa:	66 90                	xchg   ax,ax
+20000aac:	66 90                	xchg   ax,ax
+20000aae:	66 90                	xchg   ax,ax
+20000ab0:	66 90                	xchg   ax,ax
+20000ab2:	66 90                	xchg   ax,ax
+20000ab4:	66 90                	xchg   ax,ax
+20000ab6:	66 90                	xchg   ax,ax
+20000ab8:	66 90                	xchg   ax,ax
+20000aba:	66 90                	xchg   ax,ax
+20000abc:	66 90                	xchg   ax,ax
+20000abe:	66 90                	xchg   ax,ax
+20000ac0:	66 90                	xchg   ax,ax
+20000ac2:	66 90                	xchg   ax,ax
+20000ac4:	66 90                	xchg   ax,ax
+20000ac6:	66 90                	xchg   ax,ax
+20000ac8:	66 90                	xchg   ax,ax
+20000aca:	66 90                	xchg   ax,ax
+20000acc:	66 90                	xchg   ax,ax
+20000ace:	66 90                	xchg   ax,ax
+20000ad0:	66 90                	xchg   ax,ax
+20000ad2:	66 90                	xchg   ax,ax
+20000ad4:	66 90                	xchg   ax,ax
+20000ad6:	66 90                	xchg   ax,ax
+20000ad8:	66 90                	xchg   ax,ax
+20000ada:	66 90                	xchg   ax,ax
+20000adc:	66 90                	xchg   ax,ax
+20000ade:	66 90                	xchg   ax,ax
+20000ae0:	66 90                	xchg   ax,ax
+20000ae2:	66 90                	xchg   ax,ax
+20000ae4:	66 90                	xchg   ax,ax
+20000ae6:	66 90                	xchg   ax,ax
+20000ae8:	66 90                	xchg   ax,ax
+20000aea:	66 90                	xchg   ax,ax
+20000aec:	66 90                	xchg   ax,ax
+20000aee:	66 90                	xchg   ax,ax
+20000af0:	66 90                	xchg   ax,ax
+20000af2:	66 90                	xchg   ax,ax
+20000af4:	66 90                	xchg   ax,ax
+20000af6:	66 90                	xchg   ax,ax
+20000af8:	66 90                	xchg   ax,ax
+20000afa:	66 90                	xchg   ax,ax
+20000afc:	66 90                	xchg   ax,ax
+20000afe:	66 90                	xchg   ax,ax
+20000b00:	66 90                	xchg   ax,ax
+20000b02:	66 90                	xchg   ax,ax
+20000b04:	66 90                	xchg   ax,ax
+20000b06:	66 90                	xchg   ax,ax
+20000b08:	66 90                	xchg   ax,ax
+20000b0a:	66 90                	xchg   ax,ax
+20000b0c:	66 90                	xchg   ax,ax
+20000b0e:	66 90                	xchg   ax,ax
+20000b10:	66 90                	xchg   ax,ax
+20000b12:	66 90                	xchg   ax,ax
+20000b14:	66 90                	xchg   ax,ax
+20000b16:	66 90                	xchg   ax,ax
+20000b18:	66 90                	xchg   ax,ax
+20000b1a:	66 90                	xchg   ax,ax
+20000b1c:	66 90                	xchg   ax,ax
+20000b1e:	66 90                	xchg   ax,ax
+20000b20:	66 90                	xchg   ax,ax
+20000b22:	66 90                	xchg   ax,ax
+20000b24:	66 90                	xchg   ax,ax
+20000b26:	66 90                	xchg   ax,ax
+20000b28:	66 90                	xchg   ax,ax
+20000b2a:	66 90                	xchg   ax,ax
+20000b2c:	66 90                	xchg   ax,ax
+20000b2e:	66 90                	xchg   ax,ax
+20000b30:	66 90                	xchg   ax,ax
+20000b32:	66 90                	xchg   ax,ax
+20000b34:	66 90                	xchg   ax,ax
+20000b36:	66 90                	xchg   ax,ax
+20000b38:	66 90                	xchg   ax,ax
+20000b3a:	66 90                	xchg   ax,ax
+20000b3c:	66 90                	xchg   ax,ax
+20000b3e:	66 90                	xchg   ax,ax
+20000b40:	66 90                	xchg   ax,ax
+20000b42:	66 90                	xchg   ax,ax
+20000b44:	66 90                	xchg   ax,ax
+20000b46:	66 90                	xchg   ax,ax
+20000b48:	66 90                	xchg   ax,ax
+20000b4a:	66 90                	xchg   ax,ax
+20000b4c:	66 90                	xchg   ax,ax
+20000b4e:	66 90                	xchg   ax,ax
+20000b50:	66 90                	xchg   ax,ax
+20000b52:	66 90                	xchg   ax,ax
+20000b54:	66 90                	xchg   ax,ax
+20000b56:	66 90                	xchg   ax,ax
+20000b58:	66 90                	xchg   ax,ax
+20000b5a:	66 90                	xchg   ax,ax
+20000b5c:	66 90                	xchg   ax,ax
+20000b5e:	66 90                	xchg   ax,ax
+20000b60:	66 90                	xchg   ax,ax
+20000b62:	66 90                	xchg   ax,ax
+20000b64:	66 90                	xchg   ax,ax
+20000b66:	66 90                	xchg   ax,ax
+20000b68:	66 90                	xchg   ax,ax
+20000b6a:	66 90                	xchg   ax,ax
+20000b6c:	66 90                	xchg   ax,ax
+20000b6e:	66 90                	xchg   ax,ax
+20000b70:	66 90                	xchg   ax,ax
+20000b72:	66 90                	xchg   ax,ax
+20000b74:	66 90                	xchg   ax,ax
+20000b76:	66 90                	xchg   ax,ax
+20000b78:	66 90                	xchg   ax,ax
+20000b7a:	66 90                	xchg   ax,ax
+20000b7c:	66 90                	xchg   ax,ax
+20000b7e:	66 90                	xchg   ax,ax
+20000b80:	66 90                	xchg   ax,ax
+20000b82:	66 90                	xchg   ax,ax
+20000b84:	66 90                	xchg   ax,ax
+20000b86:	66 90                	xchg   ax,ax
+20000b88:	66 90                	xchg   ax,ax
+20000b8a:	66 90                	xchg   ax,ax
+20000b8c:	66 90                	xchg   ax,ax
+20000b8e:	66 90                	xchg   ax,ax
+20000b90:	66 90                	xchg   ax,ax
+20000b92:	66 90                	xchg   ax,ax
+20000b94:	66 90                	xchg   ax,ax
+20000b96:	66 90                	xchg   ax,ax
+20000b98:	66 90                	xchg   ax,ax
+20000b9a:	66 90                	xchg   ax,ax
+20000b9c:	66 90                	xchg   ax,ax
+20000b9e:	66 90                	xchg   ax,ax
+20000ba0:	66 90                	xchg   ax,ax
+20000ba2:	66 90                	xchg   ax,ax
+20000ba4:	66 90                	xchg   ax,ax
+20000ba6:	66 90                	xchg   ax,ax
+20000ba8:	66 90                	xchg   ax,ax
+20000baa:	66 90                	xchg   ax,ax
+20000bac:	66 90                	xchg   ax,ax
+20000bae:	66 90                	xchg   ax,ax
+20000bb0:	66 90                	xchg   ax,ax
+20000bb2:	66 90                	xchg   ax,ax
+20000bb4:	66 90                	xchg   ax,ax
+20000bb6:	66 90                	xchg   ax,ax
+20000bb8:	66 90                	xchg   ax,ax
+20000bba:	66 90                	xchg   ax,ax
+20000bbc:	66 90                	xchg   ax,ax
+20000bbe:	66 90                	xchg   ax,ax
+20000bc0:	66 90                	xchg   ax,ax
+20000bc2:	66 90                	xchg   ax,ax
+20000bc4:	66 90                	xchg   ax,ax
+20000bc6:	66 90                	xchg   ax,ax
+20000bc8:	66 90                	xchg   ax,ax
+20000bca:	66 90                	xchg   ax,ax
+20000bcc:	66 90                	xchg   ax,ax
+20000bce:	66 90                	xchg   ax,ax
+20000bd0:	66 90                	xchg   ax,ax
+20000bd2:	66 90                	xchg   ax,ax
+20000bd4:	66 90                	xchg   ax,ax
+20000bd6:	66 90                	xchg   ax,ax
+20000bd8:	66 90                	xchg   ax,ax
+20000bda:	66 90                	xchg   ax,ax
+20000bdc:	66 90                	xchg   ax,ax
+20000bde:	66 90                	xchg   ax,ax
+20000be0:	66 90                	xchg   ax,ax
+20000be2:	66 90                	xchg   ax,ax
+20000be4:	66 90                	xchg   ax,ax
+20000be6:	66 90                	xchg   ax,ax
+20000be8:	66 90                	xchg   ax,ax
+20000bea:	66 90                	xchg   ax,ax
+20000bec:	66 90                	xchg   ax,ax
+20000bee:	66 90                	xchg   ax,ax
+20000bf0:	66 90                	xchg   ax,ax
+20000bf2:	66 90                	xchg   ax,ax
+20000bf4:	66 90                	xchg   ax,ax
+20000bf6:	66 90                	xchg   ax,ax
+20000bf8:	66 90                	xchg   ax,ax
+20000bfa:	66 90                	xchg   ax,ax
+20000bfc:	66 90                	xchg   ax,ax
+20000bfe:	66 90                	xchg   ax,ax
+20000c00:	66 90                	xchg   ax,ax
+20000c02:	66 90                	xchg   ax,ax
+20000c04:	66 90                	xchg   ax,ax
+20000c06:	66 90                	xchg   ax,ax
+20000c08:	66 90                	xchg   ax,ax
+20000c0a:	66 90                	xchg   ax,ax
+20000c0c:	66 90                	xchg   ax,ax
+20000c0e:	66 90                	xchg   ax,ax
+20000c10:	66 90                	xchg   ax,ax
+20000c12:	66 90                	xchg   ax,ax
+20000c14:	66 90                	xchg   ax,ax
+20000c16:	66 90                	xchg   ax,ax
+20000c18:	66 90                	xchg   ax,ax
+20000c1a:	66 90                	xchg   ax,ax
+20000c1c:	66 90                	xchg   ax,ax
+20000c1e:	66 90                	xchg   ax,ax
+20000c20:	66 90                	xchg   ax,ax
+20000c22:	66 90                	xchg   ax,ax
+20000c24:	66 90                	xchg   ax,ax
+20000c26:	66 90                	xchg   ax,ax
+20000c28:	66 90                	xchg   ax,ax
+20000c2a:	66 90                	xchg   ax,ax
+20000c2c:	66 90                	xchg   ax,ax
+20000c2e:	66 90                	xchg   ax,ax
+20000c30:	66 90                	xchg   ax,ax
+20000c32:	66 90                	xchg   ax,ax
+20000c34:	66 90                	xchg   ax,ax
+20000c36:	66 90                	xchg   ax,ax
+20000c38:	66 90                	xchg   ax,ax
+20000c3a:	66 90                	xchg   ax,ax
+20000c3c:	66 90                	xchg   ax,ax
+20000c3e:	66 90                	xchg   ax,ax
+20000c40:	66 90                	xchg   ax,ax
+20000c42:	66 90                	xchg   ax,ax
+20000c44:	66 90                	xchg   ax,ax
+20000c46:	66 90                	xchg   ax,ax
+20000c48:	66 90                	xchg   ax,ax
+20000c4a:	66 90                	xchg   ax,ax
+20000c4c:	66 90                	xchg   ax,ax
+20000c4e:	66 90                	xchg   ax,ax
+20000c50:	66 90                	xchg   ax,ax
+20000c52:	66 90                	xchg   ax,ax
+20000c54:	66 90                	xchg   ax,ax
+20000c56:	66 90                	xchg   ax,ax
+20000c58:	66 90                	xchg   ax,ax
+20000c5a:	66 90                	xchg   ax,ax
+20000c5c:	66 90                	xchg   ax,ax
+20000c5e:	66 90                	xchg   ax,ax
+20000c60:	66 90                	xchg   ax,ax
+20000c62:	66 90                	xchg   ax,ax
+20000c64:	66 90                	xchg   ax,ax
+20000c66:	66 90                	xchg   ax,ax
+20000c68:	66 90                	xchg   ax,ax
+20000c6a:	66 90                	xchg   ax,ax
+20000c6c:	66 90                	xchg   ax,ax
+20000c6e:	66 90                	xchg   ax,ax
+20000c70:	66 90                	xchg   ax,ax
+20000c72:	66 90                	xchg   ax,ax
+20000c74:	66 90                	xchg   ax,ax
+20000c76:	66 90                	xchg   ax,ax
+20000c78:	66 90                	xchg   ax,ax
+20000c7a:	66 90                	xchg   ax,ax
+20000c7c:	66 90                	xchg   ax,ax
+20000c7e:	66 90                	xchg   ax,ax
+20000c80:	66 90                	xchg   ax,ax
+20000c82:	66 90                	xchg   ax,ax
+20000c84:	66 90                	xchg   ax,ax
+20000c86:	66 90                	xchg   ax,ax
+20000c88:	66 90                	xchg   ax,ax
+20000c8a:	66 90                	xchg   ax,ax
+20000c8c:	66 90                	xchg   ax,ax
+20000c8e:	66 90                	xchg   ax,ax
+20000c90:	66 90                	xchg   ax,ax
+20000c92:	66 90                	xchg   ax,ax
+20000c94:	66 90                	xchg   ax,ax
+20000c96:	66 90                	xchg   ax,ax
+20000c98:	66 90                	xchg   ax,ax
+20000c9a:	66 90                	xchg   ax,ax
+20000c9c:	66 90                	xchg   ax,ax
+20000c9e:	66 90                	xchg   ax,ax
+20000ca0:	66 90                	xchg   ax,ax
+20000ca2:	66 90                	xchg   ax,ax
+20000ca4:	66 90                	xchg   ax,ax
+20000ca6:	66 90                	xchg   ax,ax
+20000ca8:	66 90                	xchg   ax,ax
+20000caa:	66 90                	xchg   ax,ax
+20000cac:	66 90                	xchg   ax,ax
+20000cae:	66 90                	xchg   ax,ax
+20000cb0:	66 90                	xchg   ax,ax
+20000cb2:	66 90                	xchg   ax,ax
+20000cb4:	66 90                	xchg   ax,ax
+20000cb6:	66 90                	xchg   ax,ax
+20000cb8:	66 90                	xchg   ax,ax
+20000cba:	66 90                	xchg   ax,ax
+20000cbc:	66 90                	xchg   ax,ax
+20000cbe:	66 90                	xchg   ax,ax
+20000cc0:	66 90                	xchg   ax,ax
+20000cc2:	66 90                	xchg   ax,ax
+20000cc4:	66 90                	xchg   ax,ax
+20000cc6:	66 90                	xchg   ax,ax
+20000cc8:	66 90                	xchg   ax,ax
+20000cca:	66 90                	xchg   ax,ax
+20000ccc:	66 90                	xchg   ax,ax
+20000cce:	66 90                	xchg   ax,ax
+20000cd0:	66 90                	xchg   ax,ax
+20000cd2:	66 90                	xchg   ax,ax
+20000cd4:	66 90                	xchg   ax,ax
+20000cd6:	66 90                	xchg   ax,ax
+20000cd8:	66 90                	xchg   ax,ax
+20000cda:	66 90                	xchg   ax,ax
+20000cdc:	66 90                	xchg   ax,ax
+20000cde:	66 90                	xchg   ax,ax
+20000ce0:	66 90                	xchg   ax,ax
+20000ce2:	66 90                	xchg   ax,ax
+20000ce4:	66 90                	xchg   ax,ax
+20000ce6:	66 90                	xchg   ax,ax
+20000ce8:	66 90                	xchg   ax,ax
+20000cea:	66 90                	xchg   ax,ax
+20000cec:	66 90                	xchg   ax,ax
+20000cee:	66 90                	xchg   ax,ax
+20000cf0:	66 90                	xchg   ax,ax
+20000cf2:	66 90                	xchg   ax,ax
+20000cf4:	66 90                	xchg   ax,ax
+20000cf6:	66 90                	xchg   ax,ax
+20000cf8:	66 90                	xchg   ax,ax
+20000cfa:	66 90                	xchg   ax,ax
+20000cfc:	66 90                	xchg   ax,ax
+20000cfe:	66 90                	xchg   ax,ax
+20000d00:	66 90                	xchg   ax,ax
+20000d02:	66 90                	xchg   ax,ax
+20000d04:	66 90                	xchg   ax,ax
+20000d06:	66 90                	xchg   ax,ax
+20000d08:	66 90                	xchg   ax,ax
+20000d0a:	66 90                	xchg   ax,ax
+20000d0c:	66 90                	xchg   ax,ax
+20000d0e:	66 90                	xchg   ax,ax
+20000d10:	66 90                	xchg   ax,ax
+20000d12:	66 90                	xchg   ax,ax
+20000d14:	66 90                	xchg   ax,ax
+20000d16:	66 90                	xchg   ax,ax
+20000d18:	66 90                	xchg   ax,ax
+20000d1a:	66 90                	xchg   ax,ax
+20000d1c:	66 90                	xchg   ax,ax
+20000d1e:	66 90                	xchg   ax,ax
+20000d20:	66 90                	xchg   ax,ax
+20000d22:	66 90                	xchg   ax,ax
+20000d24:	66 90                	xchg   ax,ax
+20000d26:	66 90                	xchg   ax,ax
+20000d28:	66 90                	xchg   ax,ax
+20000d2a:	66 90                	xchg   ax,ax
+20000d2c:	66 90                	xchg   ax,ax
+20000d2e:	66 90                	xchg   ax,ax
+20000d30:	66 90                	xchg   ax,ax
+20000d32:	66 90                	xchg   ax,ax
+20000d34:	66 90                	xchg   ax,ax
+20000d36:	66 90                	xchg   ax,ax
+20000d38:	66 90                	xchg   ax,ax
+20000d3a:	66 90                	xchg   ax,ax
+20000d3c:	66 90                	xchg   ax,ax
+20000d3e:	66 90                	xchg   ax,ax
+20000d40:	66 90                	xchg   ax,ax
+20000d42:	66 90                	xchg   ax,ax
+20000d44:	66 90                	xchg   ax,ax
+20000d46:	66 90                	xchg   ax,ax
+20000d48:	66 90                	xchg   ax,ax
+20000d4a:	66 90                	xchg   ax,ax
+20000d4c:	66 90                	xchg   ax,ax
+20000d4e:	66 90                	xchg   ax,ax
+20000d50:	66 90                	xchg   ax,ax
+20000d52:	66 90                	xchg   ax,ax
+20000d54:	66 90                	xchg   ax,ax
+20000d56:	66 90                	xchg   ax,ax
+20000d58:	66 90                	xchg   ax,ax
+20000d5a:	66 90                	xchg   ax,ax
+20000d5c:	66 90                	xchg   ax,ax
+20000d5e:	66 90                	xchg   ax,ax
+20000d60:	66 90                	xchg   ax,ax
+20000d62:	66 90                	xchg   ax,ax
+20000d64:	66 90                	xchg   ax,ax
+20000d66:	66 90                	xchg   ax,ax
+20000d68:	66 90                	xchg   ax,ax
+20000d6a:	66 90                	xchg   ax,ax
+20000d6c:	66 90                	xchg   ax,ax
+20000d6e:	66 90                	xchg   ax,ax
+20000d70:	66 90                	xchg   ax,ax
+20000d72:	66 90                	xchg   ax,ax
+20000d74:	66 90                	xchg   ax,ax
+20000d76:	66 90                	xchg   ax,ax
+20000d78:	66 90                	xchg   ax,ax
+20000d7a:	66 90                	xchg   ax,ax
+20000d7c:	66 90                	xchg   ax,ax
+20000d7e:	66 90                	xchg   ax,ax
+20000d80:	66 90                	xchg   ax,ax
+20000d82:	66 90                	xchg   ax,ax
+20000d84:	66 90                	xchg   ax,ax
+20000d86:	66 90                	xchg   ax,ax
+20000d88:	66 90                	xchg   ax,ax
+20000d8a:	66 90                	xchg   ax,ax
+20000d8c:	66 90                	xchg   ax,ax
+20000d8e:	66 90                	xchg   ax,ax
+20000d90:	66 90                	xchg   ax,ax
+20000d92:	66 90                	xchg   ax,ax
+20000d94:	66 90                	xchg   ax,ax
+20000d96:	66 90                	xchg   ax,ax
+20000d98:	66 90                	xchg   ax,ax
+20000d9a:	66 90                	xchg   ax,ax
+20000d9c:	66 90                	xchg   ax,ax
+20000d9e:	66 90                	xchg   ax,ax
+20000da0:	66 90                	xchg   ax,ax
+20000da2:	66 90                	xchg   ax,ax
+20000da4:	66 90                	xchg   ax,ax
+20000da6:	66 90                	xchg   ax,ax
+20000da8:	66 90                	xchg   ax,ax
+20000daa:	66 90                	xchg   ax,ax
+20000dac:	66 90                	xchg   ax,ax
+20000dae:	66 90                	xchg   ax,ax
+20000db0:	66 90                	xchg   ax,ax
+20000db2:	66 90                	xchg   ax,ax
+20000db4:	66 90                	xchg   ax,ax
+20000db6:	66 90                	xchg   ax,ax
+20000db8:	66 90                	xchg   ax,ax
+20000dba:	66 90                	xchg   ax,ax
+20000dbc:	66 90                	xchg   ax,ax
+20000dbe:	66 90                	xchg   ax,ax
+20000dc0:	66 90                	xchg   ax,ax
+20000dc2:	66 90                	xchg   ax,ax
+20000dc4:	66 90                	xchg   ax,ax
+20000dc6:	66 90                	xchg   ax,ax
+20000dc8:	66 90                	xchg   ax,ax
+20000dca:	66 90                	xchg   ax,ax
+20000dcc:	66 90                	xchg   ax,ax
+20000dce:	66 90                	xchg   ax,ax
+20000dd0:	66 90                	xchg   ax,ax
+20000dd2:	66 90                	xchg   ax,ax
+20000dd4:	66 90                	xchg   ax,ax
+20000dd6:	66 90                	xchg   ax,ax
+20000dd8:	66 90                	xchg   ax,ax
+20000dda:	66 90                	xchg   ax,ax
+20000ddc:	66 90                	xchg   ax,ax
+20000dde:	66 90                	xchg   ax,ax
+20000de0:	66 90                	xchg   ax,ax
+20000de2:	66 90                	xchg   ax,ax
+20000de4:	66 90                	xchg   ax,ax
+20000de6:	66 90                	xchg   ax,ax
+20000de8:	66 90                	xchg   ax,ax
+20000dea:	66 90                	xchg   ax,ax
+20000dec:	66 90                	xchg   ax,ax
+20000dee:	66 90                	xchg   ax,ax
+20000df0:	66 90                	xchg   ax,ax
+20000df2:	66 90                	xchg   ax,ax
+20000df4:	66 90                	xchg   ax,ax
+20000df6:	66 90                	xchg   ax,ax
+20000df8:	66 90                	xchg   ax,ax
+20000dfa:	66 90                	xchg   ax,ax
+20000dfc:	66 90                	xchg   ax,ax
+20000dfe:	66 90                	xchg   ax,ax
+20000e00:	66 90                	xchg   ax,ax
+20000e02:	66 90                	xchg   ax,ax
+20000e04:	66 90                	xchg   ax,ax
+20000e06:	66 90                	xchg   ax,ax
+20000e08:	66 90                	xchg   ax,ax
+20000e0a:	66 90                	xchg   ax,ax
+20000e0c:	66 90                	xchg   ax,ax
+20000e0e:	66 90                	xchg   ax,ax
+20000e10:	66 90                	xchg   ax,ax
+20000e12:	66 90                	xchg   ax,ax
+20000e14:	66 90                	xchg   ax,ax
+20000e16:	66 90                	xchg   ax,ax
+20000e18:	66 90                	xchg   ax,ax
+20000e1a:	66 90                	xchg   ax,ax
+20000e1c:	66 90                	xchg   ax,ax
+20000e1e:	66 90                	xchg   ax,ax
+20000e20:	66 90                	xchg   ax,ax
+20000e22:	66 90                	xchg   ax,ax
+20000e24:	66 90                	xchg   ax,ax
+20000e26:	66 90                	xchg   ax,ax
+20000e28:	66 90                	xchg   ax,ax
+20000e2a:	66 90                	xchg   ax,ax
+20000e2c:	66 90                	xchg   ax,ax
+20000e2e:	66 90                	xchg   ax,ax
+20000e30:	66 90                	xchg   ax,ax
+20000e32:	66 90                	xchg   ax,ax
+20000e34:	66 90                	xchg   ax,ax
+20000e36:	66 90                	xchg   ax,ax
+20000e38:	66 90                	xchg   ax,ax
+20000e3a:	66 90                	xchg   ax,ax
+20000e3c:	66 90                	xchg   ax,ax
+20000e3e:	66 90                	xchg   ax,ax
+20000e40:	66 90                	xchg   ax,ax
+20000e42:	66 90                	xchg   ax,ax
+20000e44:	66 90                	xchg   ax,ax
+20000e46:	66 90                	xchg   ax,ax
+20000e48:	66 90                	xchg   ax,ax
+20000e4a:	66 90                	xchg   ax,ax
+20000e4c:	66 90                	xchg   ax,ax
+20000e4e:	66 90                	xchg   ax,ax
+20000e50:	66 90                	xchg   ax,ax
+20000e52:	66 90                	xchg   ax,ax
+20000e54:	66 90                	xchg   ax,ax
+20000e56:	66 90                	xchg   ax,ax
+20000e58:	66 90                	xchg   ax,ax
+20000e5a:	66 90                	xchg   ax,ax
+20000e5c:	66 90                	xchg   ax,ax
+20000e5e:	66 90                	xchg   ax,ax
+20000e60:	66 90                	xchg   ax,ax
+20000e62:	66 90                	xchg   ax,ax
+20000e64:	66 90                	xchg   ax,ax
+20000e66:	66 90                	xchg   ax,ax
+20000e68:	66 90                	xchg   ax,ax
+20000e6a:	66 90                	xchg   ax,ax
+20000e6c:	66 90                	xchg   ax,ax
+20000e6e:	66 90                	xchg   ax,ax
+20000e70:	66 90                	xchg   ax,ax
+20000e72:	66 90                	xchg   ax,ax
+20000e74:	66 90                	xchg   ax,ax
+20000e76:	66 90                	xchg   ax,ax
+20000e78:	66 90                	xchg   ax,ax
+20000e7a:	66 90                	xchg   ax,ax
+20000e7c:	66 90                	xchg   ax,ax
+20000e7e:	66 90                	xchg   ax,ax
+20000e80:	66 90                	xchg   ax,ax
+20000e82:	66 90                	xchg   ax,ax
+20000e84:	66 90                	xchg   ax,ax
+20000e86:	66 90                	xchg   ax,ax
+20000e88:	66 90                	xchg   ax,ax
+20000e8a:	66 90                	xchg   ax,ax
+20000e8c:	66 90                	xchg   ax,ax
+20000e8e:	66 90                	xchg   ax,ax
+20000e90:	66 90                	xchg   ax,ax
+20000e92:	66 90                	xchg   ax,ax
+20000e94:	66 90                	xchg   ax,ax
+20000e96:	66 90                	xchg   ax,ax
+20000e98:	66 90                	xchg   ax,ax
+20000e9a:	66 90                	xchg   ax,ax
+20000e9c:	66 90                	xchg   ax,ax
+20000e9e:	66 90                	xchg   ax,ax
+20000ea0:	66 90                	xchg   ax,ax
+20000ea2:	66 90                	xchg   ax,ax
+20000ea4:	66 90                	xchg   ax,ax
+20000ea6:	66 90                	xchg   ax,ax
+20000ea8:	66 90                	xchg   ax,ax
+20000eaa:	66 90                	xchg   ax,ax
+20000eac:	66 90                	xchg   ax,ax
+20000eae:	66 90                	xchg   ax,ax
+20000eb0:	66 90                	xchg   ax,ax
+20000eb2:	66 90                	xchg   ax,ax
+20000eb4:	66 90                	xchg   ax,ax
+20000eb6:	66 90                	xchg   ax,ax
+20000eb8:	66 90                	xchg   ax,ax
+20000eba:	66 90                	xchg   ax,ax
+20000ebc:	66 90                	xchg   ax,ax
+20000ebe:	66 90                	xchg   ax,ax
+20000ec0:	66 90                	xchg   ax,ax
+20000ec2:	66 90                	xchg   ax,ax
+20000ec4:	66 90                	xchg   ax,ax
+20000ec6:	66 90                	xchg   ax,ax
+20000ec8:	66 90                	xchg   ax,ax
+20000eca:	66 90                	xchg   ax,ax
+20000ecc:	66 90                	xchg   ax,ax
+20000ece:	66 90                	xchg   ax,ax
+20000ed0:	66 90                	xchg   ax,ax
+20000ed2:	66 90                	xchg   ax,ax
+20000ed4:	66 90                	xchg   ax,ax
+20000ed6:	66 90                	xchg   ax,ax
+20000ed8:	66 90                	xchg   ax,ax
+20000eda:	66 90                	xchg   ax,ax
+20000edc:	66 90                	xchg   ax,ax
+20000ede:	66 90                	xchg   ax,ax
+20000ee0:	66 90                	xchg   ax,ax
+20000ee2:	66 90                	xchg   ax,ax
+20000ee4:	66 90                	xchg   ax,ax
+20000ee6:	66 90                	xchg   ax,ax
+20000ee8:	66 90                	xchg   ax,ax
+20000eea:	66 90                	xchg   ax,ax
+20000eec:	66 90                	xchg   ax,ax
+20000eee:	66 90                	xchg   ax,ax
+20000ef0:	66 90                	xchg   ax,ax
+20000ef2:	66 90                	xchg   ax,ax
+20000ef4:	66 90                	xchg   ax,ax
+20000ef6:	66 90                	xchg   ax,ax
+20000ef8:	66 90                	xchg   ax,ax
+20000efa:	66 90                	xchg   ax,ax
+20000efc:	66 90                	xchg   ax,ax
+20000efe:	66 90                	xchg   ax,ax
+20000f00:	66 90                	xchg   ax,ax
+20000f02:	66 90                	xchg   ax,ax
+20000f04:	66 90                	xchg   ax,ax
+20000f06:	66 90                	xchg   ax,ax
+20000f08:	66 90                	xchg   ax,ax
+20000f0a:	66 90                	xchg   ax,ax
+20000f0c:	66 90                	xchg   ax,ax
+20000f0e:	66 90                	xchg   ax,ax
+20000f10:	66 90                	xchg   ax,ax
+20000f12:	66 90                	xchg   ax,ax
+20000f14:	66 90                	xchg   ax,ax
+20000f16:	66 90                	xchg   ax,ax
+20000f18:	66 90                	xchg   ax,ax
+20000f1a:	66 90                	xchg   ax,ax
+20000f1c:	66 90                	xchg   ax,ax
+20000f1e:	66 90                	xchg   ax,ax
+20000f20:	66 90                	xchg   ax,ax
+20000f22:	66 90                	xchg   ax,ax
+20000f24:	66 90                	xchg   ax,ax
+20000f26:	66 90                	xchg   ax,ax
+20000f28:	66 90                	xchg   ax,ax
+20000f2a:	66 90                	xchg   ax,ax
+20000f2c:	66 90                	xchg   ax,ax
+20000f2e:	66 90                	xchg   ax,ax
+20000f30:	66 90                	xchg   ax,ax
+20000f32:	66 90                	xchg   ax,ax
+20000f34:	66 90                	xchg   ax,ax
+20000f36:	66 90                	xchg   ax,ax
+20000f38:	66 90                	xchg   ax,ax
+20000f3a:	66 90                	xchg   ax,ax
+20000f3c:	66 90                	xchg   ax,ax
+20000f3e:	66 90                	xchg   ax,ax
+20000f40:	66 90                	xchg   ax,ax
+20000f42:	66 90                	xchg   ax,ax
+20000f44:	66 90                	xchg   ax,ax
+20000f46:	66 90                	xchg   ax,ax
+20000f48:	66 90                	xchg   ax,ax
+20000f4a:	66 90                	xchg   ax,ax
+20000f4c:	66 90                	xchg   ax,ax
+20000f4e:	66 90                	xchg   ax,ax
+20000f50:	66 90                	xchg   ax,ax
+20000f52:	66 90                	xchg   ax,ax
+20000f54:	66 90                	xchg   ax,ax
+20000f56:	66 90                	xchg   ax,ax
+20000f58:	66 90                	xchg   ax,ax
+20000f5a:	66 90                	xchg   ax,ax
+20000f5c:	66 90                	xchg   ax,ax
+20000f5e:	66 90                	xchg   ax,ax
+20000f60:	66 90                	xchg   ax,ax
+20000f62:	66 90                	xchg   ax,ax
+20000f64:	66 90                	xchg   ax,ax
+20000f66:	66 90                	xchg   ax,ax
+20000f68:	66 90                	xchg   ax,ax
+20000f6a:	66 90                	xchg   ax,ax
+20000f6c:	66 90                	xchg   ax,ax
+20000f6e:	66 90                	xchg   ax,ax
+20000f70:	66 90                	xchg   ax,ax
+20000f72:	66 90                	xchg   ax,ax
+20000f74:	66 90                	xchg   ax,ax
+20000f76:	66 90                	xchg   ax,ax
+20000f78:	66 90                	xchg   ax,ax
+20000f7a:	66 90                	xchg   ax,ax
+20000f7c:	66 90                	xchg   ax,ax
+20000f7e:	66 90                	xchg   ax,ax
+20000f80:	66 90                	xchg   ax,ax
+20000f82:	66 90                	xchg   ax,ax
+20000f84:	66 90                	xchg   ax,ax
+20000f86:	66 90                	xchg   ax,ax
+20000f88:	66 90                	xchg   ax,ax
+20000f8a:	66 90                	xchg   ax,ax
+20000f8c:	66 90                	xchg   ax,ax
+20000f8e:	66 90                	xchg   ax,ax
+20000f90:	66 90                	xchg   ax,ax
+20000f92:	66 90                	xchg   ax,ax
+20000f94:	66 90                	xchg   ax,ax
+20000f96:	66 90                	xchg   ax,ax
+20000f98:	66 90                	xchg   ax,ax
+20000f9a:	66 90                	xchg   ax,ax
+20000f9c:	66 90                	xchg   ax,ax
+20000f9e:	66 90                	xchg   ax,ax
+20000fa0:	66 90                	xchg   ax,ax
+20000fa2:	66 90                	xchg   ax,ax
+20000fa4:	66 90                	xchg   ax,ax
+20000fa6:	66 90                	xchg   ax,ax
+20000fa8:	66 90                	xchg   ax,ax
+20000faa:	66 90                	xchg   ax,ax
+20000fac:	66 90                	xchg   ax,ax
+20000fae:	66 90                	xchg   ax,ax
+20000fb0:	66 90                	xchg   ax,ax
+20000fb2:	66 90                	xchg   ax,ax
+20000fb4:	66 90                	xchg   ax,ax
+20000fb6:	66 90                	xchg   ax,ax
+20000fb8:	66 90                	xchg   ax,ax
+20000fba:	66 90                	xchg   ax,ax
+20000fbc:	66 90                	xchg   ax,ax
+20000fbe:	66 90                	xchg   ax,ax
+20000fc0:	66 90                	xchg   ax,ax
+20000fc2:	66 90                	xchg   ax,ax
+20000fc4:	66 90                	xchg   ax,ax
+20000fc6:	66 90                	xchg   ax,ax
+20000fc8:	66 90                	xchg   ax,ax
+20000fca:	66 90                	xchg   ax,ax
+20000fcc:	66 90                	xchg   ax,ax
+20000fce:	66 90                	xchg   ax,ax
+20000fd0:	66 90                	xchg   ax,ax
+20000fd2:	66 90                	xchg   ax,ax
+20000fd4:	66 90                	xchg   ax,ax
+20000fd6:	66 90                	xchg   ax,ax
+20000fd8:	66 90                	xchg   ax,ax
+20000fda:	66 90                	xchg   ax,ax
+20000fdc:	66 90                	xchg   ax,ax
+20000fde:	66 90                	xchg   ax,ax
+20000fe0:	66 90                	xchg   ax,ax
+20000fe2:	66 90                	xchg   ax,ax
+20000fe4:	66 90                	xchg   ax,ax
+20000fe6:	66 90                	xchg   ax,ax
+20000fe8:	66 90                	xchg   ax,ax
+20000fea:	66 90                	xchg   ax,ax
+20000fec:	66 90                	xchg   ax,ax
+20000fee:	66 90                	xchg   ax,ax
+20000ff0:	66 90                	xchg   ax,ax
+20000ff2:	66 90                	xchg   ax,ax
+20000ff4:	66 90                	xchg   ax,ax
+20000ff6:	66 90                	xchg   ax,ax
+20000ff8:	66 90                	xchg   ax,ax
+20000ffa:	66 90                	xchg   ax,ax
+20000ffc:	66 90                	xchg   ax,ax
+20000ffe:	66 90                	xchg   ax,ax
+
+Disassembly of section .eh_frame:
+
+20001000 <.eh_frame>:
+20001000:	14 00                	adc    al,0x0
+20001002:	00 00                	add    BYTE PTR [eax],al
+20001004:	00 00                	add    BYTE PTR [eax],al
+20001006:	00 00                	add    BYTE PTR [eax],al
+20001008:	01 7a 52             	add    DWORD PTR [edx+0x52],edi
+2000100b:	00 01                	add    BYTE PTR [ecx],al
+2000100d:	7c 08                	jl     20001017 <_ZL4test+0xe73>
+2000100f:	01 1b                	add    DWORD PTR [ebx],ebx
+20001011:	0c 04                	or     al,0x4
+20001013:	04 88                	add    al,0x88
+20001015:	01 00                	add    DWORD PTR [eax],eax
+20001017:	00 1c 00             	add    BYTE PTR [eax+eax*1],bl
+2000101a:	00 00                	add    BYTE PTR [eax],al
+2000101c:	1c 00                	sbb    al,0x0
+2000101e:	00 00                	add    BYTE PTR [eax],al
+20001020:	e0 ef                	loopne 20001011 <_ZL4test+0xe6d>
+20001022:	ff                   	(bad)  
+20001023:	ff 49 00             	dec    DWORD PTR [ecx+0x0]
+20001026:	00 00                	add    BYTE PTR [eax],al
+20001028:	00 41 0e             	add    BYTE PTR [ecx+0xe],al
+2000102b:	08 85 02 42 0d 05    	or     BYTE PTR [ebp+0x50d4202],al
+20001031:	02 45 c5             	add    al,BYTE PTR [ebp-0x3b]
+20001034:	0c 04                	or     al,0x4
+20001036:	04 00                	add    al,0x0
+20001038:	1c 00                	sbb    al,0x0
+2000103a:	00 00                	add    BYTE PTR [eax],al
+2000103c:	3c 00                	cmp    al,0x0
+2000103e:	00 00                	add    BYTE PTR [eax],al
+20001040:	09 f0                	or     eax,esi
+20001042:	ff                   	(bad)  
+20001043:	ff 40 00             	inc    DWORD PTR [eax+0x0]
+20001046:	00 00                	add    BYTE PTR [eax],al
+20001048:	00 41 0e             	add    BYTE PTR [ecx+0xe],al
+2000104b:	08 85 02 42 0d 05    	or     BYTE PTR [ebp+0x50d4202],al
+20001051:	7c c5                	jl     20001018 <_ZL4test+0xe74>
+20001053:	0c 04                	or     al,0x4
+20001055:	04 00                	add    al,0x0
+20001057:	00 20                	add    BYTE PTR [eax],ah
+20001059:	00 00                	add    BYTE PTR [eax],al
+2000105b:	00 5c 00 00          	add    BYTE PTR [eax+eax*1+0x0],bl
+2000105f:	00 29                	add    BYTE PTR [ecx],ch
+20001061:	f0 ff                	lock (bad) 
+20001063:	ff ce                	dec    esi
+20001065:	00 00                	add    BYTE PTR [eax],al
+20001067:	00 00                	add    BYTE PTR [eax],al
+20001069:	41                   	inc    ecx
+2000106a:	0e                   	push   cs
+2000106b:	08 85 02 42 0d 05    	or     BYTE PTR [ebp+0x50d4202],al
+20001071:	44                   	inc    esp
+20001072:	83 03 02             	add    DWORD PTR [ebx],0x2
+20001075:	c6 c5 c3             	mov    ch,0xc3
+20001078:	0c 04                	or     al,0x4
+2000107a:	04 00                	add    al,0x0
+2000107c:	20 00                	and    BYTE PTR [eax],al
+2000107e:	00 00                	add    BYTE PTR [eax],al
+20001080:	80 00 00             	add    BYTE PTR [eax],0x0
+20001083:	00 d3                	add    bl,dl
+20001085:	f0 ff                	lock (bad) 
+20001087:	ff 1c 00             	call   FWORD PTR [eax+eax*1]
+2000108a:	00 00                	add    BYTE PTR [eax],al
+2000108c:	00 41 0e             	add    BYTE PTR [ecx+0xe],al
+2000108f:	08 85 02 42 0d 05    	or     BYTE PTR [ebp+0x50d4202],al
+20001095:	41                   	inc    ecx
+20001096:	83 03 56             	add    DWORD PTR [ebx],0x56
+20001099:	c3                   	ret    
+2000109a:	41                   	inc    ecx
+2000109b:	c5 0c 04             	lds    ecx,FWORD PTR [esp+eax*1]
+2000109e:	04 00                	add    al,0x0
+200010a0:	1c 00                	sbb    al,0x0
+200010a2:	00 00                	add    BYTE PTR [eax],al
+200010a4:	a4                   	movs   BYTE PTR es:[edi],BYTE PTR ds:[esi]
+200010a5:	00 00                	add    BYTE PTR [eax],al
+200010a7:	00 cb                	add    bl,cl
+200010a9:	f0 ff                	lock (bad) 
+200010ab:	ff 2e                	jmp    FWORD PTR [esi]
+200010ad:	00 00                	add    BYTE PTR [eax],al
+200010af:	00 00                	add    BYTE PTR [eax],al
+200010b1:	41                   	inc    ecx
+200010b2:	0e                   	push   cs
+200010b3:	08 85 02 42 0d 05    	or     BYTE PTR [ebp+0x50d4202],al
+200010b9:	6a c5                	push   0xffffffc5
+200010bb:	0c 04                	or     al,0x4
+200010bd:	04 00                	add    al,0x0
+	...
+
+Disassembly of section .data:
+
+200010c0 <data>:
+	...
+
+Disassembly of section .bss:
+
+20002000 <_ZL12MEM_ALLOCATE>:
+	...
+
+Disassembly of section .comment:
+
+00000000 <.comment>:
+   0:	47                   	inc    edi
+   1:	43                   	inc    ebx
+   2:	43                   	inc    ebx
+   3:	3a 20                	cmp    ah,BYTE PTR [eax]
+   5:	28 47 4e             	sub    BYTE PTR [edi+0x4e],al
+   8:	55                   	push   ebp
+   9:	29 20                	sub    DWORD PTR [eax],esp
+   b:	37                   	aaa    
+   c:	2e 31 2e             	xor    DWORD PTR cs:[esi],ebp
+   f:	30 00                	xor    BYTE PTR [eax],al

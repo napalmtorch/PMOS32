@@ -18,8 +18,8 @@ namespace HAL
             Size     = size;
 
             // set heap addresses as constants
-            Physical = 0x00800000;
-            Virtual  = 0xC0800000;
+            Physical = 0x01000000;
+            Virtual  = 0xC1000000;
 
             // calculate page count
             uint32_t pages = Size / PAGE_SIZE;
@@ -48,7 +48,7 @@ namespace HAL
             CountMax  = max_entries;
 
             // create mass free entry
-            CreateEntry(Core::PMM.Align(Virtual + TableSize), Size - TableSize, HeapType::Free);
+            Entries[0] = { Core::PMM.Align(Virtual + TableSize), Size - TableSize, HeapType::Free };
 
             // finished
             Debug::OK("Initialized heap - %d MB, %d pages", Size / 1024 / 1024, pages);
@@ -147,6 +147,7 @@ namespace HAL
         void HeapManager::Free(void* ptr)
         {
             if (ptr == nullptr) { return; }
+            if (ptr == (void*)Entries[0].Address) { return; }
             for (uint32_t i = 0; i < CountMax; i++)
             {
                 if (Entries[i].Address == 0 || Entries[i].Size == 0 || Entries[i].Type == HeapType::Free) { continue; }
@@ -154,6 +155,7 @@ namespace HAL
                 {
                     Entries[i].Type = HeapType::Free;
                     UsedSize -= Entries[i].Size;
+                    Merge();
                     //Debug::Info("FREE -  ADDR: 0x%8x, SIZE: %d bytes", Entries[i].Address, Entries[i].Size);
                     return;
                 }
@@ -176,7 +178,7 @@ namespace HAL
         /// @brief Get next available entry and mark as allocated @param size Size in bytes - 4K aligned
         HeapEntry* HeapManager::GetAllocatedEntry(uint32_t size)
         {
-            for (uint32_t i = 0; i < CountMax; i++)
+            for (uint32_t i = 1; i < CountMax; i++)
             {
                 if (Entries[i].Address == 0 || Entries[i].Size == 0 || Entries[i].Type != HeapType::Free) { continue; }
                 if (Entries[i].Size == size)
@@ -186,6 +188,13 @@ namespace HAL
                 }
             }
 
+            HeapEntry* entry = CreateEntry(Entries[0].Address, size, HeapType::Used);
+            Entries[0].Address += size;
+            Entries[0].Size -= size;
+            Entries[0].Type = HeapType::Free;
+            return entry;
+
+            /*
             for (uint32_t i = 0; i < CountMax; i++)
             {
                 if (Entries[i].Address == 0 || Entries[i].Size == 0 || Entries[i].Type != HeapType::Free) { continue; }
@@ -197,7 +206,40 @@ namespace HAL
                     return &Entries[i];
                 }
             }
+            return nullptr;
+            */
+        }
 
+        void HeapManager::Merge()
+        {
+            for (uint32_t i = 0; i < CountMax; i++)
+            {
+                if (Entries[i].Address > 0 && Entries[i].Size > 0 && Entries[i].Type == HeapType::Free)
+                {
+                    HeapEntry* nearest = GetNearestEntry(&Entries[i]);
+
+                    if (nearest != nullptr && nearest != &Entries[i])
+                    {
+                        if (Entries[i].Address > nearest->Address) { Entries[i].Address = nearest->Address; }
+                        Entries[i].Size += nearest->Size;
+                        DeleteEntry(nearest);
+                    }
+                }
+            }
+        }
+
+        HeapEntry* HeapManager::GetNearestEntry(HeapEntry* entry)
+        {
+            if (entry == nullptr) { return nullptr; }
+            if (entry->Address == 0 || entry->Size == 0 || entry->Type != HeapType::Free) { return nullptr; }
+            
+            for (uint32_t i = 0; i < CountMax; i++)
+            {
+                HeapEntry* temp = &Entries[i];
+
+                if (temp != nullptr && temp != entry && temp->Address + temp->Size == entry->Address && temp->Type == HeapType::Free) { return temp; }
+                if (temp != nullptr && temp != entry && entry->Address - entry->Size == temp->Address && temp->Type == HeapType::Free) { return temp; }
+            }
             return nullptr;
         }
 
@@ -236,7 +278,7 @@ namespace HAL
         /// @brief Get next null value index in entry array @return Index of entry
         int HeapManager::GetFreeIndex()
         {
-            for (uint32_t i = 0; i < CountMax; i++)
+            for (uint32_t i = 1; i < CountMax; i++)
             {
                 if (Entries[i].Address == 0 && Entries[i].Size == 0 && Entries[i].Type == HeapType::Free)
                 {

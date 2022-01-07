@@ -22,14 +22,15 @@ namespace System
         Register((Command*)&Commands::VMM);
         Register((Command*)&Commands::PROC);
         Register((Command*)&Commands::FSINFO);
+        Register((Command*)&Commands::EXEC);
+        Register((Command*)&Commands::PKILL);
 
         Register((Command*)&Commands::LS);
         Register((Command*)&Commands::CD);
 
         char* kb_data = (char*)Core::Heap.Allocate(512, true, Memory::HeapType::String);
         KBStream = Stream((uint8_t*)kb_data, 512);
-        Core::Keyboard.SetStream(&KBStream);
-        Core::Keyboard.TerminalOutput = true;
+        Enable();
 
         CurrentPath = (char*)Core::Heap.Allocate(128, true, Memory::HeapType::String);
         strcpy(CurrentPath, "/");
@@ -37,8 +38,25 @@ namespace System
         Debug::OK("Initialized command line");
     }
 
+    void CommandLine::Enable()
+    {
+        Core::Keyboard.SetStream(&KBStream);
+        Core::Keyboard.TerminalOutput = true;
+        Enabled = true;
+    }
+
+    void CommandLine::Disable()
+    {
+        if (Core::Keyboard.GetStream() == &KBStream) { Core::Keyboard.SetStream(nullptr); }
+        Core::Keyboard.TerminalOutput = false;
+        Core::Terminal.Clear(Graphics::Color4::Black);
+        Core::VESA.Clear(Graphics::Color::Black);
+        Enabled = false;
+    }
+
     void CommandLine::PrintCaret()
     {
+        if (!Enabled) { return; }
         Core::Terminal.Write("root", Color4::Magenta);
         Core::Terminal.Write("@");
         Core::Terminal.Write(CurrentPath, Color4::Yellow);
@@ -109,6 +127,7 @@ namespace System
 
     void CommandLine::Monitor()
     {
+        if (!Enabled) { EnterDown = false; return; }
         if (Core::Keyboard.IsKeyDown(Key::Enter) && !EnterDown)
         {
             Execute((char*)Core::Keyboard.GetStream()->Data);

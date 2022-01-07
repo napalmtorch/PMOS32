@@ -27,4 +27,12 @@ namespace HAL
         uint32_t vbe_interface_offset;
         uint32_t vbe_interface_len;
     } PACKED MultibootHeader;
+
+    typedef struct
+    {
+        uint32_t StartAddress;
+        uint32_t EndAddress;
+        uint32_t String;
+        uint32_t Reserved;
+    } PACKED MultibootModule;
 }

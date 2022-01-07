@@ -49,9 +49,11 @@ namespace HAL
                 void* Allocate(uint32_t size, bool clear = false, HeapType type = HeapType::Used);
                 void  Free(void* ptr);
                 void  FreeArray(void** ptr, uint32_t count);
+                void  Merge();
 
             private:
                 HeapEntry* GetAllocatedEntry(uint32_t size);
+                HeapEntry* GetNearestEntry(HeapEntry* entry);
                 HeapEntry* CreateEntry(uint32_t addr, uint32_t size, HeapType type);
                 bool       DeleteEntry(HeapEntry* entry);
                 int        GetFreeIndex();

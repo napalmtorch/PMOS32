@@ -10,6 +10,7 @@ namespace System
             DebugMode old = Debug::GetMode();
             Debug::SetMode(DebugMode::Terminal);
             Core::ProcessMgr.Print();
+            Core::ProcessMgr.PrintThreads();
             Debug::SetMode(old);
         }
     }

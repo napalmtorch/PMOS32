@@ -9,7 +9,7 @@ namespace HAL
         class ATAController
         {
             public:
-                const uint32_t SectorSize = 512;
+                uint32_t SectorSize;
 
             public: 
                 void Init();

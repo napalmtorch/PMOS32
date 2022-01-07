@@ -25,12 +25,13 @@ namespace HAL
             // locate available position for table
             bool located = false;
 
-            UsableAddress = Align(Kernel::GetEndAddress());
+            UsableAddress = Align(0x00C00000);
 
             MemoryMapEntry* memmap = (MemoryMapEntry*)Kernel::Multiboot.mmap_addr;
             for (uint32_t i = 0; i < Kernel::Multiboot.mmap_len / sizeof(MemoryMapEntry); i++)
             {  
                 // located usable entry
+                Debug::Info("MMAP ENTRY: 0x%8x, 0x%2x, %d bytes", memmap[i].Address, memmap[i].Type, memmap[i].Length);
                 if (memmap[i].Type == (uint32_t)MemoryMapType::Available && memmap[i].Length >= PMM_SIZE_MIN && !located)
                 {
                     UsableSize    = memmap[i].Length - Kernel::GetSize();

@@ -155,11 +155,13 @@ namespace HAL
             KernelDirectory.Init(phys);
             KernelDirectory.Map(0, 0);
             KernelDirectory.Map(0x00400000, 0x00400000);
+            KernelDirectory.Map(0x00800000, 0x00800000);
+            KernelDirectory.Map(0x00C00000, 0x00C00000);
             KernelDirectory.Map(KBASE_VIRTUAL, 0);
             
             _write_cr3(KernelDirectory.Physical);
 
-            KernelDirectory.SetPhysical(0x00400000);
+            KernelDirectory.SetPhysical(0x00800000);
             memcpy((void*)KernelDirectory.Physical, (void*)phys, 0x1000);
             _write_cr3(KernelDirectory.Physical);
 

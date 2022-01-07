@@ -26,13 +26,21 @@ namespace System
         void PRINT(SystemCallArguments args);
         void MTABLE(SystemCallArguments args);
         void EXEC(SystemCallArguments args);
+        void LOCK(SystemCallArguments args);
+        void UNLOCK(SystemCallArguments args);
+        void CLISTATE(SystemCallArguments args);
+        void EXIT(SystemCallArguments args);
     }
 
     namespace SystemCalls
     {
-        static const SystemCall PRINT  = { "PRINT",  0x00000001, SystemCallMethods::PRINT };
-        static const SystemCall MTABLE = { "MTABLE", 0x000000FF, SystemCallMethods::MTABLE }; 
-        static const SystemCall EXEC   = { "EXEC",   0x000000A0, SystemCallMethods::EXEC };
+        static const SystemCall PRINT    = { "PRINT",    0x00000001, SystemCallMethods::PRINT };
+        static const SystemCall MTABLE   = { "MTABLE",   0x000000FF, SystemCallMethods::MTABLE }; 
+        static const SystemCall EXEC     = { "EXEC",     0x000000A0, SystemCallMethods::EXEC };
+        static const SystemCall LOCK     = { "LOCK",     0x000000F0, SystemCallMethods::LOCK };
+        static const SystemCall UNLOCK   = { "UNLOCK",   0x000000F1, SystemCallMethods::UNLOCK };
+        static const SystemCall CLISTATE = { "CLISTATE", 0x000000B0, SystemCallMethods::CLISTATE };
+        static const SystemCall EXIT     = { "EXIT",     0x00000069, SystemCallMethods::EXIT };
 
         extern uint32_t Count;
 

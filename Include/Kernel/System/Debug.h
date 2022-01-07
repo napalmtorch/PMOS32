@@ -50,6 +50,7 @@ namespace System
         void Error(const char* str, ...);
         void Error(const char* str, DebugMode mode, ...);
 
+        void DumpMemory(void* ptr, uint32_t len);
         void DumpRegisters(HAL::Registers32* regs);
     }
 }

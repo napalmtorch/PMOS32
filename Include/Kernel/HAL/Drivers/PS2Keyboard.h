@@ -3,7 +3,7 @@
 #include <Lib/Stream.h>
 #include <Kernel/HAL/Drivers/Key.h>
 
-    namespace HAL
+namespace HAL
 {
     typedef struct
     {

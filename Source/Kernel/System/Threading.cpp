@@ -50,7 +50,7 @@ namespace System
 
             Registers.CS     = 0x08;
             Registers.DS     = 0x10;
-            Registers.EFLAGS = 0x200;
+            Registers.EFLAGS = 0x202;
             Registers.EIP    = (uint32_t)Protocol;
             Registers.ESP    = (uint32_t)stk;
         }

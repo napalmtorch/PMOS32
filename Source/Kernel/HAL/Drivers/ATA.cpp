@@ -29,6 +29,8 @@ namespace HAL
     { 
         void ATAController::Init()
         {
+            SectorSize = 512;
+
             IDT::RegisterInterrupt(IRQ14, Callback);
             if (!Identify()) { Debug::Warning("No hard disk detected"); return; }
 

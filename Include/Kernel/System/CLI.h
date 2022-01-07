@@ -23,6 +23,7 @@ namespace System
             int32_t   ArgumentCount;
             char**    Arguments;
             char*     CurrentPath;
+            bool      Enabled;
 
         public:
             Stream    KBStream;
@@ -32,6 +33,8 @@ namespace System
 
         public:
             void Init();
+            void Enable();
+            void Disable();
             void PrintCaret();
             bool Register(Command* cmd);
             bool Unregister(Command* cmd);
@@ -54,6 +57,8 @@ namespace System
         void VMM(char* input, char** argv, int argc);
         void PROC(char* input, char** argv, int argc);
         void FSINFO(char* input, char** argv, int argc);
+        void EXEC(char* input, char** argv, int argc);
+        void PKILL(char* input, char** argv, int argc);
 
         void LS(char* input, char** argv, int argc);
         void CD(char* input, char** argv, int argc);
@@ -68,6 +73,8 @@ namespace System
         static const Command VMM        = { "VMM",    "Show virtual memory information", "pmm", CommandMethods::VMM };
         static const Command PROC       = { "PROC",   "Show list of processes", "proc", CommandMethods::PROC };
         static const Command FSINFO     = { "FSINFO", "Show file system information", "fsinfo [b : block, f : files, p : file properties", CommandMethods::FSINFO };
+        static const Command EXEC       = { "EXEC", "Executable a specified binary file", "exec [path] [args]", CommandMethods::EXEC };
+        static const Command PKILL      = { "PKILL", "Terminate a specified process", "pkill [-i : index, -n : name, -na : all with name]", CommandMethods::PKILL };
 
         static const Command LS         = { "LS", "List contents of specified directory", "ls [path]", CommandMethods::LS };
         static const Command CD         = { "CD", "Set the current directory", "cd [path]", CommandMethods::CD };

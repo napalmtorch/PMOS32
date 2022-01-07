@@ -34,45 +34,45 @@
 00000000000i[      ]   Sound support: SB16 ES1370
 00000000000i[      ]   USB support: UHCI OHCI EHCI xHCI
 00000000000i[      ]   VGA extension support: vbe cirrus voodoo
-00000000000i[MEM0  ] allocated memory at 0x7f34c7c78010. after alignment, vector=0x7f34c7c79000
+00000000000i[MEM0  ] allocated memory at 0x7f54b4adb010. after alignment, vector=0x7f54b4adc000
 00000000000i[MEM0  ] 1024.00MB
 00000000000i[MEM0  ] mem block size = 0x00020000, blocks=8192
 00000000000i[MEM0  ] rom at 0xfffe0000/131072 ('/usr/share/bochs/BIOS-bochs-latest')
-00000000000i[      ] lt_dlhandle is 0x563d3557b690
+00000000000i[      ] lt_dlhandle is 0x5584105eb690
 00000000000i[PLUGIN] loaded plugin libbx_hdimage.so
-00000000000i[      ] lt_dlhandle is 0x563d35e75bd0
+00000000000i[      ] lt_dlhandle is 0x558410ee5bd0
 00000000000i[PLUGIN] loaded plugin libbx_soundalsa.so
 00000000000i[WAVOUT] ALSA: opened default PCM output device
 00000000000i[WAVOUT] changed sample rate to 44101
-00000000000i[      ] lt_dlhandle is 0x563d35eb9900
+00000000000i[      ] lt_dlhandle is 0x558410f3c870
 00000000000i[PLUGIN] loaded plugin libbx_pci.so
-00000000000i[      ] lt_dlhandle is 0x563d35ebc8a0
+00000000000i[      ] lt_dlhandle is 0x558410effbe0
 00000000000i[PLUGIN] loaded plugin libbx_pci2isa.so
-00000000000i[      ] lt_dlhandle is 0x563d35e8fbe0
+00000000000i[      ] lt_dlhandle is 0x558410effb30
 00000000000i[PLUGIN] loaded plugin libbx_usb_uhci.so
-00000000000i[      ] lt_dlhandle is 0x563d35e8fb30
+00000000000i[      ] lt_dlhandle is 0x558410ee6770
 00000000000i[PLUGIN] loaded plugin libbx_acpi.so
-00000000000i[      ] lt_dlhandle is 0x563d35e76770
+00000000000i[      ] lt_dlhandle is 0x558410f5f6f0
 00000000000i[PLUGIN] loaded plugin libbx_hpet.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee03b0
+00000000000i[      ] lt_dlhandle is 0x558410f604f0
 00000000000i[PLUGIN] loaded plugin libbx_cmos.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee0b30
+00000000000i[      ] lt_dlhandle is 0x558410f60c70
 00000000000i[PLUGIN] loaded plugin libbx_dma.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee1580
+00000000000i[      ] lt_dlhandle is 0x558410f61650
 00000000000i[PLUGIN] loaded plugin libbx_pic.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee1d40
+00000000000i[      ] lt_dlhandle is 0x558410f61e10
 00000000000i[PLUGIN] loaded plugin libbx_pit.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee2740
+00000000000i[      ] lt_dlhandle is 0x558410f62810
 00000000000i[PLUGIN] loaded plugin libbx_vga.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee2fa0
+00000000000i[      ] lt_dlhandle is 0x558410f63070
 00000000000i[PLUGIN] loaded plugin libbx_floppy.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee3b50
+00000000000i[      ] lt_dlhandle is 0x558410f63c20
 00000000000i[PLUGIN] loaded plugin libbx_ioapic.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee4470
+00000000000i[      ] lt_dlhandle is 0x558410f64540
 00000000000i[PLUGIN] loaded plugin libbx_keyboard.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee4c40
+00000000000i[      ] lt_dlhandle is 0x558410f64d10
 00000000000i[PLUGIN] loaded plugin libbx_harddrv.so
-00000000000i[      ] lt_dlhandle is 0x563d35ee6ea0
+00000000000i[      ] lt_dlhandle is 0x558410f66f70
 00000000000i[PLUGIN] loaded plugin libbx_pci_ide.so
 00000000000i[PLUGIN] init_dev of 'pci' plugin device by virtual method
 00000000000i[DEV   ] i440FX PMC present at device 0, function 0
@@ -80,7 +80,7 @@
 00000000000i[DEV   ] PIIX3 PCI-to-ISA bridge present at device 1, function 0
 00000000000i[PLUGIN] init_dev of 'cmos' plugin device by virtual method
 00000000000i[CMOS  ] Using local time for initial clock
-00000000000i[CMOS  ] Setting initial clock to: Mon Jan  3 05:34:37 2022 (time0=1641206077)
+00000000000i[CMOS  ] Setting initial clock to: Thu Jan  6 18:42:08 2022 (time0=1641512528)
 00000000000i[PLUGIN] init_dev of 'dma' plugin device by virtual method
 00000000000i[DMA   ] channel 4 used by cascade
 00000000000i[PLUGIN] init_dev of 'pic' plugin device by virtual method
@@ -115,7 +115,7 @@
 00000000000i[CD1   ] load cdrom with path='PMOS.iso'
 00000000000i[CD1   ] Opening image file as a cd.
 00000000000i[HD    ] Media present in CD-ROM drive
-00000000000i[HD    ] Capacity is 5669 sectors (11.07 MB)
+00000000000i[HD    ] Capacity is 5994 sectors (11.71 MB)
 00000000000i[PLUGIN] init_dev of 'pci_ide' plugin device by virtual method
 00000000000i[DEV   ] PIIX3 PCI IDE controller present at device 1, function 1
 00000000000i[PLUGIN] init_dev of 'unmapped' plugin device by virtual method
@@ -243,6 +243,6 @@
 00000000000i[CPU0  ] | EIP=0000fff0 (0000fff0)
 00000000000i[CPU0  ] | CR0=0x60000010 CR2=0x00000000
 00000000000i[CPU0  ] | CR3=0x00000000 CR4=0x00000000
-00000000000i[CMOS  ] Last time is 1641206077 (Mon Jan  3 05:34:37 2022)
+00000000000i[CMOS  ] Last time is 1641512528 (Thu Jan  6 18:42:08 2022)
 00000000000i[XGUI  ] Exit
 00000000000i[SIM   ] quit_sim called with exit code 0

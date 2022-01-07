@@ -311,6 +311,7 @@ namespace Core
     HAL::Drivers::VGAController VGA;
     HAL::Drivers::VESAController VESA;
     HAL::Drivers::PS2Keyboard Keyboard;
+    HAL::Drivers::PS2Mouse Mouse;
     HAL::Drivers::ATAController ATA;
     System::Threading::ThreadManager ThreadMgr;
     System::TerminalManager Terminal;
@@ -318,12 +319,13 @@ namespace Core
     System::CommandLine CLI;
     FileSystem::FSHost FileSysHDD;
     FileSystem::VirtualFileSystem FS;
+    FileSystem::RFSHost RAMFS;
 }
 
 namespace Kernel
 {
     // Copy of multiboot header
-    MultibootHeader Multiboot;
+    MultibootHeader& Multiboot;
 
     /// Entry point for idle thread
     int IdleMain(void* arg)
@@ -332,22 +334,14 @@ namespace Kernel
         Debug::Info("Entered idle thread"); 
         unlock();
 
-        while (true);
+        while (true) { Core::ProcessMgr.Schedule(); }
         return 0;
-    }
-
-    // Entry point for test thread
-    int TestMain(void* arg)
-    {
-        Debug::Info("This is a atest");
-        return 420;
     }
 
     // pit callback
     void PITCallback(Registers32* regs)
     {
         Core::ProcessMgr.Schedule();
-        _current_thread = _next_thread;
     }
 
     // Initialize and start core system services
@@ -359,7 +353,8 @@ namespace Kernel
         Debug::Info("Starting PurpleMoon...");
 
         // copy multiboot
-        memcpy(&Multiboot, mboot, sizeof(MultibootHeader));
+        MultibootHeader* mboot_hdr = (MultibootHeader*)mboot;
+        Multiboot = *mboot_hdr;
         Debug::OK("Located multiboot header");
         Debug::Info("Bootloader: %s", Multiboot.bootloader_name);
         Debug::Info("Kernel Memory: 0x%8x - 0x%8x", GetStartAddress(), GetEndAddress());
@@ -374,12 +369,20 @@ namespace Kernel
         Core::PMM.Init();
         Core::Heap.Init(512 * 1024 * 1024, 4096);
 
+        Core::PMM.PrintTable(&Core::PMM.UsedTable);
+
         // initialize vga
         Core::VESA.Init();
 
         // initialize terminal
         Core::Terminal.Init(TerminalType::VESA);
         Core::Terminal.WriteLine("Starting PurpleMoon...");
+
+        // initialize ram disk
+        MultibootModule* mod = (MultibootModule*)Multiboot.modules_addr;
+        uint8_t* ramdisk = (uint8_t*)mod->StartAddress;
+        Debug::Info("RAM DISK ADDR: 0x%8x - 0x%8x", mod->StartAddress, mod->EndAddress);
+        Core::RAMFS.Init((uint8_t*)(KBASE_VIRTUAL + (uint32_t)ramdisk));
 
         // initialize ata driver
         Core::ATA.Init();
@@ -397,17 +400,21 @@ namespace Kernel
         Threading::Thread* idle = Core::ThreadMgr.Create("idle", 8192, IdleMain);
         Core::ProcessMgr.Processes[0]->LoadThread(idle);
 
-        //Process* test_proc = Process::CreateELF("testproc", (uint8_t*)test_prog, sizeof(test_prog));
-        //Core::ProcessMgr.Load(test_proc);
+        FileSystem::RFSFile test_program = Core::RAMFS.ReadFile("test.elf");
+        Process* test_proc = Process::CreateELF("testproc", test_program.Data, test_program.Size);
+        Core::ProcessMgr.Load(test_proc);
         
         // initialize PS2 keyboard
         Core::Keyboard.Init();
+        Core::Mouse.Init();
 
         // initialize command line
         Core::CLI.Init();
 
         // initialize PIT
-        PIT::Init(120, PITCallback);
+        PIT::Init(60, PITCallback);
+
+        RTC::Init();
 
         SystemCalls::Init();
 
@@ -418,13 +425,7 @@ namespace Kernel
     // Prepare system for user interaction
     void BeforeRun()
     {
-        SystemCallArguments args;
-        const char* prog_file = "/sys/bin/Test.elf";
-        args.Code = SystemCalls::EXEC.Code;
-        args.Source = (void*)prog_file;
-        args.Argument = 0;
-        args.Destination = 0;
-        SystemCalls::Execute(args);
+        
     }
 
     // Kernel main loop

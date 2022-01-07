@@ -17,6 +17,10 @@ namespace System
             Register(SystemCalls::PRINT);
             Register(SystemCalls::MTABLE);
             Register(SystemCalls::EXEC);
+            Register(SystemCalls::LOCK);
+            Register(SystemCalls::UNLOCK);
+            Register(SystemCalls::CLISTATE);
+            Register(SystemCalls::EXIT);
 
             IDT::RegisterInterrupt(IRQ_SYSCALL, Execute);
 
@@ -70,8 +74,31 @@ namespace System
         void EXEC(SystemCallArguments args)
         {
             FileSystem::FSFile file = Core::FileSysHDD.ReadFile((char*)args.Source);
+            if (file.Data == nullptr) { Debug::Error("Unable to locate file '%s'", DebugMode::All, (char*)args.Source); return; }
             Process* proc = Process::CreateELF(file.Name, file.Data, file.Size);
             Core::ProcessMgr.Load(proc);
+        }
+
+        void LOCK(SystemCallArguments args)
+        {
+            lock();
+        }
+
+        void UNLOCK(SystemCallArguments args)
+        {
+            unlock();
+        }
+
+        void CLISTATE(SystemCallArguments args)
+        {
+            uint32_t state = args.Argument;
+            if (state == 1) { Core::CLI.Enable(); }
+            else { Core::CLI.Disable(); }
+        }
+
+        void EXIT(SystemCallArguments args)
+        {
+            Core::ProcessMgr.Kill(Core::ProcessMgr.CurrentProc);
         }
     }
 }
