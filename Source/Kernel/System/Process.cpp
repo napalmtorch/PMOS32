@@ -23,7 +23,7 @@ namespace System
         memset(thread_name, 0, 128);
         strcpy(thread_name, name);
         strcat(thread_name, "_thread0");
-        Threads[0] = Core::ThreadMgr.Create(thread_name, 0x10000, protocol);
+        Threads[0] = Threading::Thread::Create(thread_name, 0x10000, protocol);
         strcpy(Name, name);
     }
 
@@ -43,14 +43,48 @@ namespace System
 
         Threading::Thread* t = (Threading::Thread*)Core::Heap.Allocate(sizeof(Threading::Thread), true, Memory::HeapType::Thread);
         proc->Threads[0] = t;
+
+        //uint32_t phys = (uint32_t)Core::Heap.Allocate(0x2000, true, Memory::HeapType::Array) - KBASE_VIRTUAL;
+        uint32_t phys = Core::VMM.AllocateDirectory();
+
+        Core::VMM.KernelDirectory.Map(phys, phys);
+        memset((void*)phys, 0, 0x2000);
+
+        proc->PageDir = (Memory::PageDirectory*)Core::Heap.Allocate(sizeof(Memory::PageDirectory), true, Memory::HeapType::Array);
+        proc->PageDir->Init(phys);
+
+        proc->PageDir->Map(0, 0);
+        proc->PageDir->Map(0x00400000, 0x00400000);
+        proc->PageDir->Map(0x00800000, 0x00800000);
+        proc->PageDir->Map(0x00C00000, 0x00C00000);
+        proc->PageDir->Map(0xC0000000, 0);
+        proc->PageDir->Map(0xFD000000, 0xFD000000);
+        proc->PageDir->Map(phys, phys);
+
+        // calculate page count
+        uint32_t ps = 4 * 1024 * 1024;
+        uint32_t pages = Core::Heap.Size / ps;
+        uint32_t v = Core::Heap.Virtual, p = Core::Heap.Physical;
+
+        // map pages
+        Debug::Info("Mapping pages for heap = PAGES: %d, SIZE: %d MB", pages, Core::Heap.Size / 1024 / 1024);
+        for (uint32_t i = 0; i < pages; i++)
+        {
+            proc->PageDir->Map(p, p, false);
+            proc->PageDir->Map(v, p, false);
+            v += ps;
+            p += ps;
+        }
+        Debug::Info("Mapped kernel heap onto process '%s'", name);
+
         ELF::Init(data, size, proc);
         
         strcpy(t->Name, name);
         strcat(t->Name, "_thread0");
-        memset(&t->Registers, 0, sizeof(Registers32));
+        memset(&t->Registers, 0, sizeof(Threading::ThreadRegisters));
         t->StackSize = Core::PMM.Align(t->StackSize);
         t->Stack     = (uint8_t*)Core::Heap.Allocate(0x10000, true, Memory::HeapType::ThreadStack);
-        t->ID        = Core::ThreadMgr.CurrentID++;
+        t->ID        = Threading::CurrentID++;
         t->State     = Threading::ThreadState::Halted;
 
         uint32_t* stk = (uint32_t*)((uint32_t)t->Stack + (t->StackSize - 16));
@@ -59,11 +93,10 @@ namespace System
         *--stk = (uint32_t)Threading::Thread::Exit;
         *--stk = (uint32_t)t->Protocol;
 
-        t->Registers.CS     = 0x08;
-        t->Registers.DS     = 0x10;
         t->Registers.EFLAGS = 0x202;
         t->Registers.EIP    = (uint32_t)t->Protocol;
         t->Registers.ESP    = (uint32_t)stk;
+        t->Registers.CR3    = proc->PageDir->GetPhysical();
 
         Debug::Info("Created ELF process - ID: %d, PROTOCOL: 0x%8x, NAME: '%s'", proc->ID, t->Protocol, proc->Name);
         return proc;
@@ -87,6 +120,7 @@ namespace System
         kthread->Stack     = nullptr;
         kthread->Protocol  = nullptr;
         kthread->Locked    = false;
+        kthread->Registers.CR3 = Core::VMM.KernelDirectory.GetPhysical();
         Debug::Info("Created kernel thread  - ID: %d, NAME: '%s'", kthread->ID, kthread->Name);
 
         proc->Threads[0] = kthread;
@@ -112,6 +146,8 @@ namespace System
         int i = GetFreeIndex();
         if (i < 0 || i >= ThreadCountMax) { Debug::Error("Maximum amount of threads reached in process '%s'", Name); return false; }
         Threads[i] = thread;
+        if (ID == 0) { Threads[i]->Registers.CR3 = Core::VMM.KernelDirectory.GetPhysical(); }
+        else { Threads[i]->Registers.CR3 = PageDir->GetPhysical(); }
         Threads[i]->State = Threading::ThreadState::Running;
         ThreadCount++;
         Debug::Info("Loaded thread '%s' in process '%s'", thread->Name, Name);
@@ -121,12 +157,12 @@ namespace System
     bool Process::UnloadThread(Threading::Thread* thread)
     {
         if (thread == nullptr) { Debug::Error("Tried to unload null thread in process '%s'", Name); return false; }
+
         for (uint32_t i = 0; i < ThreadCountMax; i++)
         {
             if (Threads[i] == thread)
             {
                 Debug::Info("Unloaded thread - ID: %d, NAME: '%s'", thread->ID, thread->Name);
-                Core::VMM.KernelDirectory.Unmap((void*)Virtual);
                 Core::Heap.Free(Threads[i]->Stack);
                 Core::Heap.Free(Threads[i]);
                 Threads[i] = nullptr;
@@ -171,7 +207,7 @@ namespace System
         CurrentProc = kproc;
         NextProc = nullptr;
 
-        Core::ThreadMgr.CurrentID = 1;
+        Threading::CurrentID = 1;
 
         Debug::OK("Initialized process manager");
     }
@@ -198,7 +234,7 @@ namespace System
         Debug::Write("------ ", Color4::Gray);
         Debug::Write("THREADS", Color4::Green);
         Debug::Write(" -----------------------------------------------\n", Color4::Gray);
-        Debug::WriteLine(" ID          ADDR        STATE   NAME", Color4::Magenta);
+        Debug::WriteLine(" ID          ADDR        STATE        NAME", Color4::Magenta);
 
         for (uint32_t i = 0; i < CountMax; i++)
         {
@@ -244,9 +280,13 @@ namespace System
                 Debug::Info("Unloaded process '%s'", Processes[i]->Name);
                 Core::Heap.Free(Processes[i]->ProgramData);
                 Core::Heap.Free(Processes[i]->Threads);
+                Core::VMM.FreeDirectory(Processes[i]->PageDir->GetPhysical());
+                Core::VMM.KernelDirectory.Unmap((void*)Processes[i]->PageDir->GetPhysical());
+                Core::Heap.Free(Processes[i]->PageDir);
                 Core::Heap.Free(Processes[i]);
                 Processes[i] = nullptr;
                 Count--;
+                Debug::Info("Finished unloading process");
                 return true;
             }
         }
@@ -290,14 +330,13 @@ namespace System
     }
 
     bool switch_proc = false;
+    int old_index = 0;
     void ProcessManager::Schedule()
     {
         switch_proc = false;
 
         // get current process
         CurrentProc = Processes[Index];
-        if (CurrentProc == nullptr) { return; }
-        if (CurrentProc->ID == 0) { CurrentProc->Running = true; }
 
         // get current thread in process
         _current_thread = CurrentProc->Threads[CurrentProc->Index];
@@ -307,9 +346,8 @@ namespace System
         // get next thread in process
         if (!switch_proc)
         {
-            int old_index = CurrentProc->Index;
+            old_index = CurrentProc->Index;
             _next_thread = GetNextThread(CurrentProc, true);
-            if (_next_thread == nullptr) { Debug::Error("Next thread was null"); return; }
             if (_next_thread != _current_thread) { CurrentProc->Switched++; }
             if (CurrentProc->Index == old_index) { switch_proc = true; }
         }
@@ -329,9 +367,8 @@ namespace System
         if (switch_proc)
         {
             NextProc = GetNextProcess(true);
-            if (NextProc == nullptr) { Debug::Error("Next process was null"); return; }
             if (NextProc != CurrentProc) { _next_thread = NextProc->Threads[0]; }
-            CurrentProc = NextProc;
+            CurrentProc = NextProc;          
         }
         else { NextProc = CurrentProc; }
 
@@ -348,7 +385,8 @@ namespace System
             if (!Processes[Index]->Running) 
             {
                 Unload(Processes[Index]); 
-                Index++; continue; 
+                Index++; 
+                continue; 
             }
             if (Processes[Index]->Running) 
             { 
@@ -356,6 +394,7 @@ namespace System
                 else { Processes[Index]->Running = false; Index++; continue; } 
             }
         }
+        
         return Processes[Index];
     }
 

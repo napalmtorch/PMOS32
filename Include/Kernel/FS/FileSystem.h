@@ -1,6 +1,7 @@
 #pragma once
 #include <Lib/Types.h>
 #include <Kernel/System/Debug.h>
+#include <Kernel/FS/DriveManager.h>
 
 #define FS_SECTOR_BOOT  0
 #define FS_SECTOR_INFO  1
@@ -134,6 +135,7 @@ namespace FileSystem
     class FSHost
     {
         public:
+            VirtualDrive* Drive;
             FSInfo       Info;
             FSBlockTable BlockEntries;
             FSFileTable  FileEntries;

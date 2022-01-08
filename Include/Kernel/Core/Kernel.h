@@ -28,6 +28,7 @@
 #include <Kernel/System/SystemCall.h>
 #include <Kernel/System/CLI.h>
 #include <Kernel/System/ELF.h>
+#include <Kernel/FS/DriveManager.h>
 #include <Kernel/FS/FileSystem.h>
 #include <Kernel/FS/VFS.h>
 #include <Kernel/FS/RAMFS.h>
@@ -45,7 +46,6 @@ namespace Core
     extern HAL::Drivers::PS2Keyboard Keyboard;
     extern HAL::Drivers::PS2Mouse Mouse;
     extern HAL::Drivers::ATAController ATA;
-    extern System::Threading::ThreadManager ThreadMgr;
     extern System::TerminalManager Terminal;
     extern System::ProcessManager ProcessMgr;
     extern System::CommandLine CLI;

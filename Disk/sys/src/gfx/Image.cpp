@@ -1,4 +1,7 @@
 #include <sys/lib/gfx/Image.h>
+#include <sys/lib/api/Library.h>
+#include <sys/lib/stdlib.h>
+#include <sys/lib/stdio.h>
 
 namespace pmlib
 {

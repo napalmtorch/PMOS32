@@ -147,6 +147,7 @@ i686-elf-ld -T '../../Build/Linker.ld' -o '../Kernel.bin' "../Boot.o" *.o -O0
 cd '../../'
 
 # ----------------------------------------------- PROGRAMS --------------------------------------------------------------
+sh Build/BuildCLib.sh
 sh Build/BuildLibs.sh
 
 # Create disk image

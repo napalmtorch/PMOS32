@@ -9,7 +9,7 @@ namespace FileSystem
         Default = 0x00,
         Root    = 0xFF,
     };
-
+    
     typedef struct
     {
         char*     Name;

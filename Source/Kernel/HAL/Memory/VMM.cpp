@@ -149,8 +149,11 @@ namespace HAL
 
         // -----------------------------------------------------------------
 
-        void VirtualMemoryManager::Init()
+        void VirtualMemoryManager::Init(uint32_t start)
         {
+            Start = start;
+            for (uint32_t i = 0; i < 1024; i++) { Entries[i] = 0; }
+
             uint32_t phys = ((uint32_t)(&_kernel_page_dir) - KBASE_VIRTUAL);
             KernelDirectory.Init(phys);
             KernelDirectory.Map(0, 0);
@@ -168,6 +171,36 @@ namespace HAL
             memset((void*)phys, 0, 0x1000);
             memset(&_boot_page_dir, 0, PAGE_COUNT * sizeof(uint32_t));
             Debug::OK("Initialized VMM");
+        }
+
+        uint32_t VirtualMemoryManager::AllocateDirectory()
+        {
+            int i = GetFreeIndex();
+            Entries[i] = Start + (i * (4 * 1024 * 1024));
+            Debug::Info("Allocated page directory: 0x%8x", Entries[i]);
+            return Entries[i];
+        }
+
+        bool VirtualMemoryManager::FreeDirectory(uint32_t dir)
+        {
+            for (uint32_t i = 0; i < 1024; i++)
+            {
+                if (Entries[i] == dir)
+                {
+                    Entries[i] = 0;
+                    Debug::Info("Freed page directory: 0x%8x", dir);
+                    return true;
+                }
+            }
+
+            Debug::Info("Unable to free page directory: 0x%8x", dir);
+            return false;
+        }
+
+        int VirtualMemoryManager::GetFreeIndex()
+        {
+            for (uint32_t i = 0; i < 1024; i++) { if (Entries[i] == 0) { return i; } }
+            return -1;
         }
     }
 }

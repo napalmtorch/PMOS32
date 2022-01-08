@@ -1,5 +1,7 @@
 #pragma once
-#include <sys/lib/Types.h>
+#include <sys/lib/stdint.h>
+#include <sys/lib/stdarg.h>
+#include <sys/lib/stddef.h>
 
 namespace pmlib
 {

@@ -1,7 +1,11 @@
-#include <sys/lib/Types.h>
-#include <sys/lib/Library.h>
-#include <sys/lib/Common.h>
-#include <sys/lib/Time.h>
+#include <sys/lib/stdint.h>
+#include <sys/lib/stdarg.h>
+#include <sys/lib/stddef.h>
+#include <sys/lib/stdlib.h>
+#include <sys/lib/stdio.h>
+#include <sys/lib/string.h>
+#include <sys/lib/api/Library.h>
+#include <sys/lib/api/Time.h>
 #include <sys/lib/gfx/Graphics.h>
 #include <sys/lib/gfx/Image.h>
 #include <sys/lib/input/Keyboard.h>
@@ -11,7 +15,7 @@ int _start(void* arg)
 {
     clistate(false);
     lib_init();
-    printf("%s, %d, 0x%8x\n", "Hello world", 1234, 0xDEADC0DE);
+    printf("Initialized shell process\n");
     
     uint32_t fbw = pmlib::GetFrameBufferWidth();
     uint32_t fbh = pmlib::GetFrameBufferHeight();
@@ -24,6 +28,7 @@ int _start(void* arg)
     uint32_t sec, last_sec, fps, frames;
     char fps_string[32];
     memset(fps_string, 0, 32);
+
     while (true)
     {
         frames++;
@@ -44,16 +49,14 @@ int _start(void* arg)
         image.DrawString(0, 0, (char*)"FPS: ", 0xFFFFFFFF, pmlib::Fonts::Serif8x16);
         image.DrawString(40, 0, fps_string, 0xFFFFFFFF, pmlib::Fonts::Serif8x16);
 
-        if (pmlib::KeyboardDown(pmlib::Key::End)) 
-        { 
-            clistate(true);
-            exit(0); 
-        }
+        if (pmlib::KeyboardDown(pmlib::Key::End)) { break; }
 
         pmlib::Render(0, 0, fbw, fbh, image.GetData());
+        yield();
     }
 
     kfree(image.GetData());
-
-    return 1234;
+    clistate(true);
+    yield();
+    return 0;
 }

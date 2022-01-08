@@ -2,62 +2,91 @@ newimg 536870912
 format
 
 mkdir /sys
+infile -d /sys Disk/sys
+
 mkdir /sys/bin
+infile -d /sys/bin Disk/sys/bin
+
 mkdir /sys/lib
+infile -d /sys/lib Disk/sys/lib
+
+mkdir /sys/lib/api
+infile -d /sys/lib/api Disk/sys/lib/api
+
 mkdir /sys/lib/gfx
+infile -d /sys/lib/gfx Disk/sys/lib/gfx
+
 mkdir /sys/lib/input
+infile -d /sys/lib/input Disk/sys/lib/input
+
+mkdir /sys/lib/ui
+infile -d /sys/lib/ui Disk/sys/lib/ui
+
 mkdir /sys/lib/system
+infile -d /sys/system Disk/sys/system
+
 mkdir /sys/lib/system/Shell
+infile -d /sys/lib/system/Shell Disk/sys/lib/system/Shell
+
 mkdir /sys/lib/system/Terminal
+infile -d /sys/lib/system/Terminal Disk/sys/lib/system/Terminal
 
 mkdir /sys/src
+infile -d /sys/src Disk/sys/src
+
+mkdir /sys/src/api
+infile -d /sys/src/api Disk/sys/src/api
+
 mkdir /sys/src/gfx
+infile -d /sys/src/gfx Disk/sys/src/gfx
+
 mkdir /sys/src/input
+infile -d /sys/src/input Disk/sys/src/input
+
+mkdir /sys/src/ui
+infile -d /sys/src/ui Disk/sys/src/ui
+
 mkdir /sys/src/system
+infile -d /sys/system Disk/sys/system
+
 mkdir /sys/src/system/Shell
+infile -d /sys/src/system/Shell Disk/sys/src/system/Shell
+
 mkdir /sys/src/system/Terminal
+infile -d /sys/src/system/Terminal Disk/sys/src/system/Terminal
 
 mkdir /sys/resources
+infile -d /sys/resources Disk/sys/resources
+
 mkdir /sys/resources/fonts
+infile -d /sys/resources/fonts Disk/sys/resources/fonts
+
 mkdir /sys/resources/themes
+infile -d /sys/resources/themes Disk/sys/resources/themes
+
 mkdir /sys/resources/wallpapers
+infile -d /sys/resources/wallpapers Disk/sys/resources/wallpapers
 
 mkdir /users
+infile -d /users Disk/users
 
 mkdir /users/root
+infile -d /users/root Disk/users/root
+
 mkdir /users/root/documents
+infile -d /users/root/documents Disk/users/root/documents
+
 mkdir /users/root/pictures
+infile -d /users/root/pictures Disk/users/root/pictures
 
 mkdir /users/public
+infile -d /users/public Disk/users/public
+
 mkdir /users/public/documents
+infile -d /users/public/documents Disk/users/public/documents
+
 mkdir /users/public/pictures
-
-infile /sys/lib/Common.h Disk/sys/lib/Common.h
-infile /sys/lib/Library.h Disk/sys/lib/Library.h
-infile /sys/lib/Memory.h Disk/sys/lib/Memory.h
-infile /sys/lib/Types.h Disk/sys/lib/Types.h
-infile /sys/lib/Time.h Disk/sys/lib/Time.h
-infile /sys/lib/gfx/Image.h Disk/sys/lib/gfx/Image.h
-infile /sys/lib/gfx/Graphics.h Disk/sys/lib/gfx/Graphics.h
-infile /sys/lib/gfx/Font.h Disk/sys/lib/gfx/Font.h
-infile /sys/lib/gfx/FontData.h Disk/sys/lib/gfx/FontData.h
-infile /sys/lib/input/Keyboard.h Disk/sys/lib/input/Keyboard.h
-infile /sys/lib/input/Mouse.h Disk/sys/lib/input/Mouse.h
-
-infile /sys/src/Common.cpp Disk/sys/src/Common.cpp
-infile /sys/src/Library.cpp Disk/sys/src/Library.cpp
-infile /sys/src/Memory.cpp Disk/sys/src/Memory.cpp
-infile /sys/src/Time.cpp Disk/sys/src/Time.cpp
-infile /sys/src/gfx/Image.cpp Disk/sys/src/gfx/Image.cpp
-infile /sys/src/gfx/Graphics.cpp Disk/sys/src/gfx/Graphics.cpp
-infile /sys/src/input/Keyboard.cpp Disk/sys/src/input/Keyboard.cpp
-infile /sys/src/input/Mouse.cpp Disk/sys/src/input/Mouse.cpp
-
-infile /sys/src/Linker.ld Disk/sys/src/Linker.ld
-
-infile /sys/src/system/Shell/Main.cpp Disk/sys/src/system/Shell/Main.cpp
-
-infile /sys/bin/Shell.elf Disk/sys/bin/Shell.elf
+infile -d /users/public/pictures Disk/users/public/pictures
 
 saveimg ./hdd.img
 blocks

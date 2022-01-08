@@ -3,46 +3,46 @@
 [EXTERN _current_thread]
 [EXTERN _next_thread]
 
-; DS;
-; EDI, ESI, EBP, ESP, EBX, EDX, ECX, EAX;
-; INT, ERR;
-; EIP, CS, EFLAGS, USERESP, SS;
+; ESP, EBP, EDI, ESI;
+; EAX, EBX, ECX, EDX;
+; EIP, CR3, EFLAGS, PADDING;
 
 _switch_thread:
-    cli
     mov EAX, [_current_thread]
 
-    mov [EAX+4],  EDI
-    mov [EAX+8],  ESI
-    mov [EAX+12], EBP
-    mov [EAX+16], ESP
+    mov [EAX+0],  ESP
+    mov [EAX+4],  EBP
+    mov [EAX+8],  EDI
+    mov [EAX+12], ESI
+    mov [EAX+16], EAX
     mov [EAX+20], EBX
-    mov [EAX+24], EDX
-    mov [EAX+28], ECX
-    mov [EAX+32], EAX
+    mov [EAX+24], ECX
+    mov [EAX+28], EDX
+
+    mov ECX, CR3
+    mov [EAX+36], ECX
 
     pushf
     pop ECX
-    mov [EAX+52], ECX
+    mov [EAX+40], ECX
 
     mov EAX, [_next_thread]
 
-    mov ECX, [EAX+52]
+    mov ECX, [EAX+40]
     push ECX
     popf
 
-    mov EDI, [EAX+4]
-    mov ESI, [EAX+8]
-    mov EBP, [EAX+12]
-    mov ESP, [EAX+16]
+    mov ESP, [EAX+0]
+    mov EBP, [EAX+4]
+    mov EDI, [EAX+8]
+    mov ESI, [EAX+12]
     mov EBX, [EAX+20]
-    mov EDX, [EAX+24]
-    mov ECX, [EAX+28]
+    mov ECX, [EAX+36]
+    mov CR3, ECX
+    mov ECX, [EAX+24]
+    mov EDX, [EAX+28]
 
-    mov EAX, [_next_thread]
     mov [_current_thread], EAX
-
-    mov EAX, [EAX+32]
-
-    sti
+    mov EAX, [EAX+16]
+    
     ret

@@ -10,6 +10,7 @@ namespace HAL
         {
             public:
                 uint32_t SectorSize;
+                bool     Initialized = false;
 
             public: 
                 void Init();

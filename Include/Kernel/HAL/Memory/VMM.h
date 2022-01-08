@@ -44,9 +44,15 @@ namespace HAL
 
             public:
                 PageDirectory KernelDirectory;
+                uint32_t      Entries[1024];
+                uint32_t      Start;
 
             public:
-                void Init();
+                void     Init(uint32_t start);
+                uint32_t AllocateDirectory();
+                bool     FreeDirectory(uint32_t dir);
+                int      GetFreeIndex();
+
         };
     }
 }

@@ -687,12 +687,12 @@ namespace FileSystem
     void FSHost::Mount()
     {
         ReadInfo();
-
         BlockEntries.Init(this);
         FileEntries.Init(this);
         RootDir = FileEntries.ReadDirectory(0);
-
         WriteInfo();
+
+        Drive = DriveManager::Register(DriveType::ATADisk, FileSystemType::PMFS, 'X', RootDir.Name);
         Debug::OK("Mounted file system");
     }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <Lib/Types.h>
+#include <Kernel/FS/DriveManager.h>
 
 namespace FileSystem
 {
@@ -23,6 +24,7 @@ namespace FileSystem
         private:
             uint8_t* Data;
             RFSInfo* Info;
+            VirtualDrive* Drive;
 
         public:
             void Init(uint8_t* data);

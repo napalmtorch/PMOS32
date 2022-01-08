@@ -19,17 +19,21 @@ namespace System
             Terminated,
         };
 
+        typedef struct
+        {
+            uint32_t ESP, EBP, EDI, ESI;
+            uint32_t EAX, EBX, ECX, EDX;
+            uint32_t EIP, CR3, EFLAGS, PADDING;
+        } PACKED ThreadRegisters;
+
         typedef int (*ThreadProtocol)(void* arg);
 
-        class Thread;
-        class ThreadManager;
+        extern uint32_t CurrentID;
 
         class Thread
         {
-            friend class ThreadManager;
-
             public:
-                HAL::Registers32 Registers;
+                ThreadRegisters  Registers;
                 uint8_t*         Stack;
                 uint32_t         StackSize;
                 ThreadState      State;
@@ -40,36 +44,12 @@ namespace System
 
             public:
                 void Init(char* name, uint32_t stack_size, ThreadProtocol protocol);
+                static Thread* Create(char* name, uint32_t stack_size, ThreadProtocol protocol);
                 static void Exit();
                 void Lock();
                 void Unlock();
                 bool Start();
                 bool Stop();
-        };
-
-        class ThreadManager
-        {
-            friend class Thread;
-
-            public:
-                Thread** Threads;
-                uint32_t Index;
-                uint32_t Count;
-                uint32_t CountMax;
-                uint32_t CurrentID;
-
-            public:
-                void Init();
-                void Load(Thread* thread);
-                void Unload(Thread* thread);
-                void Terminate(Thread* thread);
-                void Lock();
-                void Unlock();
-                void Schedule();
-                Thread* Create(char* name, uint32_t stack_size, ThreadProtocol protocol);
-
-            private:
-                Thread* GetNextThread(bool inc);
         };
     }
 }

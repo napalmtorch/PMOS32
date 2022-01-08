@@ -22,21 +22,23 @@ namespace HAL
             Virtual  = 0xC1000000;
 
             // calculate page count
-            uint32_t pages = Size / PAGE_SIZE;
+            uint32_t ps = 4 * 1024 * 1024;
+            uint32_t pages = Size / ps;
             uint32_t v = Virtual, p = Physical;
 
             // map pages
-            Debug::Info("Mapping pages for heap...", pages, Size / 1024 / 1024);
+            Debug::Info("Mapping pages for heap = PAGES: %d, SIZE: %d MB", pages, Core::Heap.Size / 1024 / 1024);
             for (uint32_t i = 0; i < pages; i++)
             {
+                Core::VMM.KernelDirectory.Map(p, p, false);
                 Core::VMM.KernelDirectory.Map(v, p, false);
-                v += PAGE_SIZE;
-                p += PAGE_SIZE;
+                v += ps;
+                p += ps;
             }
 
             // finished mapping pages - clear memory and print message
             memset((void*)Virtual, 0, Size);
-            Debug::Info("Mapped (V=0x%8x, P=0x%8x) - (V=0x%8x, P=0x%8x)", Virtual, Physical, v - PAGE_SIZE, p - PAGE_SIZE);
+            Debug::Info("Mapped (V=0x%8x, P=0x%8x) - (V=0x%8x, P=0x%8x)", Virtual, Physical, v - ps, p - ps);
 
             // create heap entry in pmm table
             Core::PMM.CreateEntry(&Core::PMM.UsedTable, Physical, Size, MemoryType::Heap);
@@ -125,6 +127,7 @@ namespace HAL
                 case HeapType::Thread:          { return "THREAD     "; }
                 case HeapType::ThreadStack:     { return "THREADSTACK"; }
                 case HeapType::String:          { return "STRING     "; }
+                case HeapType::Object:          { return "OBJECT     "; }
                 default:                        { return "ERROR      "; }
             }
         }
@@ -132,7 +135,7 @@ namespace HAL
         /// @brief Allocate region of memory @param size Size in bytes @param clear Clear allocated memory @param type Allocation type @return Pointer to allocated memory
         void* HeapManager::Allocate(uint32_t size, bool clear, HeapType type)
         {
-            if (size == 0) { Debug::Error("Tried to allocate 0 bytes"); return nullptr; }
+            if (size == 0) { Debug::Error("Tried to allocate 0 bytes, type = 0x%2x", (uint32_t)type); return nullptr; }
             uint32_t aligned = Core::PMM.Align(size);
             HeapEntry* entry = GetAllocatedEntry(aligned);
             if (entry == nullptr) { Debug::Error("Out of memory"); return nullptr; }

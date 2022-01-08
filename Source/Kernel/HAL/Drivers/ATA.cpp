@@ -31,9 +31,11 @@ namespace HAL
         {
             SectorSize = 512;
 
+            if (!Identify()) { Debug::Warning("No hard disk detected", DebugMode::All); return; }
+            else { Debug::OK("Hard disk detected", DebugMode::All); }
             IDT::RegisterInterrupt(IRQ14, Callback);
-            if (!Identify()) { Debug::Warning("No hard disk detected"); return; }
 
+            Initialized = true;
             Debug::OK("Initialized ATA driver");
         }
 
@@ -89,6 +91,7 @@ namespace HAL
 
         bool ATAController::Read(uint64_t sector, uint32_t count, uint8_t* buffer)
         {
+            if (!Initialized) { return false; }
             Ports::Write8(ATA_PRIMARY_DRIVE_HEAD, 0x40);                        // Select master
             Ports::Write8(ATA_PRIMARY_SECCOUNT, (count >> 8) & 0xFF );          // sectorcount high
             Ports::Write8(ATA_PRIMARY_LBA_LO, (sector >> 24) & 0xFF);           // LBA4
@@ -116,6 +119,7 @@ namespace HAL
 
         bool ATAController::Write(uint64_t sector, uint32_t count, uint8_t* buffer)
         {
+            if (!Initialized) { return false; }
             Ports::Write8(ATA_PRIMARY_DRIVE_HEAD, 0x40);                     // Select master
             Ports::Write8(ATA_PRIMARY_SECCOUNT, (count >> 8) & 0xFF );     // sectorcount high
             Ports::Write8(ATA_PRIMARY_LBA_LO, (sector >> 24) & 0xFF);           // LBA4
@@ -148,7 +152,7 @@ namespace HAL
 
         bool ATAController::Fill(uint64_t sector, uint32_t count, uint8_t* buffer)
         {
-             for (uint32_t i = 0; i < count; i++)
+            for (uint32_t i = 0; i < count; i++)
             {
                 if (!Write(sector + i, 1, buffer + (SectorSize * i))) { return false; }
             }

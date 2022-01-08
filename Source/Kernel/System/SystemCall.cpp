@@ -21,6 +21,7 @@ namespace System
             Register(SystemCalls::UNLOCK);
             Register(SystemCalls::CLISTATE);
             Register(SystemCalls::EXIT);
+            Register(SystemCalls::YIELD);
 
             IDT::RegisterInterrupt(IRQ_SYSCALL, Execute);
 
@@ -99,6 +100,11 @@ namespace System
         void EXIT(SystemCallArguments args)
         {
             Core::ProcessMgr.Kill(Core::ProcessMgr.CurrentProc);
+        }
+
+        void YIELD(SystemCallArguments args)
+        {
+            Core::ProcessMgr.Schedule();
         }
     }
 }

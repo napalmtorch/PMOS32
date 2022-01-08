@@ -1,6 +1,8 @@
 #pragma once
-#include <sys/lib/Types.h>
-#include <sys/lib/Time.h>
+#include <sys/lib/stdint.h>
+#include <sys/lib/stdarg.h>
+#include <sys/lib/stddef.h>
+#include <sys/lib/api/Time.h>
 
 typedef struct
 {
@@ -32,7 +34,6 @@ typedef enum
 typedef void* (*MTYPE_MEM_ALLOCATE)(uint32_t size, bool clear, uint8_t type);
 typedef void  (*MTYPE_MEM_FREE)(void* ptr);
 typedef void  (*MTYPE_VPRINTF)(const char* str, va_list args);
-
 
 typedef void  (*MTYPE_VESA_CLEAR)(uint32_t color);
 typedef void  (*MTYPE_VESA_BLIT)(uint32_t x, uint32_t y, uint32_t color);

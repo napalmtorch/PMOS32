@@ -18,8 +18,10 @@ namespace HAL
             Thread,
             ThreadStack,   
             String,
+            Object,
             Error,
         };
+        
 
         typedef struct
         {
@@ -30,10 +32,10 @@ namespace HAL
 
         class HeapManager
         {
-            private:
+            public:
+                uint32_t   Size;
                 uint32_t   Physical;
                 uint32_t   Virtual;
-                uint32_t   Size;
                 uint32_t   TableSize;
                 uint32_t   Count;
                 uint32_t   CountMax;

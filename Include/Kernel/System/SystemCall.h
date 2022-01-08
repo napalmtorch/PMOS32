@@ -30,6 +30,7 @@ namespace System
         void UNLOCK(SystemCallArguments args);
         void CLISTATE(SystemCallArguments args);
         void EXIT(SystemCallArguments args);
+        void YIELD(SystemCallArguments args);
     }
 
     namespace SystemCalls
@@ -41,7 +42,7 @@ namespace System
         static const SystemCall UNLOCK   = { "UNLOCK",   0x000000F1, SystemCallMethods::UNLOCK };
         static const SystemCall CLISTATE = { "CLISTATE", 0x000000B0, SystemCallMethods::CLISTATE };
         static const SystemCall EXIT     = { "EXIT",     0x00000069, SystemCallMethods::EXIT };
-
+        static const SystemCall YIELD    = { "YIELD",    0x0000006A, SystemCallMethods::YIELD };
         extern uint32_t Count;
 
         void Init();

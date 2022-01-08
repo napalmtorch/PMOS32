@@ -16,7 +16,18 @@ EXTC
         Core::Terminal.Clear();
         Debug::Error("ISR EXCEPTION - INT: 0x%8x, ERR: 0x%8x", regs->INT, regs->ERR);
         Debug::DumpRegisters(regs);
-        asm volatile("hlt");
+        if (Core::ProcessMgr.CurrentProc != nullptr) 
+        { 
+            if (Core::ProcessMgr.CurrentProc->ID > 0) 
+            { 
+                if (!Core::CLI.Enabled) { Core::CLI.Enable(); }
+                Core::ProcessMgr.CurrentProc->Terminate(); 
+                Core::ProcessMgr.Schedule();
+                asm volatile("sti"); 
+            }
+            else { asm volatile("cli; hlt"); }
+        }
+        else { asm volatile("cli; hlt"); }
     }
 
     // IRQ handler

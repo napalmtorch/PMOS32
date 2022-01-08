@@ -1,13 +1,10 @@
 #pragma once
 
 #define EXTC extern "C"
+#define PACKED __attribute__((packed))
 
 EXTC
 {
-    #define PACKED __attribute__((packed))
-    #define UNUSED(x) (void)(x)
-    #define NULL 0
-
     typedef signed char   int8_t;
     typedef short int     int16_t;
     typedef int           int32_t;
@@ -43,9 +40,6 @@ EXTC
 
     typedef long long int                intmax_t;
     typedef unsigned long long int       uintmax_t;
-
-    typedef unsigned int         size_t;
-    typedef uint32_t             ptrdiff_t;    
 
     #  define __INT64_C(c)        c ## LL
     #  define __UINT64_C(c)        c ## ULL
@@ -118,21 +112,4 @@ EXTC
 
     #  define INTMAX_C(c)        c ## LL
     #  define UINTMAX_C(c)        c ## ULL
-
-    typedef char* va_list;
-
-    #define __va_argsiz(t)	\
-        (((sizeof(t) + sizeof(int) - 1) / sizeof(int)) * sizeof(int))
-
-    #define va_start(ap, pN)	\
-        ((ap) = ((va_list) (&pN) + __va_argsiz(pN)))
-
-    #define va_end(ap)	((void)0)
-
-    #define va_arg(ap, t)					\
-        (((ap) = (ap) + __va_argsiz(t)),		\
-        *((t*) (void*) ((ap) - __va_argsiz(t))))
-
-    #define _low16(address) (uint16_t)((address) & 0xFFFF)
-    #define _high16(address) (uint16_t)(((address) & 0xFFFF0000) >> 16)
 }

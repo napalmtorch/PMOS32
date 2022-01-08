@@ -30,11 +30,11 @@ isr_common_stub:
 	call _isr_handler
     add esp, 4
 
-	pop eax 
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
+	pop ebx 
+	mov ds, bx
+	mov es, bx
+	mov fs, bx
+	mov gs, bx
 	popa
 
 	add esp, 8

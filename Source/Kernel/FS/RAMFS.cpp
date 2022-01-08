@@ -12,6 +12,8 @@ namespace FileSystem
         Data = data;
         Info = (RFSInfo*)data;
         Info->Files = (RFSFile*)((uint32_t)Data + sizeof(RFSInfo));
+
+        Drive = DriveManager::Register(DriveType::RAMDisk, FileSystemType::PMRFS, 'A', "BOOT");
         Debug::OK("Initialized RAMFS - %d files", Info->Count);
     }
 

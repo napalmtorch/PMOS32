@@ -1,6 +1,9 @@
 #pragma once
-#include <sys/lib/Types.h>
-#include <sys/lib/Memory.h>
+#include <sys/lib/stdint.h>
+#include <sys/lib/stdarg.h>
+#include <sys/lib/stddef.h>
+#include <sys/lib/string.h>
+#include <sys/lib/api/Memory.h>
 
 namespace pmlib
 {

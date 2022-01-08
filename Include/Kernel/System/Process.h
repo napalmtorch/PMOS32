@@ -1,6 +1,7 @@
 #pragma once
 #include <Lib/Types.h>
 #include <Kernel/System/Threading.h>
+#include <Kernel/HAL/Memory/VMM.h>
 
 namespace System
 {
@@ -12,11 +13,14 @@ namespace System
             uint32_t            ThreadCountMax;
             uint32_t            Index;
             uint32_t            Virtual;
-            
+
+        public:
             uint8_t*  ProgramData;
             uint32_t  ProgramSize;
+        
             
         public:
+            HAL::Memory::PageDirectory* PageDir;
             bool     Running;
             uint32_t Switched;
             uint32_t ID;
