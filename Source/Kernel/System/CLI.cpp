@@ -91,15 +91,16 @@ namespace System
         return false;
     }
 
-    void CommandLine::Execute(char* input)
+    void CommandLine::Execute(char* input, bool caret)
     {
         Arguments = strsplit(input, ' ', &ArgumentCount);
 
-        if (strlen(input) == 0 || input == nullptr) { return; }
+        if (strlen(input) == 0 || input == nullptr) { if (caret) { PrintCaret(); } return; }
 
         if (ArgumentCount == 0)
         {
             Core::Heap.FreeArray((void**)Arguments, ArgumentCount);
+            if (caret) { PrintCaret(); }
             return;
         }
 
@@ -116,6 +117,7 @@ namespace System
                 else { Debug::Error("Invalid callback for command '%s'", DebugMode::Terminal, Commands[i]->Name); return; }
                 Core::Heap.Free(cmd);
                 Core::Heap.FreeArray((void**)Arguments, ArgumentCount);
+                if (caret) { PrintCaret(); }
                 return;
             }
         }
@@ -123,6 +125,7 @@ namespace System
         Debug::Error("Unknown command '%s'", DebugMode::Terminal, Arguments[0]);
         Core::Heap.Free(cmd);
         Core::Heap.FreeArray((void**)Arguments, ArgumentCount);
+        if (caret) { PrintCaret(); }
     }
 
     void CommandLine::Monitor()
@@ -133,7 +136,6 @@ namespace System
             Execute((char*)Core::Keyboard.GetStream()->Data);
             memset(Core::Keyboard.GetStream()->Data, 0, Core::Keyboard.GetStream()->Size);
             Core::Keyboard.GetStream()->Seek(0);
-            PrintCaret();
             EnterDown = true;
         }
 

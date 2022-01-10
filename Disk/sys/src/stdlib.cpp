@@ -6,6 +6,9 @@
 
 EXTC
 {
+    void* __gxx_personality_v0 = 0;
+    void* _Unwind_Resume       = 0;
+
     const char     PUNCT_CHARS[] = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
     const char*    ITOA_STR = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz";
     const uint32_t LTOA_DIGITS = 32;
@@ -65,17 +68,23 @@ EXTC
     void clistate(bool state)
     {
         asm volatile("int $0x80": :"a"((uint32_t)state), "b"(0), "c"(0xB0), "d"(0));
+        yield();
     }
 
     void lock() { asm volatile("int $0x80": :"a"(0), "b"(0), "c"(0xF0), "d"(0)); }
 
     void unlock() { asm volatile("int $0x80": :"a"(0), "b"(0), "c"(0xF1), "d"(0)); }
 
-    void yield() { asm volatile("int $0x80": :"a"(0), "b"(0), "c"(0x6A), "d"(0)); }
+    void yield() 
+    { 
+        asm volatile("int $0x80": :"a"(0), "b"(0), "c"(0x6A), "d"(0)); 
+        //((MTYPE_YIELD)MTABLE_ENTRIES[20].addr)();
+    }
 
     void exit(int code)
     {
         asm volatile("int $0x80": :"a"(code), "b"(0), "c"(0x69), "d"(0));
+        yield();
     }
 
     void swap(char *x, char *y) { char t = *x; *x = *y; *y = t; }
@@ -127,4 +136,18 @@ EXTC
         ultoa(num, str, base);
         return str;
     }
+
+    int system(char* command)
+    {
+        asm volatile("int $0x80": :"a"(0), "b"((uint32_t)command), "c"(0xCC), "d"(0));
+        yield();
+        return true;
+    }
 }
+
+void* operator new(size_t size) { return kmalloc(size, true, MEMTYPE_USED); }
+void* operator new[](size_t size) { return kmalloc(size, true, MEMTYPE_USED); }
+void  operator delete(void *p) { kfree(p); }
+void  operator delete(void *p, size_t size) { kfree(p); }
+void  operator delete[](void *p) { kfree(p); }
+void  operator delete[](void *p, size_t size) { kfree(p); }

@@ -31,6 +31,7 @@ namespace System
         void CLISTATE(SystemCallArguments args);
         void EXIT(SystemCallArguments args);
         void YIELD(SystemCallArguments args);
+        void CMD(SystemCallArguments args);
     }
 
     namespace SystemCalls
@@ -43,11 +44,16 @@ namespace System
         static const SystemCall CLISTATE = { "CLISTATE", 0x000000B0, SystemCallMethods::CLISTATE };
         static const SystemCall EXIT     = { "EXIT",     0x00000069, SystemCallMethods::EXIT };
         static const SystemCall YIELD    = { "YIELD",    0x0000006A, SystemCallMethods::YIELD };
+        static const SystemCall CMD      = { "CMD",      0x000000CC, SystemCallMethods::CMD };
         extern uint32_t Count;
 
         void Init();
         void Register(SystemCall call);
+        void Monitor();
+        void Callback(HAL::Registers32* regs);
         void Execute(HAL::Registers32* regs);
         void Execute(SystemCallArguments args);
+        bool Push(SystemCallArguments args);
+        SystemCallArguments Pop();
     }
 }

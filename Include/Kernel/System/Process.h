@@ -5,6 +5,13 @@
 
 namespace System
 {
+    typedef struct
+    {
+        char     Message[64];
+        uint32_t Size;
+        uint8_t* Data;
+    } ProcessMessage;
+
     class Process
     {
         public:
@@ -12,13 +19,14 @@ namespace System
             uint32_t            ThreadCount;
             uint32_t            ThreadCountMax;
             uint32_t            Index;
+            uint32_t            MessageCount;
             uint32_t            Virtual;
+            ProcessMessage*     Messages;
 
         public:
             uint8_t*  ProgramData;
             uint32_t  ProgramSize;
         
-            
         public:
             HAL::Memory::PageDirectory* PageDir;
             bool     Running;
@@ -31,6 +39,11 @@ namespace System
             static Process* Create(char* name, Threading::ThreadProtocol protocol);
             static Process* CreateELF(char* name, uint8_t* data, uint32_t size);
             static Process* CreateKernel();
+
+        public:
+            bool IsMessageReady();
+            bool PushMessage(ProcessMessage msg);
+            ProcessMessage PopMessage();
 
         public:
             bool Start();
@@ -66,6 +79,9 @@ namespace System
             bool Kill(Process* proc);
             bool Kill(char* name);
             bool Kill(int index);
+
+        public:
+            bool SendMessage(char* name, ProcessMessage msg);
 
         public:
             void Schedule();

@@ -112,12 +112,12 @@ namespace Kernel
         MethodLibrary::Init();
 
         // create idle thread and add to kernel process
-        Threading::Thread* idle = Threading::Thread::Create("idle", 8192, IdleMain);
+        Threading::Thread* idle = Threading::Thread::Create("idle", 16384, IdleMain);
         idle->Registers.CR3 = Core::VMM.KernelDirectory.GetPhysical();
         Core::ProcessMgr.Processes[0]->LoadThread(idle);
         
         test_program = Core::RAMFS.ReadFile("shell.elf");
-        Process* test_proc = Process::CreateELF("testproc", test_program.Data, test_program.Size);
+        Process* test_proc = Process::CreateELF("Shell.elf", test_program.Data, test_program.Size);
         Core::ProcessMgr.Load(test_proc);
 
         // initialize PS2 keyboard
@@ -148,6 +148,7 @@ namespace Kernel
     void Run()
     {
         Core::CLI.Monitor();
+        SystemCalls::Monitor();
         Core::ProcessMgr.Schedule();
     }
 

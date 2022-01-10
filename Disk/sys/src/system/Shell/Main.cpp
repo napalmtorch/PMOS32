@@ -1,62 +1,49 @@
-#include <sys/lib/stdint.h>
-#include <sys/lib/stdarg.h>
-#include <sys/lib/stddef.h>
-#include <sys/lib/stdlib.h>
-#include <sys/lib/stdio.h>
-#include <sys/lib/string.h>
-#include <sys/lib/api/Library.h>
-#include <sys/lib/api/Time.h>
-#include <sys/lib/gfx/Graphics.h>
-#include <sys/lib/gfx/Image.h>
-#include <sys/lib/input/Keyboard.h>
-#include <sys/lib/input/Mouse.h>
+#include <sys/lib/system/Shell/Main.h>
+#include <sys/lib/system/Shell/Shell.h>
+
+ShellHost shell;
 
 int _start(void* arg)
 {
-    clistate(false);
-    lib_init();
-    printf("Initialized shell process\n");
-    
-    uint32_t fbw = pmlib::GetFrameBufferWidth();
-    uint32_t fbh = pmlib::GetFrameBufferHeight();
-    uint32_t* fb = pmlib::GetFrameBuffer();
+    shell.Init();
 
-    pmlib::Image image;
-    image.Create(fbw, fbh);
+    char* file = (char*)kmalloc(128, true, MEMTYPE_STRING);
+    strcpy(file, "/sys/bin/Terminal.elf");
+    asm volatile("int $0x80": :"a"(0), "b"((uint32_t)file), "c"(0xA0), "d"(0));
+    yield();
+    kfree(file);
 
-    pmlib::DateTime time;
-    uint32_t sec, last_sec, fps, frames;
-    char fps_string[32];
-    memset(fps_string, 0, 32);
+    pmgui::Window* win = new pmgui::Window(128, 128, 320, 240, "TestWin", "TestWin");
+    shell.WinMgr->Add(win);
+
+    //system("exec /sys/bin/Terminal.elf");
 
     while (true)
     {
-        frames++;
-        time = pmlib::GetCurrentTime();
+        shell.Update();
 
-        sec = time.Second;
-        if (sec != last_sec)
+        if (pmlib::IsProcMsgReady())
         {
-            fps = frames;
-            ltoa(fps, fps_string, 10);
-            frames = 0;
-            last_sec = sec;
+            ProcessMessage msg = pmlib::ReceiveProcMsg();
+            
+            if (!strcmp(msg.Message, "CREATEWIN"))
+            {
+                pmgui::Window* win = (pmgui::Window*)msg.Data;
+                if (!shell.WinMgr->Add(win)) { printf("Unable to add window\n"); break; }
+                printf("DONE ADDING WINDOW\n");
+            }
         }
 
-        image.Clear(0xFF007F7F);
-
-        image.DrawFilledRect(pmlib::GetMouseX(), pmlib::GetMouseY(), 8, 8, 0xFFFFFFFF);
-        image.DrawString(0, 0, (char*)"FPS: ", 0xFFFFFFFF, pmlib::Fonts::Serif8x16);
-        image.DrawString(40, 0, fps_string, 0xFFFFFFFF, pmlib::Fonts::Serif8x16);
-
-        if (pmlib::KeyboardDown(pmlib::Key::End)) { break; }
-
-        pmlib::Render(0, 0, fbw, fbh, image.GetData());
+        if (shell.ExitCode > 0) { break; }
         yield();
     }
 
-    kfree(image.GetData());
-    clistate(true);
+    shell.Dispose();
+
     yield();
-    return 0;
+    return shell.ExitCode;
+}
+
+void _draw_shell()
+{
 }

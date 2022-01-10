@@ -48,7 +48,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 
@@ -58,7 +58,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 
@@ -68,7 +68,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 
@@ -78,7 +78,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 
@@ -88,7 +88,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 
@@ -98,7 +98,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 
@@ -108,7 +108,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 
@@ -118,7 +118,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 
@@ -128,7 +128,7 @@ for file in $cdir*.cpp
 do
     inf="$(basename $file)"
     outf="$(echo ${inf%.*}.o)"
-    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti
+    i686-elf-g++ -w -IInclude -c "$cdir$inf" -o "$outdir$outf" -nostdlib -ffreestanding -Wall -Wextra -O0 -fno-rtti -fno-exceptions
     echo "$cmsgl$cdir$inf$cmsgm$outdir$outf$cmsge"
 done
 

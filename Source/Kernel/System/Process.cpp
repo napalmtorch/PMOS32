@@ -17,7 +17,9 @@ namespace System
         ThreadCountMax = 256;
         ThreadCount    = 1;
         ID             = ProcessID++;
+        MessageCount   = 0;
         Threads = (Threading::Thread**)Core::Heap.Allocate(sizeof(Threading::Thread*) * ThreadCountMax, true, Memory::HeapType::PointerArray);
+        Messages = (ProcessMessage*)Core::Heap.Allocate(sizeof(ProcessMessage) * 256, true, Memory::HeapType::Array);
 
         char thread_name[128];
         memset(thread_name, 0, 128);
@@ -44,7 +46,6 @@ namespace System
         Threading::Thread* t = (Threading::Thread*)Core::Heap.Allocate(sizeof(Threading::Thread), true, Memory::HeapType::Thread);
         proc->Threads[0] = t;
 
-        //uint32_t phys = (uint32_t)Core::Heap.Allocate(0x2000, true, Memory::HeapType::Array) - KBASE_VIRTUAL;
         uint32_t phys = Core::VMM.AllocateDirectory();
 
         Core::VMM.KernelDirectory.Map(phys, phys);
@@ -82,8 +83,8 @@ namespace System
         strcpy(t->Name, name);
         strcat(t->Name, "_thread0");
         memset(&t->Registers, 0, sizeof(Threading::ThreadRegisters));
-        t->StackSize = Core::PMM.Align(t->StackSize);
-        t->Stack     = (uint8_t*)Core::Heap.Allocate(0x10000, true, Memory::HeapType::ThreadStack);
+        t->StackSize = 512 * 1024;
+        t->Stack     = (uint8_t*)Core::Heap.Allocate(512 * 1024, true, Memory::HeapType::ThreadStack);
         t->ID        = Threading::CurrentID++;
         t->State     = Threading::ThreadState::Halted;
 
@@ -138,6 +139,26 @@ namespace System
     {
         Running = false;
         return true;
+    }
+
+    bool Process::IsMessageReady() { return MessageCount > 0; }
+
+    bool Process::PushMessage(ProcessMessage msg)
+    {
+        if (MessageCount >= 256) { Debug::Error("Maximuma mount of messages reached on process '%s'", Name); return false; }
+        Messages[MessageCount] = msg;
+        MessageCount++;
+        Debug::Info("Pushed message onto process '%s'", Name);
+        return true;
+    }
+
+    ProcessMessage Process::PopMessage()
+    {
+        if (MessageCount < 0) { return { 0 }; }
+        MessageCount--;
+        ProcessMessage msg = Messages[MessageCount];
+        Debug::Info("Popped message from process '%s'", Name);
+        return msg;
     }
 
     bool Process::LoadThread(Threading::Thread* thread)
@@ -283,6 +304,7 @@ namespace System
                 Core::VMM.FreeDirectory(Processes[i]->PageDir->GetPhysical());
                 Core::VMM.KernelDirectory.Unmap((void*)Processes[i]->PageDir->GetPhysical());
                 Core::Heap.Free(Processes[i]->PageDir);
+                Core::Heap.Free(Processes[i]->Messages);
                 Core::Heap.Free(Processes[i]);
                 Processes[i] = nullptr;
                 Count--;
@@ -326,6 +348,25 @@ namespace System
             if (i == 0) { continue; }
             if (i == index) { return Processes[i]->Terminate(); }
         }
+        return false;
+    }
+
+    bool ProcessManager::SendMessage(char* name, ProcessMessage msg)
+    {
+        if (name == nullptr) { return false; }
+        if (strlen(name) == 0) { return false; }
+
+        for (uint32_t i = 0; i < CountMax; i++)
+        {
+            if (Processes[i] == nullptr) { continue; }
+            if (streql(Processes[i]->Name, name))
+            {
+                Processes[i]->PushMessage(msg);
+                Debug::Info("Sent %d byte message to process '%s'", msg.Size, name);
+                return true;
+            }
+        }
+
         return false;
     }
 

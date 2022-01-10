@@ -41,5 +41,20 @@ namespace pmgui
                 0, 0
             }
         };
+
+        static const VisualStyle DefaultWindow = 
+        { 
+            "Default", 0, 0, pmlib::Fonts::Serif8x8, BorderStyle::Classic,
+            {
+                (uint32_t)pmlib::Color::Silver,
+                (uint32_t)pmlib::Color::Black,
+                (uint32_t)pmlib::Color::White,
+                (uint32_t)pmlib::Color::DimGray,
+                (uint32_t)pmlib::Color::Black,
+                (uint32_t)pmlib::Color::DarkBlue,
+                (uint32_t)pmlib::Color::White,
+                0,
+            }
+        };
     }
 }

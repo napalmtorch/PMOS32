@@ -3,6 +3,8 @@
 
 namespace pmlib
 {
+    Image ScreenBuffer;
+
     void Render(int x, int y, int w, int h, uint32_t* data)
     {
         uint32_t fbw = GetFrameBufferWidth();

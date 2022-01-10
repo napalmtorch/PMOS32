@@ -8,4 +8,4 @@ void lib_init()
 }
 
     // virtual handler
-    void __cxa_pure_virtual() { }
+EXTC void __cxa_pure_virtual() { }

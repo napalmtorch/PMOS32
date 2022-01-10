@@ -8,10 +8,15 @@ namespace System
     namespace SystemCalls
     {
         SystemCall SystemCalls[256];
+        SystemCallArguments Queue[256];
         uint32_t   Count;
+        uint32_t   QueueIndex;
 
         void Init()
         {
+            for (uint32_t i = 0; i < 256; i++) { Queue[i] = { 0, 0, 0, 0 }; }
+
+            QueueIndex = 0;
             Count = 0;
 
             Register(SystemCalls::PRINT);
@@ -22,8 +27,9 @@ namespace System
             Register(SystemCalls::CLISTATE);
             Register(SystemCalls::EXIT);
             Register(SystemCalls::YIELD);
+            Register(SystemCalls::CMD);
 
-            IDT::RegisterInterrupt(IRQ_SYSCALL, Execute);
+            IDT::RegisterInterrupt(IRQ_SYSCALL, Callback);
 
             Debug::Info("Initialized system calls");
         }
@@ -34,6 +40,24 @@ namespace System
             SystemCalls[Count] = call;
             Debug::Info("Registered system call - CODE: 0x%8x, NAME: '%s'", call.Code, call.Name);
             Count++;
+        }
+
+        void Monitor()
+        {
+            while (QueueIndex > 0)
+            {
+                SystemCallArguments args = Pop();
+                Execute(args);
+            }
+        }
+
+        void Callback(HAL::Registers32* regs)
+        {
+            SystemCallArguments args = { regs->EAX, (void*)regs->EBX, regs->ECX, (void*)regs->EDX };
+
+            if (args.Code == SystemCalls::YIELD.Code || args.Code == SystemCalls::MTABLE.Code || args.Code == SystemCalls::CLISTATE.Code || args.Code == SystemCalls::YIELD.Code ||
+                args.Code == SystemCalls::CMD.Code) { Execute(args); }
+            else { Push(args); }
         }
 
         void Execute(HAL::Registers32* regs)
@@ -49,11 +73,30 @@ namespace System
                 if (SystemCalls[i].Handler == nullptr) { continue; }
                 if (SystemCalls[i].Code == args.Code)
                 {
+                    //Debug::Info("EXEC SYSTEM CALL 0x%8x, 0x%8x, 0x%8x, 0x%8x", args.Argument, (uint32_t)args.Source, args.Code, (uint32_t)args.Destination);
                     SystemCalls[i].Handler(args);
                     return;
                 }
             }
             Debug::Error("Invalid system call 0x%8x", args.Code);
+        }
+
+        bool Push(SystemCallArguments args)
+        {
+            if (QueueIndex >= 256) { return false; }
+            Queue[QueueIndex] = args;
+            QueueIndex++;
+            Debug::Info("Pushed system call 0x%8x", args.Code);
+            return true;
+        }
+
+        SystemCallArguments Pop()
+        {
+            if (QueueIndex < 0) { return { 0, 0, 0, 0 }; }
+            QueueIndex--;
+            SystemCallArguments args = Queue[QueueIndex];
+            //Debug::Info("Popped system call 0x%8x", args.Code);
+            return args;
         }
     }
 
@@ -105,6 +148,12 @@ namespace System
         void YIELD(SystemCallArguments args)
         {
             Core::ProcessMgr.Schedule();
+        }
+
+        void CMD(SystemCallArguments args)
+        {
+            char* command = (char*)args.Source;
+            Core::CLI.Execute(command);
         }
     }
 }

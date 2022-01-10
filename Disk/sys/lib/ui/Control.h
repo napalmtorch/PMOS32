@@ -8,6 +8,16 @@
 
 namespace pmgui
 {
+    enum class ControlType : uint8_t
+    {
+        Base,
+        Container,
+        Window,
+        Button,
+        TextBox,
+        CheckBox,
+    };
+
     typedef struct
     {
         bool Hover;
@@ -17,24 +27,28 @@ namespace pmgui
         bool Focused;
     } PACKED ControlInputState;
 
+    class Container;
+
     class Control
     {
-        private:
+        protected:
             char*             Name;
             char*             Text;
             char*             Tag;
-            ControlInputState State;
 
         public:
-            void*       Parent;
-            bool        Enabled;
-            bool        Visible;
-            pmlib::Rectangle Bounds;
-            VisualStyle Style;
+            Container*        Parent;
+            bool              Enabled;
+            bool              Visible;
+            pmlib::Rectangle  Bounds;
+            VisualStyle       Style;
+            ControlType       Type;
+            ControlInputState State;;
 
         public:
-            Control(int x, int y, int w, int h, char* name, void* parent = nullptr);
-            void Init(int x, int y, int w, int h, char* name, void* parent = nullptr);
+            Control(int x, int y, int w, int h, char* name, Container* parent = nullptr);
+            void Init(int x, int y, int w, int h, char* name, Container* parent = nullptr);
+            virtual void Dispose();
             virtual void Update();
             virtual void Draw();
 
@@ -43,6 +57,7 @@ namespace pmgui
             virtual void OnMouseDown();
             virtual void OnMouseUp();
             virtual void OnMouseHover();
+            virtual void OnMouseEnter();
             virtual void OnMouseLeave();
 
         public:
@@ -50,6 +65,7 @@ namespace pmgui
             void (*MouseDown)(void* parent);
             void (*MouseUp)(void* parent);
             void (*MouseHover)(void* parent);
+            void (*MouseEnter)(void* parent);
             void (*MouseLeave)(void* parent);
     };
 }

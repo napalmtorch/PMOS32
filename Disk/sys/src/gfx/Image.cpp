@@ -15,6 +15,7 @@ namespace pmlib
     void Image::Create(uint32_t w, uint32_t h)
     {
         if (Data != nullptr) { kfree(Data); }
+        if (w == 0 || h == 0) { return; }
         Data   = (uint32_t*)kmalloc(w * h * 4, true, MEMTYPE_ARRAY);
         Width  = w;
         Height = h;
@@ -42,6 +43,36 @@ namespace pmlib
         for (int yy = 0; yy < h; yy++)
         {
             for (int xx = 0; xx < w; xx++) { DrawPixel(x + xx, y + yy, color); }
+        }
+    }
+
+    void Image::DrawRect(int x, int y, int w, int h, int thickness, uint32_t color)
+    {
+        DrawFilledRect(x, y, w, thickness, color);
+        DrawFilledRect(x, y + h - thickness, w, thickness, color);
+        DrawFilledRect(x, y + thickness, thickness, h - (thickness * 2), color);
+        DrawFilledRect(x + w - thickness, y + thickness, thickness, h - (thickness * 2), color);
+    }
+
+    void Image::DrawRect3D(int x, int y, int w, int h, bool invert, uint32_t ca, uint32_t cb, uint32_t cc)
+    {
+        if (invert)
+        {
+            DrawFilledRect(x, y, w - 1, 1, cc);
+            DrawFilledRect(x, y, 1, h - 1, cc);
+            DrawFilledRect(x + 1, y + 1, w - 3, 1, cb);
+            DrawFilledRect(x + 1, y + 1, 1, h - 3, cb);
+            DrawFilledRect(x, y + h - 1, w, 1, ca);
+            DrawFilledRect(x + w - 1, y, 1, h, ca);
+        }
+        else
+        {
+            DrawFilledRect(x, y, w, 1, ca);
+            DrawFilledRect(x, y, 1, h, ca);
+            DrawFilledRect(x + 1, y + h - 2, w - 2, 1, cb);
+            DrawFilledRect(x + w - 2, y + 1, 1, h - 2, cb);
+            DrawFilledRect(x, y + h - 1, w, 1, cc);
+            DrawFilledRect(x + w - 1, y, 1, h, cc);
         }
     }
 
@@ -102,6 +133,38 @@ namespace pmlib
             }
             i++;
         }
+    }
+
+    void Image::DrawArray(int x, int y, int w, int h, uint32_t* data)
+    {
+        if (data == NULL) { return; }
+        uint32_t iw = w;
+        while (x + w > (int)Width) { w--; }
+        while (y + h > (int)Height) { h--; }
+
+        for (int yy = 0; yy < h; yy++)
+        {
+            uint8_t* src = (uint8_t*)(data + (yy * iw));
+            int xx = x;
+            if (xx < 0) { xx = 0; }
+            while (xx + w > (int)Width) { xx--; }
+            uint32_t real_offset = (xx + ((y + yy) * Width)) * 4;
+            uint8_t* dest = (uint8_t*)((uint32_t)Data + real_offset);
+            //if (y + yy >= (int)Height) { return; }
+            if (y + yy >= 0 && (uint32_t)dest >= (uint32_t)Data && (uint32_t)dest < (uint32_t)((uint32_t)Data + (Width * Height * 4)))
+            {
+                if (x >= 0) { memcpy(dest, src, w * 4); }
+                else { memcpy(dest, src - (x * 4), (w + x) * 4); }
+            }
+        }
+    }
+
+    void Image::DrawArray(int x, int y, int w, int h, uint32_t trans, uint32_t* data)
+    {
+       for (uint32_t i = 0; i < (uint32_t)w * h; i++)
+       {
+           if (data[i] != trans) { DrawPixel(x + (i % w), y + (i / w), data[i]); }
+       }
     }
 
     uint32_t Image::GetWidth() { return Width; }

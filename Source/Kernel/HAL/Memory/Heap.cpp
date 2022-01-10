@@ -142,7 +142,7 @@ namespace HAL
             if (clear) { memset((void*)entry->Address, 0, aligned); }
             if (type != HeapType::Free) { entry->Type = type; }
             UsedSize += aligned;
-            //Debug::Info("ALLOC - ADDR: 0x%8x, TYPE: 0x%2x, SIZE: %d bytes", entry->Address, (uint32_t)entry->Type, entry->Size);
+            Debug::Info("ALLOC - ADDR: 0x%8x, TYPE: 0x%2x, SIZE: %d bytes", entry->Address, (uint32_t)entry->Type, entry->Size);
             return (void*)entry->Address;
         }
 
@@ -159,7 +159,7 @@ namespace HAL
                     Entries[i].Type = HeapType::Free;
                     UsedSize -= Entries[i].Size;
                     Merge();
-                    //Debug::Info("FREE -  ADDR: 0x%8x, SIZE: %d bytes", Entries[i].Address, Entries[i].Size);
+                    Debug::Info("FREE -  ADDR: 0x%8x, SIZE: %d bytes", Entries[i].Address, Entries[i].Size);
                     return;
                 }
             }

@@ -6,6 +6,13 @@
 
 typedef struct
 {
+    char     Message[64];
+    uint32_t Size;
+    uint8_t* Data;
+} ProcessMessage;
+
+typedef struct
+{
     const char* name;
     uint32_t    addr;
 } __attribute__((packed)) mtable_entry_t;
@@ -51,6 +58,12 @@ typedef bool     (*MTYPE_MS_GETRIGHT)(void);
 
 typedef pmlib::DateTime (*MTYPE_GET_TIME)(void);
 
+typedef bool (*MTYPE_SEND_MSG)(char* proc_name, ProcessMessage msg);
+typedef ProcessMessage (*MTYPE_RECV_MSG)(void);
+typedef bool (*MTYPE_MSG_READY)(void);
+
+typedef void (*MTYPE_YIELD)(void);
+
 #define MEMTYPE_FREE        0
 #define MEMTYPE_USED        1
 #define MEMTYPE_ARRAY       2
@@ -59,7 +72,8 @@ typedef pmlib::DateTime (*MTYPE_GET_TIME)(void);
 #define MEMTYPE_THREAD      5
 #define MEMTYPE_THREADSTACK 6
 #define MEMTYPE_STRING      7
-#define MEMTYPE_ERROR       8
+#define MEMTYPE_OBJECT      8
+#define MEMTYPE_ERROR       9
 
 extern mtable_entry_t* MTABLE_ENTRIES;
 

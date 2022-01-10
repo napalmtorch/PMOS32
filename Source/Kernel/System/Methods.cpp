@@ -37,6 +37,12 @@ namespace System
 
             Register(16, "GET_TIME", (uint32_t)ExternalMethods::GET_TIME);
 
+            Register(17, "SEND_MSG", (uint32_t)ExternalMethods::SEND_MSG);
+            Register(18, "RECV_MSG", (uint32_t)ExternalMethods::RECV_MSG);
+            Register(19, "MSG_READY", (uint32_t)ExternalMethods::MSG_READY);
+
+            Register(20, "YIELD", (uint32_t)ExternalMethods::YIELD);
+
             Debug::OK("Initialized method library");
         }
 
@@ -96,7 +102,14 @@ namespace System
         bool MS_GETRIGHT() { return Core::Mouse.IsRightPressed(); }
 
         DateTime GET_TIME() { return RTC::GetCurrentTime(); }
-        
+
+        bool SEND_MSG(char* name, ProcessMessage msg) { return Core::ProcessMgr.SendMessage(name, msg); }
+
+        ProcessMessage RECV_MSG() { return Core::ProcessMgr.CurrentProc->PopMessage(); }
+
+        bool MSG_READY() { return Core::ProcessMgr.CurrentProc->IsMessageReady(); }
+
+        void YIELD() { Core::ProcessMgr.Schedule(); }
     }
 
 }

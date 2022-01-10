@@ -2,6 +2,9 @@
 #include <sys/lib/stdint.h>
 #include <sys/lib/stdarg.h>
 #include <sys/lib/stddef.h>
+#include <sys/lib/stdlib.h>
+#include <sys/lib/stdio.h>
+#include <sys/lib/string.h>
 
 namespace pmlib
 {
@@ -17,4 +20,5 @@ namespace pmlib
     } PACKED DateTime;
 
     DateTime GetCurrentTime();
+    char*    GetTimeString(DateTime time, bool military, bool second, char* buffer);
 }

@@ -38,7 +38,7 @@ namespace System
             void PrintCaret();
             bool Register(Command* cmd);
             bool Unregister(Command* cmd);
-            void Execute(char* input);
+            void Execute(char* input, bool caret = true);
             void Monitor();
 
         public:

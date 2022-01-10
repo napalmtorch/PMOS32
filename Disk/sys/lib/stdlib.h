@@ -19,4 +19,16 @@ EXTC
 
     char* itoa(int num, char* str, int base);
     char* ltoa(size_t num, char* str, int base);
+
+    int system(char* command);
 }
+
+// allocate overloads
+extern void *operator new(size_t size);
+extern void *operator new[](size_t size);
+
+// delete overloads
+extern void operator delete(void *p);
+extern void operator delete(void *p, size_t size);
+extern void operator delete[](void *p);
+extern void operator delete[](void *p, size_t size);

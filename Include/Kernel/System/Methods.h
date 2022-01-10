@@ -2,6 +2,7 @@
 #include <Lib/Types.h>
 #include <Lib/Time.h>
 #include <Kernel/HAL/Memory/Heap.h>
+#include <Kernel/System/Process.h>
 
 namespace System
 {
@@ -32,6 +33,12 @@ namespace System
         bool     MS_GETRIGHT();
 
         DateTime GET_TIME();
+
+        bool SEND_MSG(char* name, ProcessMessage msg);
+        ProcessMessage RECV_MSG();
+        bool MSG_READY();
+
+        void YIELD();
     }
 
     namespace MethodLibrary
